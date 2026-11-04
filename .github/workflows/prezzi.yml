@@ -1,0 +1,24 @@
+name: Aggiorna prezzi MIMIT
+on:
+  schedule:
+    - cron: "20 7 * * *"   # ogni mattina dopo la pubblicazione dei prezzi delle 8:00
+  workflow_dispatch: {}
+permissions:
+  contents: write
+jobs:
+  prezzi:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/aggiorna_prezzi.py
+      - name: Pubblica se cambiati
+        run: |
+          if ! git diff --quiet; then
+            git config user.name "tpetrol-bot"
+            git config user.email "tpetrol-bot@users.noreply.github.com"
+            git commit -am "Prezzi MIMIT aggiornati"
+            git push
+          fi
