@@ -364,23 +364,28 @@ footer a{color:inherit}
 .odo-s{margin:18px 0 0;font-size:15px;opacity:.85}
 .odo-n{margin:6px auto 0;font-size:12px;opacity:.65;max-width:60ch}
 /* carte accettate */
-.ca-all{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:22px auto 0;max-width:820px}
-.ca-all span{font-size:14px;font-weight:600;padding:7px 14px;border-radius:999px;background:var(--bg);border:1px solid var(--line)}
-.ca-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;margin-top:28px;align-items:start}
-.ca{background:var(--bg);border:1px solid var(--line);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:10px}
-.ca header{display:flex;align-items:center;gap:12px}
-.ca header img{height:44px;width:auto;max-width:96px;object-fit:contain;background:#fff;border:1px solid var(--line);border-radius:8px;padding:3px;flex:none}
-.ca header b{display:block;font-weight:600;line-height:1.25}
-.ca header small{color:var(--muted);font-size:13px}
-.ca details summary{cursor:pointer;font-size:14px;font-weight:600;color:var(--ink);list-style:none;display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:12px;background:var(--soft)}
-.ca details summary::-webkit-details-marker{display:none}
-.ca details summary::after{content:"+";font-weight:700}
-.ca details[open] summary::after{content:"–"}
-.ca ul{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:2px}
-.ca li a{display:block;padding:6px 10px;border-radius:10px;font-size:14px;color:var(--ink);text-decoration:none}
-.ca li a:hover{background:var(--soft)}
-.ca li small{color:var(--muted)}
-.ca-everywhere{font-size:14px;font-weight:600;padding:8px 12px;border-radius:12px;background:var(--soft)}
+.ca-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:center;margin-top:30px}
+.ca-logos{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:10px}
+.ca-logos button{all:unset;box-sizing:border-box;cursor:pointer;display:grid;place-items:center;height:66px;padding:8px;border-radius:14px;background:#fff;border:2px solid var(--line);transition:transform .15s,border-color .15s,box-shadow .15s}
+.ca-logos button img{max-height:46px;max-width:100%;width:auto;object-fit:contain;display:block}
+.ca-logos button:hover{transform:translateY(-2px)}
+.ca-logos button:focus-visible{outline:3px solid #f67625;outline-offset:2px}
+.ca-logos button[aria-pressed="true"]{border-color:#f67625;box-shadow:0 10px 22px -12px rgba(246,118,37,.9)}
+.ca-sel{margin:18px 0 0;font-size:17px;min-height:2.6em}
+.ca-sel b{font-weight:700}
+.ca-sel span{color:#f67625;font-weight:700}
+.ca-mapbox{position:relative}
+.ca-mapbox svg{filter:drop-shadow(0 24px 34px rgba(0,20,43,.35))}
+.ca-off{fill:#6f8aa8;stroke:#1a3a63;stroke-width:1.5;opacity:.55;transition:all .35s}
+.ca-on{fill:#f67625;stroke:#fff;stroke-width:2;opacity:1;filter:drop-shadow(0 0 6px rgba(246,118,37,.95))}
+.ca-halo{fill:none;stroke:#f67625;stroke-width:2;opacity:0}
+.ca-halo.on{animation:caHalo 1.8s ease-out infinite}
+@keyframes caHalo{0%{opacity:.85;r:7}100%{opacity:0;r:20}}
+.ca-pt{cursor:pointer;outline:none}
+.ca-tip{position:absolute;transform:translate(-50%,calc(-100% - 12px));background:#00142b;color:#fff;padding:8px 12px;border-radius:12px;font-size:13px;white-space:nowrap;pointer-events:none;box-shadow:0 10px 24px -10px rgba(0,0,0,.6)}
+.ca-tip small{display:block;opacity:.7}
+@media (max-width:820px){.ca-wrap{grid-template-columns:1fr}.ca-logos{grid-template-columns:repeat(auto-fill,minmax(80px,1fr))}.ca-logos button{height:58px}}
+@media (prefers-reduced-motion:reduce){.ca-halo.on{animation:none}}
 /* AdBlue */
 .adb{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:4px 9px;border-radius:999px;background:#1e63c9;color:#fff;letter-spacing:.02em}
 .adb::before{content:"";width:8px;height:8px;border-radius:50%;background:#7fc3ff}
@@ -626,9 +631,14 @@ footer a{color:inherit}
     <div class="wrap">
       <p class="kicker">Pagamenti</p>
       <h2 class="title" id="ca-title">Carte accettate</h2>
-      <p class="lede">Le carte flotta e le carte carburante che puoi usare nelle nostre stazioni. Apri una carta per vedere in quali impianti è accettata.</p>
-      <div class="ca-all" aria-label="Accettati in tutti gli impianti"><span>Contanti</span><span>Carte di credito</span><span>PagoBANCOMAT</span></div>
-      <div class="ca-grid" id="ca-grid"></div>
+      <p class="lede">Scegli una carta: sulla mappa si accendono gli impianti dove puoi usarla. Contanti, carte di credito e PagoBANCOMAT sono accettati ovunque.</p>
+      <div class="ca-wrap">
+        <div class="ca-side">
+          <div class="ca-logos" id="ca-logos" role="group" aria-label="Scegli una carta"></div>
+          <p class="ca-sel" id="ca-sel" aria-live="polite"></p>
+        </div>
+        <div class="ca-mapbox nm-map"><svg id="ca-map" viewBox="0 0 560 740" role="img" aria-label="Mappa degli impianti dove è accettata la carta scelta"></svg><div class="ca-tip" id="ca-tip" hidden></div></div>
+      </div>
       <p class="pnote" id="ca-note"></p>
     </div>
   </section>
@@ -885,17 +895,53 @@ function renderPrices(){const q=pq.value.trim().toLowerCase();const k=ps.value;
       ${ex||x.adb?`<div class="pextra">${x.adb?`<span class="adb">AdBlue</span>`:""}${ex}</div>`:""}
       <footer><span>Aggiornato ${dshort(p.last)}</span><a href="${gm(x)}" target="_blank" rel="noopener">Mappa ↗</a></footer>`;
     pg.appendChild(a)})}
-// sezione carte accettate
-{const g=document.getElementById("ca-grid"),T=S.length;
-  const L=Object.keys(CARTA).map(k=>({k,c:CARTA[k],st:S.filter(x=>x.carte.includes(k))})).filter(o=>o.st.length).sort((a,b)=>b.st.length-a.st.length||a.c[0].localeCompare(b.c[0]));
-  L.forEach(({k,c,st})=>{const a=document.createElement("article");a.className="ca";const all=st.length===T;
-    st.sort((a,b)=>a.c.localeCompare(b.c)||a.n.localeCompare(b.n));
-    a.innerHTML=`<header>${c[1]?`<img src="${c[1]}" alt="" loading="lazy">`:""}<div><b>${c[0]}</b><small>${all?"In tutti gli impianti":st.length===1?"1 impianto":st.length+" impianti"}</small></div></header>`+
-      (all?`<div class="ca-everywhere">Accettata in tutte le ${T} stazioni</div>`:`<details><summary>Dove è accettata</summary><ul>${st.map(x=>`<li><a href="#pv-${x.pv}">${x.c} <small>· ${BRAND[x.b]} · ${x.n}</small></a></li>`).join("")}</ul></details>`);
-    g.appendChild(a)});
-  document.getElementById("ca-note").textContent=`Carte flotta rilevate dai pagamenti registrati negli impianti dal ${CARTE_DAL} al ${CARTE_AL}. In caso di dubbi chiedi al gestore.`;
-  g.addEventListener("click",e=>{const l=e.target.closest("a[href^='#pv-']");if(!l)return;const id=l.getAttribute("href").slice(1);
-    if(!document.getElementById(id)){pq.value="";pBrand="all";const pb=document.getElementById("pz-brands");if(pb)[...pb.children].forEach((c,i)=>c.setAttribute("aria-pressed",i===0));renderPrices()}})}
+// sezione carte accettate: loghi + mappa che accende gli impianti
+function drawCardMap(){const sv=document.getElementById("ca-map"),tip=document.getElementById("ca-tip"),box=sv.parentElement;
+  const NS="http://www.w3.org/2000/svg";const E=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);(p||sv).appendChild(e);return e};
+  const PW=560,PH=740;
+  function proj(la0,la1,lo0,lo1,x0,y0,w,h,pad){const K=Math.cos(42*Math.PI/180);const sc=Math.min((w-2*pad)/((lo1-lo0)*K),(h-2*pad)/(la1-la0));
+    const ox=x0+pad+((w-2*pad)-(lo1-lo0)*K*sc)/2,oy=y0+pad+((h-2*pad)-(la1-la0)*sc)/2;return{x:lo=>ox+(lo-lo0)*K*sc,y:la=>oy+(la1-la)*sc}}
+  const M=proj(41.12,42.92,12.15,13.92,0,0,PW,620,22);
+  E("rect",{x:0,y:0,width:PW,height:PH,rx:28,class:"nm-land"});
+  const coast=[[42.05,11.95],[41.95,12.05],[41.84,12.17],[41.77,12.22],[41.73,12.29],[41.66,12.42],[41.58,12.5],[41.50,12.58],[41.44,12.64],[41.42,12.72],[41.38,12.82],[41.33,12.92],[41.27,13.0],[41.23,13.05],[41.24,13.12],[41.29,13.24],[41.27,13.33],[41.25,13.43],[41.22,13.55],[41.21,13.6],[41.25,13.66],[41.2,13.78],[41.15,13.9],[41.1,14.0]];
+  const d="M"+coast.map(([la,lo])=>M.x(lo).toFixed(1)+" "+M.y(la).toFixed(1)).join(" L");
+  const clip=E("clipPath",{id:"clip-ca"},E("defs",{}));E("rect",{x:0,y:0,width:PW,height:PH,rx:28},clip);
+  const G=E("g",{"clip-path":"url(#clip-ca)"});
+  E("path",{d:d+` L${M.x(14.0)} ${PH+60} L${M.x(11.9)} ${PH+60} Z`,class:"nm-sea"},G);E("path",{d,class:"nm-coast"},G);
+  E("text",{x:40,y:690,class:"nm-sea-l"}).textContent="MAR TIRRENO";
+  [["LAZIO",42.15,12.45],["UMBRIA",42.86,12.5],["ABRUZZO",42.55,13.45]].forEach(([n,la,lo])=>E("text",{x:M.x(lo),y:M.y(la),class:"nm-reg"}).textContent=n);
+  const isRoma=x=>x.la>41.76&&x.la<41.96&&x.lo>12.40&&x.lo<12.66;
+  const IX=306,IY=470,IW=244,IH=258;
+  const R=proj(41.775,41.935,12.41,12.64,IX,IY+20,IW,IH-20,34);
+  const rb=[M.x(12.41),M.y(41.935),M.x(12.64)-M.x(12.41),M.y(41.775)-M.y(41.935)];
+  E("rect",{x:rb[0]-4,y:rb[1]-4,width:rb[2]+8,height:rb[3]+8,rx:8,class:"nm-zoom"});
+  E("path",{d:`M${rb[0]+rb[2]+4} ${rb[1]+rb[3]+4} L${IX+30} ${IY}`,class:"nm-zoom-l"});
+  E("rect",{x:IX,y:IY,width:IW,height:IH,rx:20,class:"nm-inset"});
+  E("text",{x:IX+16,y:IY+24,class:"nm-inset-t"}).textContent="ROMA";
+  E("text",{x:M.x(12.4964)-6,y:M.y(41.9028)-30,class:"nm-city","text-anchor":"end"}).textContent="ROMA";
+  [["LATINA",41.4676,12.9037,-44,52,"end"],["SPOLETO",42.734,12.738,0,-30,"middle"],["TERAMO",42.6589,13.7044,0,-26,"middle"],["RIETI",42.404,12.857,24,6,"start"]].forEach(([n,la,lo,dx,dy,an])=>E("text",{x:M.x(lo)+dx,y:M.y(la)+dy,class:"nm-city","text-anchor":an}).textContent=n);
+  const pts=S.map(x=>{const P=isRoma(x)?R:M;const cx=P.x(x.lo),cy=P.y(x.la);
+    const g=E("g",{class:"ca-pt",tabindex:0,role:"link"});
+    const h=E("circle",{cx,cy,r:7,class:"ca-halo"},g),c=E("circle",{cx,cy,r:7,class:"ca-off"},g);
+    const show=()=>{const r=box.getBoundingClientRect(),k=r.width/PW;tip.innerHTML=`<b>${x.c}</b><small>${BRAND[x.b]} · ${x.n}</small>`;
+      tip.style.left=Math.max(90,Math.min(r.width-90,cx*k))+"px";tip.style.top=(cy-6)*k+"px";tip.hidden=false};
+    const hide=()=>{tip.hidden=true};
+    const go=()=>{pq.value="";pBrand="all";const pb=document.getElementById("pz-brands");if(pb)[...pb.children].forEach((b,i)=>b.setAttribute("aria-pressed",i===0));renderPrices();
+      const el=document.getElementById("pv-"+x.pv);if(el)el.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"})};
+    g.addEventListener("mouseenter",show);g.addEventListener("mouseleave",hide);g.addEventListener("focus",show);g.addEventListener("blur",hide);
+    g.addEventListener("click",go);g.addEventListener("keydown",e=>{if(e.key==="Enter")go()});
+    return{x,g,h,c}});
+  return pts}
+{const pts=drawCardMap(),lg=document.getElementById("ca-logos"),sel=document.getElementById("ca-sel"),T=S.length;
+  const L=Object.keys(CARTA).map(k=>({k,c:CARTA[k],n:S.filter(x=>x.carte.includes(k)).length})).filter(o=>o.n).sort((a,b)=>b.n-a.n||a.c[0].localeCompare(b.c[0]));
+  const pick=(o,bt)=>{[...lg.children].forEach(b=>b.setAttribute("aria-pressed",b===bt));
+    pts.forEach(p=>{const on=p.x.carte.includes(o.k);p.c.setAttribute("class",on?"ca-off ca-on":"ca-off");p.h.setAttribute("class",on?"ca-halo on":"ca-halo");
+      p.g.setAttribute("aria-label",`${p.x.c}, ${p.x.n}: ${o.c[0]} ${on?"accettata":"non accettata"}`)});
+    sel.innerHTML=`<b>${o.c[0]}</b><br>${o.n===T?`accettata in <span>tutti i ${T} impianti</span>`:`accettata in <span>${o.n} ${o.n===1?"impianto":"impianti"}</span> su ${T}`}`};
+  L.forEach((o,i)=>{const bt=document.createElement("button");bt.type="button";bt.title=o.c[0];bt.setAttribute("aria-label",`${o.c[0]}, ${o.n} impianti`);bt.setAttribute("aria-pressed","false");
+    bt.innerHTML=o.c[1]?`<img src="${o.c[1]}" alt="">`:`<span>${o.c[0]}</span>`;bt.onclick=()=>pick(o,bt);lg.appendChild(bt)});
+  pick(L.find(o=>o.n<T)||L[0],lg.children[L.indexOf(L.find(o=>o.n<T)||L[0])]);
+  document.getElementById("ca-note").textContent=`Carte flotta rilevate dai pagamenti registrati negli impianti dal ${CARTE_DAL} al ${CARTE_AL}. In caso di dubbi chiedi al gestore.`}
 {const avg=k=>{const v=S.map(x=>x.p[k]).filter(v=>v!=null);return v.reduce((a,b)=>a+b,0)/v.length};const sm=document.getElementById("pz-sum");
   sm.innerHTML=`<div>Benzina self da <b>${fmt(bestB.p.bs)}</b></div><div>Gasolio self da <b>${fmt(bestG.p.gs)}</b></div>`}
 {const pb=document.getElementById("pz-brands");
