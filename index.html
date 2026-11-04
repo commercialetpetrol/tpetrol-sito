@@ -847,7 +847,7 @@ const LIVE={BASE:17139522,BASE_DAL:"2026-11-03",MEDIA:4860,DOW:[.79,1.04,1.04,1.
 
 // moduli: preparano un'email precompilata verso la casella commerciale
 const DEST="commercialetpetrol@gmail.com";
-const FORM_URL="https://formsubmit.co/ajax/"+DEST; // FormSubmit: invio diretto alla casella commerciale
+const FORM_URL="https://api.web3forms.com/submit",FORM_KEY="a8d459e4-7a7b-4ca3-802a-aa838cb086f4"; // Web3Forms: invio diretto a commercialetpetrol@gmail.com
 function hook(id,msgId,subject){const f=document.getElementById(id),m=document.getElementById(msgId);
   f.addEventListener("submit",e=>{e.preventDefault();
     const miss=[...f.querySelectorAll("[required]")].filter(i=>i.type==="checkbox"?!i.checked:!i.value.trim());
@@ -855,8 +855,8 @@ function hook(id,msgId,subject){const f=document.getElementById(id),m=document.g
     const fd=[...new FormData(f)];const body=fd.map(([k,v])=>`${k.replace(/_/g," ")}: ${v}`).join("\n");
     const btn=f.querySelector("button[type=submit]");
     const mailto=()=>{m.className="msg";m.textContent="Non siamo riusciti a inviare: si aprirà il tuo programma di posta con la richiesta già compilata. Se non si apre, scrivici a "+DEST+".";location.href=`mailto:${DEST}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`};
-    const data={_subject:subject+(f.querySelector("[name=codice_pv]")?" – "+f.querySelector("[name=codice_pv]").value.split(" – ")[0]:""),_template:"table",_captcha:"false",_honey:""};
-    fd.forEach(([k,v])=>{if(k!=="_honey")data[k.replace(/_/g," ")]=v});
+    const data={access_key:FORM_KEY,subject:subject+(f.querySelector("[name=codice_pv]")?" – PV "+f.querySelector("[name=codice_pv]").value.split(" – ")[0]:""),from_name:"Sito www.tpetrol.it",botcheck:""};
+    fd.forEach(([k,v])=>{if(k!=="_honey")data[k.replace(/_/g," ")]=v});const em=f.querySelector("[type=email]");if(em&&em.value)data.replyto=em.value;
     if(f.querySelector("[name=_honey]")&&f.querySelector("[name=_honey]").value)return;
     btn.disabled=true;m.className="msg";m.textContent="Invio in corso…";
     fetch(FORM_URL,{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify(data)})
