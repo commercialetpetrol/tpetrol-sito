@@ -16,4 +16,4 @@ Sito statico pubblicato con GitHub Pages.
   Le carte flotta vengono dalla banca dati vendite (pagamenti negli ultimi 4 mesi,
   periodo in `CARTE_DAL`/`CARTE_AL`); American Express è aggiunta a mano su tutti gli impianti.
 - **Mappe**: la geografia (oggetto `GEO` in `index.html`) è già proiettata nel riquadro 560×740: regioni e province ISTAT (via openpolis/geojson-italy, CC BY), laghi e fiumi Natural Earth. Va rigenerata solo se cambia l'area della mappa.
-- **Sostenibilità** (sezione `#sostenibilita`, oggetto `SOLARE` in `index.html`): per ogni codice PV le righe `[kW fotovoltaico, kWh accumulo, etichetta opzionale]`; totali, mappa ed elenco si calcolano da soli.
+- **Sostenibilità** (sezione `#sostenibilita`): `SOLARE` = per ogni codice PV le righe `[kW fotovoltaico, kWh accumulo, etichetta opzionale]`; `CER_NOVA` = stazioni aderenti a CER Nova ETS. L'elenco "Dove" si genera da solo.

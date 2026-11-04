@@ -395,27 +395,34 @@ footer a{color:inherit}
 @media (max-width:820px){.ca-wrap{grid-template-columns:1fr}.ca-logos{grid-template-columns:repeat(auto-fill,minmax(80px,1fr))}.ca-logos button{height:58px}}
 @media (prefers-reduced-motion:reduce){.ca-halo.on{animation:none}}
 /* sostenibilità */
-.so-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;max-width:820px;margin:30px auto 0}
-.so-stats div{background:linear-gradient(160deg,#0d3b2a,#00142b);color:#fff;border-radius:22px;padding:20px;text-align:center}
-.so-stats b{display:block;font-size:clamp(34px,5vw,50px);font-weight:800;color:#8be28b;line-height:1.05;font-variant-numeric:tabular-nums}
-.so-stats span{font-size:14px;opacity:.85}
-.so-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:start;margin-top:30px}
-.so-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-.so-list li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:18px;background:var(--bg)}
-.so-list li>img,.so-list li>.ph-com{height:34px;width:auto;max-width:60px;background:#fff;border-radius:7px;padding:2px;display:block}
-.so-list li>.ph-com{display:grid;place-items:center;width:52px;background:var(--brand-pb);color:#fff;font-size:12px;font-weight:700}
-.so-list b{display:block;font-weight:600;line-height:1.25}
-.so-list small{display:block;color:var(--muted);font-size:13px}
-.so-list .so-kw{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-.so-list .so-kw span{font-size:12.5px;font-weight:600;padding:4px 9px;border-radius:999px;background:var(--soft);font-variant-numeric:tabular-nums}
-.so-list .so-kw span.pv{background:#e3f5e1;color:#1d5b22}
-.so-list .so-kw span.bt{background:#e2eefb;color:#174a86}
-:root[data-theme="dark"] .so-list .so-kw span.pv{background:#173a22;color:#a9e8ad}
-:root[data-theme="dark"] .so-list .so-kw span.bt{background:#132f4f;color:#a8cdf5}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .so-list .so-kw span.pv{background:#173a22;color:#a9e8ad}:root:not([data-theme="light"]) .so-list .so-kw span.bt{background:#132f4f;color:#a8cdf5}}
-#so-map .ca-on{fill:#5fd068;filter:drop-shadow(0 0 6px rgba(95,208,104,.95))}
-#so-map .ca-halo{stroke:#5fd068}
-@media (max-width:820px){.so-wrap{grid-template-columns:1fr}.so-stats{grid-template-columns:1fr 1fr 1fr;gap:8px}.so-stats div{padding:14px 6px;border-radius:16px}.so-stats b{font-size:24px}.so-stats span{font-size:12px;line-height:1.3;display:block;margin-top:4px}}
+.so-live{display:flex;align-items:center;justify-content:center;gap:10px;margin:18px auto 0;font-weight:600;font-size:15px;color:#1d7a35}
+:root[data-theme="dark"] .so-live{color:#8be28b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .so-live{color:#8be28b}}
+.so-live .live-dot{flex:none}
+.so-intro{max-width:68ch;margin:22px auto 0;text-align:center;color:var(--muted);line-height:1.7}
+.so-intro p{margin:0 0 12px}
+.so-pillars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:28px}
+.so-pillars article{background:var(--soft);border-radius:22px;padding:22px}
+.so-ico{color:#ffd54a;display:grid;place-items:center;width:46px;height:46px;border-radius:14px;background:linear-gradient(160deg,#0d3b2a,#00142b);font-size:22px;margin-bottom:12px}
+.so-pillars h3{margin:0 0 6px;font-size:20px}
+.so-pillars p{margin:0;color:var(--muted);line-height:1.6}
+.so-where{margin-top:30px}
+.so-where>h3{font-size:20px;margin:0 0 12px}
+.so-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.so-list li{padding:14px 16px;border:1px solid var(--line);border-radius:18px;background:var(--bg)}
+.so-list b{display:block;font-weight:600}
+.so-list small{display:block;color:var(--muted);font-size:13.5px;margin-top:3px;line-height:1.45}
+.so-list .cer{display:inline-block;margin-top:8px;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;background:#00142b;color:#8be28b}
+@media (max-width:820px){.so-pillars{grid-template-columns:1fr}}
+.so-cer{margin-top:34px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:28px;align-items:start;background:linear-gradient(160deg,#0d3b2a,#00142b);color:#fff;border-radius:28px;padding:30px}
+.so-cer-k{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8be28b;margin-bottom:8px}
+.so-cer h3{font-size:clamp(24px,3.4vw,32px);margin:0 0 12px;line-height:1.15}
+.so-cer p{margin:0;opacity:.88;line-height:1.6}
+.so-ben{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.so-ben li{background:rgba(255,255,255,.07);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);border-radius:18px;padding:16px}
+.so-ben b{display:block;color:#8be28b;margin-bottom:6px}
+.so-ben span{font-size:14.5px;opacity:.88;line-height:1.5}
+@media (max-width:820px){.so-cer{grid-template-columns:1fr;padding:22px}.so-ben{grid-template-columns:1fr}}
 /* AdBlue */
 .adb{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:4px 9px;border-radius:999px;background:#1e63c9;color:#fff;letter-spacing:.02em}
 .adb::before{content:"";width:8px;height:8px;border-radius:50%;background:#7fc3ff}
@@ -770,11 +777,32 @@ footer a{color:inherit}
     <div class="wrap">
       <p class="kicker">Sostenibilità</p>
       <h2 class="title" id="so-title">Energia dal sole nelle nostre stazioni</h2>
-      <p class="lede">Su otto stazioni della rete abbiamo installato impianti fotovoltaici con batterie di accumulo, per produrre energia pulita direttamente in stazione e conservarla nelle batterie.</p>
-      <div class="so-stats" id="so-stats"></div>
-      <div class="so-wrap">
-        <div class="ca-mapbox nm-map"><svg id="so-map" viewBox="0 0 560 740" role="img" aria-label="Mappa delle stazioni T.Petrol con impianto fotovoltaico"></svg><div class="ca-tip" id="so-tip" hidden></div></div>
+      <p class="so-live"><span class="live-dot" aria-hidden="true"></span>Impianti attivi e in produzione</p>
+      <div class="so-intro">
+        <p>Una stazione di servizio è aperta tutto l'anno, spesso dalla mattina alla sera, e ha tetti e pensiline esposti al sole. Per questo abbiamo scelto di usarli: su diverse stazioni della nostra rete abbiamo installato impianti fotovoltaici, affiancati da batterie di accumulo.</p>
+        <p>È un percorso che portiamo avanti un impianto alla volta, con l'idea che anche chi vende carburanti possa fare la sua parte nella transizione energetica, partendo dalle cose concrete.</p>
+      </div>
+      <div class="so-pillars">
+        <article><span class="so-ico" aria-hidden="true">☀</span><h3>Produciamo</h3><p>I pannelli sulle pensiline e sugli edifici trasformano il sole in energia elettrica direttamente in stazione.</p></article>
+        <article><span class="so-ico" aria-hidden="true">🔋</span><h3>Conserviamo</h3><p>Le batterie di accumulo trattengono l'energia prodotta di giorno, così la possiamo usare anche quando il sole non c'è.</p></article>
+        <article><span class="so-ico" aria-hidden="true">🤝</span><h3>Condividiamo</h3><p>Una parte delle stazioni fa parte di una comunità energetica: l'energia che non usiamo va a beneficio del territorio.</p></article>
+      </div>
+      <div class="so-where">
+        <h3>Dove</h3>
         <ul class="so-list" id="so-list"></ul>
+      </div>
+      <div class="so-cer">
+        <div class="so-cer-h">
+          <span class="so-cer-k">Comunità energetica</span>
+          <h3>Aderiamo a CER Nova ETS</h3>
+          <p>Le stazioni di <b id="so-cer-n"></b> fanno parte di <b>CER Nova ETS</b>, una Comunità Energetica Rinnovabile. È un ente del terzo settore, senza scopo di lucro, che riunisce cittadini, imprese ed enti dello stesso territorio: chi ha un impianto fotovoltaico mette in comune l'energia che non consuma, chi aderisce la usa nello stesso momento in cui viene prodotta.</p>
+        </div>
+        <ul class="so-ben">
+          <li><b>Energia pulita e locale</b><span>L'energia del sole prodotta nelle nostre stazioni viene condivisa con famiglie e attività della zona.</span></li>
+          <li><b>Benefici per la comunità</b><span>Sull'energia condivisa la comunità riceve un incentivo pubblico dal GSE, che viene ripartito tra i membri o reinvestito in progetti per il territorio.</span></li>
+          <li><b>Meno emissioni</b><span>Più energia rinnovabile consumata sul posto significa meno energia da fonti fossili.</span></li>
+          <li><b>Un territorio più forte</b><span>La comunità è aperta a cittadini, imprese ed enti locali: più persone aderiscono, più energia si condivide e più benefici restano sul territorio.</span></li>
+        </ul>
       </div>
     </div>
   </section>
@@ -989,16 +1017,14 @@ function drawCardMap(svId,tipId,extra){const sv=document.getElementById(svId),ti
   pick(L.find(o=>o.n<T)||L[0],lg.children[L.indexOf(L.find(o=>o.n<T)||L[0])]);
 }
 // sostenibilità: fotovoltaico (kW) e accumulo (kWh) per stazione, comunicati dall'azienda
+const CER_NOVA=new Set(["49511","5522","5565","5229"]);
 const SOLARE={"5581":[[20,10]],"5580":[[20,10]],"6413":[[20,10]],"5229":[[20,20,"Stazione"],[20,10,"Bar"]],"5522":[[6,5]],"49511":[[10,10]],"5565":[[10,10]],"6414":[[15,20]]};
 {const it=n=>n.toLocaleString("it-IT");const st=S.filter(x=>SOLARE[x.pv]);
-  const kw=st.reduce((a,x)=>a+SOLARE[x.pv].reduce((b,r)=>b+r[0],0),0),kwh=st.reduce((a,x)=>a+SOLARE[x.pv].reduce((b,r)=>b+r[1],0),0);
-  document.getElementById("so-stats").innerHTML=`<div><b>${it(kw)} kW</b><span>di fotovoltaico installato</span></div><div><b>${it(kwh)} kWh</b><span>di batterie di accumulo</span></div><div><b>${st.length}</b><span>stazioni con impianto</span></div>`;
-  const rows=r=>r.map(([p,b,l])=>`<span class="pv">${l?l+": ":""}☀ ${it(p)} kW</span><span class="bt">🔋 ${it(b)} kWh</span>`).join("");
-  const pts=drawCardMap("so-map","so-tip",x=>SOLARE[x.pv]?`<small>${SOLARE[x.pv].map(([p,b,l])=>`${l?l+": ":""}${it(p)} kW + ${it(b)} kWh`).join(" · ")}</small>`:"");
-  pts.forEach(p=>{const on=!!SOLARE[p.x.pv];p.c.setAttribute("class",on?"ca-off ca-on":"ca-off");p.h.setAttribute("class",on?"ca-halo on":"ca-halo");
-    p.g.setAttribute("aria-label",`${p.x.c}, ${p.x.n}: ${on?"impianto fotovoltaico":"senza fotovoltaico"}`)});
-  st.sort((a,b)=>SOLARE[b.pv].reduce((s,r)=>s+r[0],0)-SOLARE[a.pv].reduce((s,r)=>s+r[0],0)||a.c.localeCompare(b.c));
-  document.getElementById("so-list").innerHTML=st.map(x=>`<li>${LOGO[x.b]?`<img src="${LOGO[x.b]}" alt="${BRAND[x.b]}">`:`<span class="ph-com">${BRAND[x.b]}</span>`}<div><b>${x.c}</b><small>${x.n}</small><div class="so-kw">${rows(SOLARE[x.pv])}</div></div></li>`).join("")}
+  const nome=x=>x.c.replace(/ \(..\)$/,"")+(x.c.startsWith("Roma")?" "+x.n.replace(/^Via (di )?/,"").replace(/ \d.*$/,""):x.pv==="6414"?" Borgo Podgora":"");
+  st.sort((a,b)=>nome(a).localeCompare(nome(b)));
+  const desc=r=>r.map(([p,b,l])=>`${l?l+": ":""}fotovoltaico da ${it(p)} kW con ${it(b)} kWh di accumulo`).join("<br>");
+  document.getElementById("so-list").innerHTML=st.map(x=>`<li><b>${nome(x)}</b><small>${desc(SOLARE[x.pv])}</small>${CER_NOVA.has(x.pv)?`<span class="cer">CER Nova ETS</span>`:""}</li>`).join("");
+  const c=st.filter(x=>CER_NOVA.has(x.pv)).map(nome);document.getElementById("so-cer-n").textContent=c.slice(0,-1).join(", ")+" e "+c.slice(-1)}
 {const avg=k=>{const v=S.map(x=>x.p[k]).filter(v=>v!=null);return v.reduce((a,b)=>a+b,0)/v.length};const sm=document.getElementById("pz-sum");
   sm.innerHTML=`<div>Benzina self da <b>${fmt(bestB.p.bs)}</b></div><div>Gasolio self da <b>${fmt(bestG.p.gs)}</b></div>`}
 {const pb=document.getElementById("pz-brands");
