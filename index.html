@@ -437,10 +437,6 @@ footer a{color:inherit}
         <div class="live-top"><span class="live-dot" aria-hidden="true"></span>In diretta dai nostri impianti</div>
         <p class="live-k">Rifornimenti dal 2015</p>
         <div class="odo-num" id="odo" role="status" aria-live="off">17.139.522</div>
-        <div class="live-row">
-          <div><strong id="live-today">—</strong><span>oggi</span></div>
-          <div><strong id="live-rate">—</strong><span>al minuto ora</span></div>
-        </div>
       </div>
     </div>
   </section>
@@ -834,7 +830,7 @@ const LIVE={BASE:17139522,BASE_DAL:"2026-11-03",MEDIA:4860,DOW:[.79,1.04,1.04,1.
   const today=document.getElementById("live-today"),rate=document.getElementById("live-rate");
   function side(){const now=Date.now();const p=parts(now);today.textContent=Math.round(integ(romeMidnight(p.ymd),now)).toLocaleString("it-IT");
     const r=ratePerSec(now)*60;rate.textContent=r<1?"<1":r.toFixed(1).replace(".",",")}
-  side();setInterval(side,15000);
+  if(today&&rate){side();setInterval(side,15000)}
   const reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
   // scatti irregolari (processo di Poisson): ogni tanto +2, e un piccolo recupero se si resta indietro
   function tick(){const now=Date.now();const exp=LIVE.BASE+integ(T0,now);let inc=Math.random()<.12?2:1;if(exp-value>4)inc+=1;if(value-exp>4)inc=0;
