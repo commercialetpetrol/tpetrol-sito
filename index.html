@@ -394,6 +394,28 @@ footer a{color:inherit}
 .ca-tip small{display:block;opacity:.7}
 @media (max-width:820px){.ca-wrap{grid-template-columns:1fr}.ca-logos{grid-template-columns:repeat(auto-fill,minmax(80px,1fr))}.ca-logos button{height:58px}}
 @media (prefers-reduced-motion:reduce){.ca-halo.on{animation:none}}
+/* sostenibilità */
+.so-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;max-width:820px;margin:30px auto 0}
+.so-stats div{background:linear-gradient(160deg,#0d3b2a,#00142b);color:#fff;border-radius:22px;padding:20px;text-align:center}
+.so-stats b{display:block;font-size:clamp(34px,5vw,50px);font-weight:800;color:#8be28b;line-height:1.05;font-variant-numeric:tabular-nums}
+.so-stats span{font-size:14px;opacity:.85}
+.so-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:start;margin-top:30px}
+.so-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.so-list li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:18px;background:var(--bg)}
+.so-list li>img,.so-list li>.ph-com{height:34px;width:auto;max-width:60px;background:#fff;border-radius:7px;padding:2px;display:block}
+.so-list li>.ph-com{display:grid;place-items:center;width:52px;background:var(--brand-pb);color:#fff;font-size:12px;font-weight:700}
+.so-list b{display:block;font-weight:600;line-height:1.25}
+.so-list small{display:block;color:var(--muted);font-size:13px}
+.so-list .so-kw{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.so-list .so-kw span{font-size:12.5px;font-weight:600;padding:4px 9px;border-radius:999px;background:var(--soft);font-variant-numeric:tabular-nums}
+.so-list .so-kw span.pv{background:#e3f5e1;color:#1d5b22}
+.so-list .so-kw span.bt{background:#e2eefb;color:#174a86}
+:root[data-theme="dark"] .so-list .so-kw span.pv{background:#173a22;color:#a9e8ad}
+:root[data-theme="dark"] .so-list .so-kw span.bt{background:#132f4f;color:#a8cdf5}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .so-list .so-kw span.pv{background:#173a22;color:#a9e8ad}:root:not([data-theme="light"]) .so-list .so-kw span.bt{background:#132f4f;color:#a8cdf5}}
+#so-map .ca-on{fill:#5fd068;filter:drop-shadow(0 0 6px rgba(95,208,104,.95))}
+#so-map .ca-halo{stroke:#5fd068}
+@media (max-width:820px){.so-wrap{grid-template-columns:1fr}.so-stats{grid-template-columns:1fr 1fr 1fr;gap:8px}.so-stats div{padding:14px 6px;border-radius:16px}.so-stats b{font-size:24px}.so-stats span{font-size:12px;line-height:1.3;display:block;margin-top:4px}}
 /* AdBlue */
 .adb{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:4px 9px;border-radius:999px;background:#1e63c9;color:#fff;letter-spacing:.02em}
 .adb::before{content:"";width:8px;height:8px;border-radius:50%;background:#7fc3ff}
@@ -529,6 +551,7 @@ footer a{color:inherit}
       <a href="#richieste">Gasolio riscaldamento</a>
       <a href="#carta">Carta petrolifera</a>
       <a href="#news">Notizie</a>
+      <a href="#sostenibilita">Sostenibilità</a>
       <a href="#affidabilita">Affidabilità</a>
       <a href="#contatti">Contatti</a>
     </nav>
@@ -743,6 +766,19 @@ footer a{color:inherit}
     </div>
   </section>
 
+  <section id="sostenibilita" class="sec band" aria-labelledby="so-title">
+    <div class="wrap">
+      <p class="kicker">Sostenibilità</p>
+      <h2 class="title" id="so-title">Energia dal sole nelle nostre stazioni</h2>
+      <p class="lede">Su otto stazioni della rete abbiamo installato impianti fotovoltaici con batterie di accumulo, per produrre energia pulita direttamente in stazione e conservarla nelle batterie.</p>
+      <div class="so-stats" id="so-stats"></div>
+      <div class="so-wrap">
+        <div class="ca-mapbox nm-map"><svg id="so-map" viewBox="0 0 560 740" role="img" aria-label="Mappa delle stazioni T.Petrol con impianto fotovoltaico"></svg><div class="ca-tip" id="so-tip" hidden></div></div>
+        <ul class="so-list" id="so-list"></ul>
+      </div>
+    </div>
+  </section>
+
   <section id="affidabilita" class="sec band soft">
     <div class="wrap">
       <p class="kicker">Affidabilità</p>
@@ -907,13 +943,13 @@ const GEO={"ours":"M236.3 661.6 236.2 661.9 236.2 661.9 236.3 661.6ZM235.5 661.4
 const GEO_LAYERS=[["other","nm-land2"],["ours","nm-land"],["lake","nm-lake"],["prov","nm-prov"],["reg","nm-regb"],["river","nm-river"],["coast","nm-coast"]];
 const CITIES=[["VITERBO",42.4207,12.1077],["TERNI",42.5636,12.6427],["FROSINONE",41.64,13.351],["L'AQUILA",42.3498,13.3995]];
 // sezione carte accettate: loghi + mappa che accende gli impianti
-function drawCardMap(){const sv=document.getElementById("ca-map"),tip=document.getElementById("ca-tip"),box=sv.parentElement;
+function drawCardMap(svId,tipId,extra){const sv=document.getElementById(svId),tip=document.getElementById(tipId),box=sv.parentElement;
   const NS="http://www.w3.org/2000/svg";const E=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);(p||sv).appendChild(e);return e};
   const PW=560,PH=740;
   function proj(la0,la1,lo0,lo1,x0,y0,w,h,pad){const K=Math.cos(42*Math.PI/180);const sc=Math.min((w-2*pad)/((lo1-lo0)*K),(h-2*pad)/(la1-la0));
     const ox=x0+pad+((w-2*pad)-(lo1-lo0)*K*sc)/2,oy=y0+pad+((h-2*pad)-(la1-la0)*sc)/2;return{x:lo=>ox+(lo-lo0)*K*sc,y:la=>oy+(la1-la)*sc}}
   const M=proj(41.12,42.92,12.15,13.92,0,0,PW,620,22);
-  const cid="clip-ca";const clip=E("clipPath",{id:cid},E("defs",{}));E("rect",{x:0,y:0,width:PW,height:PH,rx:28},clip);
+  const cid="clip-"+svId;const clip=E("clipPath",{id:cid},E("defs",{}));E("rect",{x:0,y:0,width:PW,height:PH,rx:28},clip);
   const G=E("g",{"clip-path":`url(#${cid})`});E("rect",{x:0,y:0,width:PW,height:PH,class:"nm-sea"},G);
   GEO_LAYERS.forEach(([k,c])=>E("path",{d:GEO[k],class:c},G));
   E("text",{x:40,y:690,class:"nm-sea-l"}).textContent="MAR TIRRENO";
@@ -933,7 +969,7 @@ function drawCardMap(){const sv=document.getElementById("ca-map"),tip=document.g
   const pts=S.map(x=>{const P=isRoma(x)?R:M;const cx=P.x(x.lo),cy=P.y(x.la);
     const g=E("g",{class:"ca-pt",tabindex:0,role:"link"});
     const h=E("circle",{cx,cy,r:7,class:"ca-halo"},g),c=E("circle",{cx,cy,r:7,class:"ca-off"},g);
-    const show=()=>{const r=box.getBoundingClientRect(),k=r.width/PW;tip.innerHTML=`<b>${x.c}</b><small>${BRAND[x.b]} · ${x.n}</small>`;
+    const show=()=>{const r=box.getBoundingClientRect(),k=r.width/PW;tip.innerHTML=`<b>${x.c}</b><small>${BRAND[x.b]} · ${x.n}</small>${extra?extra(x):""}`;
       tip.style.left=Math.max(90,Math.min(r.width-90,cx*k))+"px";tip.style.top=(cy-6)*k+"px";tip.hidden=false};
     const hide=()=>{tip.hidden=true};
     const go=()=>{pq.value="";pBrand="all";const pb=document.getElementById("pz-brands");if(pb)[...pb.children].forEach((b,i)=>b.setAttribute("aria-pressed",i===0));renderPrices();
@@ -942,7 +978,7 @@ function drawCardMap(){const sv=document.getElementById("ca-map"),tip=document.g
     g.addEventListener("click",go);g.addEventListener("keydown",e=>{if(e.key==="Enter")go()});
     return{x,g,h,c}});
   return pts}
-{const pts=drawCardMap(),lg=document.getElementById("ca-logos"),sel=document.getElementById("ca-sel"),T=S.length;
+{const pts=drawCardMap("ca-map","ca-tip"),lg=document.getElementById("ca-logos"),sel=document.getElementById("ca-sel"),T=S.length;
   const L=Object.keys(CARTA).map(k=>({k,c:CARTA[k],n:S.filter(x=>x.carte.includes(k)).length})).filter(o=>o.n).sort((a,b)=>b.n-a.n||a.c[0].localeCompare(b.c[0]));
   const pick=(o,bt)=>{[...lg.children].forEach(b=>b.setAttribute("aria-pressed",b===bt));
     pts.forEach(p=>{const on=p.x.carte.includes(o.k);p.c.setAttribute("class",on?"ca-off ca-on":"ca-off");p.h.setAttribute("class",on?"ca-halo on":"ca-halo");
@@ -952,6 +988,17 @@ function drawCardMap(){const sv=document.getElementById("ca-map"),tip=document.g
     bt.innerHTML=o.c[1]?`<img src="${o.c[1]}" alt="">`:`<span>${o.c[0]}</span>`;bt.onclick=()=>pick(o,bt);lg.appendChild(bt)});
   pick(L.find(o=>o.n<T)||L[0],lg.children[L.indexOf(L.find(o=>o.n<T)||L[0])]);
 }
+// sostenibilità: fotovoltaico (kW) e accumulo (kWh) per stazione, comunicati dall'azienda
+const SOLARE={"5581":[[20,10]],"5580":[[20,10]],"6413":[[20,10]],"5229":[[20,20,"Stazione"],[20,10,"Bar"]],"5522":[[6,5]],"49511":[[10,10]],"5565":[[10,10]],"6414":[[15,20]]};
+{const it=n=>n.toLocaleString("it-IT");const st=S.filter(x=>SOLARE[x.pv]);
+  const kw=st.reduce((a,x)=>a+SOLARE[x.pv].reduce((b,r)=>b+r[0],0),0),kwh=st.reduce((a,x)=>a+SOLARE[x.pv].reduce((b,r)=>b+r[1],0),0);
+  document.getElementById("so-stats").innerHTML=`<div><b>${it(kw)} kW</b><span>di fotovoltaico installato</span></div><div><b>${it(kwh)} kWh</b><span>di batterie di accumulo</span></div><div><b>${st.length}</b><span>stazioni con impianto</span></div>`;
+  const rows=r=>r.map(([p,b,l])=>`<span class="pv">${l?l+": ":""}☀ ${it(p)} kW</span><span class="bt">🔋 ${it(b)} kWh</span>`).join("");
+  const pts=drawCardMap("so-map","so-tip",x=>SOLARE[x.pv]?`<small>${SOLARE[x.pv].map(([p,b,l])=>`${l?l+": ":""}${it(p)} kW + ${it(b)} kWh`).join(" · ")}</small>`:"");
+  pts.forEach(p=>{const on=!!SOLARE[p.x.pv];p.c.setAttribute("class",on?"ca-off ca-on":"ca-off");p.h.setAttribute("class",on?"ca-halo on":"ca-halo");
+    p.g.setAttribute("aria-label",`${p.x.c}, ${p.x.n}: ${on?"impianto fotovoltaico":"senza fotovoltaico"}`)});
+  st.sort((a,b)=>SOLARE[b.pv].reduce((s,r)=>s+r[0],0)-SOLARE[a.pv].reduce((s,r)=>s+r[0],0)||a.c.localeCompare(b.c));
+  document.getElementById("so-list").innerHTML=st.map(x=>`<li>${LOGO[x.b]?`<img src="${LOGO[x.b]}" alt="${BRAND[x.b]}">`:`<span class="ph-com">${BRAND[x.b]}</span>`}<div><b>${x.c}</b><small>${x.n}</small><div class="so-kw">${rows(SOLARE[x.pv])}</div></div></li>`).join("")}
 {const avg=k=>{const v=S.map(x=>x.p[k]).filter(v=>v!=null);return v.reduce((a,b)=>a+b,0)/v.length};const sm=document.getElementById("pz-sum");
   sm.innerHTML=`<div>Benzina self da <b>${fmt(bestB.p.bs)}</b></div><div>Gasolio self da <b>${fmt(bestG.p.gs)}</b></div>`}
 {const pb=document.getElementById("pz-brands");
