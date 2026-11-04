@@ -385,6 +385,7 @@ footer a{color:inherit}
 .ca-logos button:focus-visible{outline:3px solid #f67625;outline-offset:2px}
 .ca-logos button[aria-pressed="true"]{border-color:#f67625;box-shadow:0 10px 22px -12px rgba(246,118,37,.9)}
 .ca-sel{margin:18px 0 0;font-size:17px;min-height:2.6em}
+.ca-sel[hidden]{display:none}
 .ca-sel b{font-weight:700}
 .ca-sel span{color:#f67625;font-weight:700}
 .ca-mapbox{position:relative}
@@ -690,7 +691,7 @@ footer a{color:inherit}
       <div class="ca-wrap">
         <div class="ca-side">
           <div class="ca-logos" id="ca-logos" role="group" aria-label="Scegli una carta"></div>
-          <p class="ca-sel" id="ca-sel" aria-live="polite"></p>
+          <p class="ca-sel" id="ca-sel" aria-live="polite" hidden></p>
         </div>
         <div class="ca-mapbox nm-map"><svg id="ca-map" viewBox="0 0 560 740" role="img" aria-label="Mappa degli impianti dove è accettata la carta scelta"></svg><div class="ca-tip" id="ca-tip" hidden></div></div>
       </div>
@@ -802,13 +803,13 @@ footer a{color:inherit}
       <h2 class="title" id="so-title">Energia dal sole nelle nostre stazioni</h2>
       <p class="so-live"><span class="live-dot" aria-hidden="true"></span>Impianti attivi e in produzione</p>
       <div class="so-intro">
-        <p>Una stazione di servizio è aperta tutto l'anno, spesso dalla mattina alla sera, e ha tetti e pensiline esposti al sole. Per questo abbiamo scelto di usarli: abbiamo installato impianti fotovoltaici, affiancati da batterie di accumulo, in <b id="so-n"></b> stazioni della nostra rete: <span id="so-all"></span>. A Sant'Egidio alla Vibrata i pannelli ci sono sia sulla stazione sia sul bar.</p>
+        <p>Una stazione di servizio è aperta tutto l'anno, spesso dalla mattina alla sera, e ha tetti e pensiline esposti al sole. Per questo abbiamo scelto di usarli: abbiamo installato impianti fotovoltaici, affiancati da batterie di accumulo, in <b id="so-n"></b> stazioni della nostra rete: <span id="so-all"></span>.</p>
         <p>È un percorso che portiamo avanti un impianto alla volta, con l'idea che anche chi vende carburanti possa fare la sua parte nella transizione energetica, partendo dalle cose concrete.</p>
       </div>
       <div class="so-pillars">
         <article><span class="so-ico" aria-hidden="true">☀</span><h3>Produciamo</h3><p>I pannelli sulle pensiline e sugli edifici trasformano il sole in energia elettrica direttamente in stazione.</p></article>
-        <article><span class="so-ico" aria-hidden="true">🔋</span><h3>Conserviamo</h3><p>Le batterie di accumulo trattengono l'energia prodotta di giorno, così la possiamo usare anche quando il sole non c'è.</p></article>
-        <article><span class="so-ico" aria-hidden="true">🤝</span><h3>Condividiamo</h3><p><span id="so-cer2"></span> fanno parte di una comunità energetica: l'energia che non usiamo va a beneficio del territorio.</p></article>
+        <article><span class="so-ico" aria-hidden="true">🔋</span><h3>Conserviamo</h3><p>Le batterie di accumulo conservano l'energia prodotta di giorno dai pannelli: la usiamo per illuminare i nostri piazzali anche di notte.</p></article>
+        <article><span class="so-ico" aria-hidden="true">🤝</span><h3>Condividiamo</h3><p>Condividiamo la nostra energia con comunità locali ed enti del terzo settore. Una comunità energetica trasforma l'energia rinnovabile in un vantaggio condiviso: risparmi economici per chi la utilizza e benefici per l'ambiente e il territorio.</p></article>
       </div>
       <div class="so-where">
         <h3>Dove</h3>
@@ -1053,7 +1054,6 @@ const SOLARE={"5581":[[20,10]],"5580":[[20,10]],"6413":[[20,10]],"5229":[[20,20,
     const el=document.getElementById("pv-"+l.dataset.pv);if(el)el.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"})});
   const lk=x=>`<a href="#pv-${x.pv}" data-pv="${x.pv}">${SO_NOME[x.pv]||nome(x)}</a>`,el=L=>L.slice(0,-1).join(", ")+" e "+L.slice(-1);
   const c=st.filter(x=>CER_NOVA.has(x.pv)).map(lk);document.getElementById("so-cer-n").innerHTML=el(c);
-  document.getElementById("so-cer2").innerHTML="Le stazioni di "+el(c);
   document.getElementById("so-n").textContent=["zero","una","due","tre","quattro","cinque","sei","sette","otto","nove","dieci"][st.length]||st.length;
   document.getElementById("so-all").innerHTML=el(st.map(lk))}
 {const avg=k=>{const v=S.map(x=>x.p[k]).filter(v=>v!=null);return v.reduce((a,b)=>a+b,0)/v.length};const sm=document.getElementById("pz-sum");
