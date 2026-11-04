@@ -1028,17 +1028,18 @@ function drawCardMap(svId,tipId,extra){const sv=document.getElementById(svId),ti
   pick(L.find(o=>o.n<T)||L[0],lg.children[L.indexOf(L.find(o=>o.n<T)||L[0])]);
 }
 // sostenibilità: fotovoltaico (kW) e accumulo (kWh) per stazione, comunicati dall'azienda
+const SO_NOME={"6413":"Aprilia Q8 Via Selciatella","6414":"Latina Q8 Borgo Podgora","49511":"Pontinia IP Via Trieste","5565":"Roma Q8 Via di Bravetta","5581":"Roma Q8 Via di Fioranello","5522":"Roma Q8 Via Marconi","5229":"Sant'Egidio alla Vibrata Q8 Via Aprutina","5580":"Spoleto Q8 S.S. 3 Flaminia"};
 const CER_NOVA=new Set(["49511","5522","5565","5229"]);
 const SOLARE={"5581":[[20,10]],"5580":[[20,10]],"6413":[[20,10]],"5229":[[20,20,"Stazione"],[20,10,"Bar"]],"5522":[[6,5]],"49511":[[10,10]],"5565":[[10,10]],"6414":[[15,20]]};
 {const it=n=>n.toLocaleString("it-IT");const st=S.filter(x=>SOLARE[x.pv]);
   const nome=x=>x.c.replace(/ \(..\)$/,"")+(x.c.startsWith("Roma")?" "+x.n.replace(/^Via (di )?/,"").replace(/ \d.*$/,""):x.pv==="6414"?" Borgo Podgora":"");
-  st.sort((a,b)=>nome(a).localeCompare(nome(b)));
+  st.sort((a,b)=>(SO_NOME[a.pv]||nome(a)).localeCompare(SO_NOME[b.pv]||nome(b)));
   const desc=r=>r.map(([p,b,l])=>`${l?l+": ":""}fotovoltaico da ${it(p)} kW con ${it(b)} kWh di accumulo`).join("<br>");
-  document.getElementById("so-list").innerHTML=st.map(x=>`<li><header>${LOGO[x.b]?`<img src="${LOGO[x.b]}" alt="${BRAND[x.b]}">`:`<span class="ph-com">${BRAND[x.b]}</span>`}<div><a class="so-st" href="#pv-${x.pv}" data-pv="${x.pv}">${BRAND[x.b]} ${x.n}</a><small class="so-c">${x.c}</small></div></header><small>${desc(SOLARE[x.pv])}</small><div class="so-ft">${CER_NOVA.has(x.pv)?`<span class="cer">CER Nova ETS</span>`:"<span></span>"}<a href="${gm(x)}" target="_blank" rel="noopener">Mappa ↗</a></div></li>`).join("");
+  document.getElementById("so-list").innerHTML=st.map(x=>`<li><header>${LOGO[x.b]?`<img src="${LOGO[x.b]}" alt="${BRAND[x.b]}">`:`<span class="ph-com">${BRAND[x.b]}</span>`}<div><a class="so-st" href="#pv-${x.pv}" data-pv="${x.pv}">${SO_NOME[x.pv]||nome(x)}</a><small class="so-c">${x.n}, ${x.c}</small></div></header><small>${desc(SOLARE[x.pv])}</small><div class="so-ft">${CER_NOVA.has(x.pv)?`<span class="cer">CER Nova ETS</span>`:"<span></span>"}<a href="${gm(x)}" target="_blank" rel="noopener">Mappa ↗</a></div></li>`).join("");
   document.getElementById("sostenibilita").addEventListener("click",e=>{const l=e.target.closest("a[data-pv]");if(!l)return;e.preventDefault();
     pq.value="";pBrand="all";const pb=document.getElementById("pz-brands");if(pb)[...pb.children].forEach((c,i)=>c.setAttribute("aria-pressed",i===0));renderPrices();
     const el=document.getElementById("pv-"+l.dataset.pv);if(el)el.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"})});
-  const c=st.filter(x=>CER_NOVA.has(x.pv)).map(x=>`<a href="#pv-${x.pv}" data-pv="${x.pv}">${BRAND[x.b]} ${x.n}, ${x.c}</a>`);document.getElementById("so-cer-n").innerHTML=c.slice(0,-1).join(", ")+" e "+c.slice(-1)}
+  const c=st.filter(x=>CER_NOVA.has(x.pv)).map(x=>`<a href="#pv-${x.pv}" data-pv="${x.pv}">${SO_NOME[x.pv]||nome(x)}</a>`);document.getElementById("so-cer-n").innerHTML=c.slice(0,-1).join(", ")+" e "+c.slice(-1)}
 {const avg=k=>{const v=S.map(x=>x.p[k]).filter(v=>v!=null);return v.reduce((a,b)=>a+b,0)/v.length};const sm=document.getElementById("pz-sum");
   sm.innerHTML=`<div>Benzina self da <b>${fmt(bestB.p.bs)}</b></div><div>Gasolio self da <b>${fmt(bestG.p.gs)}</b></div>`}
 {const pb=document.getElementById("pz-brands");
