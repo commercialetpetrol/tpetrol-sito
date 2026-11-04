@@ -414,6 +414,17 @@ footer a{color:inherit}
 .so-list small{display:block;color:var(--muted);font-size:13.5px;margin-top:3px;line-height:1.45}
 .so-list .cer{display:inline-block;margin-top:8px;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;background:#00142b;color:#8be28b}
 @media (max-width:820px){.so-pillars{grid-template-columns:1fr}}
+.so-list li{display:flex;flex-direction:column;gap:8px}
+.so-list header{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:center}
+.so-list header img,.so-list header .ph-com{height:32px;width:auto;max-width:56px;background:#fff;border-radius:7px;padding:2px;display:block}
+.so-list header .ph-com{display:grid;place-items:center;width:52px;background:var(--brand-pb);color:#fff;font-size:11px;font-weight:700}
+.so-st{display:block;font-weight:600;color:var(--ink);text-decoration:none;line-height:1.25}
+.so-st:hover{text-decoration:underline}
+.so-list .so-c{margin-top:1px}
+.so-ft{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto}
+.so-ft a{font-size:13px;font-weight:600}
+.so-list .cer{margin-top:0}
+#so-cer-n a{color:#fff;text-decoration:underline;text-underline-offset:3px}
 .so-cer{margin-top:34px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:28px;align-items:start;background:linear-gradient(160deg,#0d3b2a,#00142b);color:#fff;border-radius:28px;padding:30px}
 .so-cer-k{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8be28b;margin-bottom:8px}
 .so-cer h3{font-size:clamp(24px,3.4vw,32px);margin:0 0 12px;line-height:1.15}
@@ -1023,8 +1034,11 @@ const SOLARE={"5581":[[20,10]],"5580":[[20,10]],"6413":[[20,10]],"5229":[[20,20,
   const nome=x=>x.c.replace(/ \(..\)$/,"")+(x.c.startsWith("Roma")?" "+x.n.replace(/^Via (di )?/,"").replace(/ \d.*$/,""):x.pv==="6414"?" Borgo Podgora":"");
   st.sort((a,b)=>nome(a).localeCompare(nome(b)));
   const desc=r=>r.map(([p,b,l])=>`${l?l+": ":""}fotovoltaico da ${it(p)} kW con ${it(b)} kWh di accumulo`).join("<br>");
-  document.getElementById("so-list").innerHTML=st.map(x=>`<li><b>${nome(x)}</b><small>${desc(SOLARE[x.pv])}</small>${CER_NOVA.has(x.pv)?`<span class="cer">CER Nova ETS</span>`:""}</li>`).join("");
-  const c=st.filter(x=>CER_NOVA.has(x.pv)).map(nome);document.getElementById("so-cer-n").textContent=c.slice(0,-1).join(", ")+" e "+c.slice(-1)}
+  document.getElementById("so-list").innerHTML=st.map(x=>`<li><header>${LOGO[x.b]?`<img src="${LOGO[x.b]}" alt="${BRAND[x.b]}">`:`<span class="ph-com">${BRAND[x.b]}</span>`}<div><a class="so-st" href="#pv-${x.pv}" data-pv="${x.pv}">${BRAND[x.b]} ${x.n}</a><small class="so-c">${x.c}</small></div></header><small>${desc(SOLARE[x.pv])}</small><div class="so-ft">${CER_NOVA.has(x.pv)?`<span class="cer">CER Nova ETS</span>`:"<span></span>"}<a href="${gm(x)}" target="_blank" rel="noopener">Mappa ↗</a></div></li>`).join("");
+  document.getElementById("sostenibilita").addEventListener("click",e=>{const l=e.target.closest("a[data-pv]");if(!l)return;e.preventDefault();
+    pq.value="";pBrand="all";const pb=document.getElementById("pz-brands");if(pb)[...pb.children].forEach((c,i)=>c.setAttribute("aria-pressed",i===0));renderPrices();
+    const el=document.getElementById("pv-"+l.dataset.pv);if(el)el.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"})});
+  const c=st.filter(x=>CER_NOVA.has(x.pv)).map(x=>`<a href="#pv-${x.pv}" data-pv="${x.pv}">${BRAND[x.b]} ${x.n}, ${x.c}</a>`);document.getElementById("so-cer-n").innerHTML=c.slice(0,-1).join(", ")+" e "+c.slice(-1)}
 {const avg=k=>{const v=S.map(x=>x.p[k]).filter(v=>v!=null);return v.reduce((a,b)=>a+b,0)/v.length};const sm=document.getElementById("pz-sum");
   sm.innerHTML=`<div>Benzina self da <b>${fmt(bestB.p.bs)}</b></div><div>Gasolio self da <b>${fmt(bestG.p.gs)}</b></div>`}
 {const pb=document.getElementById("pz-brands");
