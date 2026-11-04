@@ -5,6 +5,8 @@
 Riscrive le righe `const PREZZI_DATA=...;` e `const PREZZI=...;` di index.html.
 Se nessuna fonte risponde non tocca nulla."""
 import csv, datetime as dt, json, re, sys, time, urllib.request, pathlib
+from zoneinfo import ZoneInfo
+ROMA = ZoneInfo("Europe/Rome")
 
 CSV_URL = "https://www.mimit.gov.it/images/exportCSV/prezzo_alle_8.csv"
 API_URL = "https://carburanti.mise.gov.it/ospzApi/registry/servicearea/{}"
@@ -62,14 +64,17 @@ def from_api():
                 v = float(f.get("price"))
             except (TypeError, ValueError):
                 continue
-            when = (f.get("insertDate") or "")[:19]
+            when = f.get("insertDate") or ""
             try:
-                when = dt.datetime.fromisoformat(when).strftime("%d/%m/%Y %H:%M:%S")
+                t = dt.datetime.fromisoformat(when.replace("Z", "+00:00"))
+                if t.tzinfo is None:
+                    t = t.replace(tzinfo=dt.timezone.utc)
+                when = t.astimezone(ROMA).strftime("%d/%m/%Y %H:%M:%S")
             except ValueError:
                 pass
             P.setdefault(i, []).append([f.get("name", ""), v, 1 if f.get("isSelf") else 0, when])
         time.sleep(0.5)
-    return dt.date.today().strftime("%d/%m/%Y"), P
+    return dt.datetime.now(ROMA).strftime("%d/%m/%Y"), P
 
 
 res = from_csv()
