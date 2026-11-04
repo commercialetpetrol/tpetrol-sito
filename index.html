@@ -679,7 +679,7 @@ footer a{color:inherit}
       <div class="pz-brands" id="pz-brands" role="group" aria-label="Filtra per bandiera"></div>
       <div class="pz-sum" id="pz-sum"></div>
       <div class="pgrid" id="pgrid"></div>
-      <p class="pnote">Prezzi self service in euro al litro. Fonte: Osservaprezzi carburanti MIMIT, dati aperti. In caso di differenze vale il prezzo esposto all'impianto.</p>
+      <p class="pnote">Prezzi self service in €/lt (euro al litro). Fonte: Osservaprezzi carburanti MIMIT, dati aperti. In caso di differenze vale il prezzo esposto all'impianto.</p>
     </div>
   </section>
 
@@ -973,7 +973,7 @@ function segSvg(str){const W=34,H=60,t=7,G=8;let x=0,out="";
 // schede prezzi
 const pq=document.getElementById("p-q"),ps=document.getElementById("p-sort"),pg=document.getElementById("pgrid");
 const dshort=d=>d?d.toLocaleDateString("it-IT",{day:"2-digit",month:"2-digit"})+" "+d.toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"}):"—";
-function prow(l,v,best){return `<div class="prow${v==null?" na":""}${best?" best":""}"><span>${l}<small>self service · €/l</small></span>${v==null?segSvg("8,888").replace(/seg-on/g,"seg-off"):segSvg(fmt(v))}</div>`}
+function prow(l,v,best){return `<div class="prow${v==null?" na":""}${best?" best":""}"><span>${l}<small>self service · €/lt</small></span>${v==null?segSvg("8,888").replace(/seg-on/g,"seg-off"):segSvg(fmt(v))}</div>`}
 function cell(v,best){return v==null?`<td class="na">—</td>`:`<td class="${best?"best":""}">${fmt(v)}</td>`}
 let pBrand="all";
 function renderPrices(){const q=pq.value.trim().toLowerCase();const k=ps.value;
@@ -984,7 +984,7 @@ function renderPrices(){const q=pq.value.trim().toLowerCase();const k=ps.value;
   L.forEach(x=>{const p=x.p,a=document.createElement("article");a.className="pcard";a.id="pv-"+x.pv;
     const badge=x===bestG?`<span class="badge">Gasolio più conveniente</span>`:x===bestB?`<span class="badge">Benzina più conveniente</span>`:"";
     const logo=LOGO[x.b]?`<img src="${LOGO[x.b]}" alt="${BRAND[x.b]}">`:`<span class="ph-com">${BRAND[x.b]}</span>`;
-    const ex=p.extra.map(e=>`<span>${e[0]} <b>${fmt(e[1])}</b></span>`).join("");
+    const ex=p.extra.map(e=>`<span>${e[0]} <b>${fmt(e[1])} €/lt</b></span>`).join("");
     a.innerHTML=`${badge}<header>${logo}<div><b>${x.n}</b><small>${x.c}</small></div></header>
       ${prow("Benzina",p.bs,x===bestB)}${prow("Gasolio",p.gs,x===bestG)}
       ${ex||x.adb?`<div class="pextra">${x.adb?`<span class="adb">AdBlue</span>`:""}${ex}</div>`:""}
@@ -1056,7 +1056,7 @@ const SOLARE={"5581":[[20,10]],"5580":[[20,10]],"6413":[[20,10]],"5229":[[20,20,
   const c=st.filter(x=>CER_NOVA.has(x.pv)).map(lk);document.getElementById("so-cer-n").innerHTML=el(c);
   document.getElementById("so-n").textContent=["zero","una","due","tre","quattro","cinque","sei","sette","otto","nove","dieci"][st.length]||st.length;}
 {const avg=k=>{const v=S.map(x=>x.p[k]).filter(v=>v!=null);return v.reduce((a,b)=>a+b,0)/v.length};const sm=document.getElementById("pz-sum");
-  sm.innerHTML=`<div>Benzina self da <b>${fmt(bestB.p.bs)}</b></div><div>Gasolio self da <b>${fmt(bestG.p.gs)}</b></div>`}
+  sm.innerHTML=`<div>Benzina self da <b>${fmt(bestB.p.bs)} €/lt</b></div><div>Gasolio self da <b>${fmt(bestG.p.gs)} €/lt</b></div>`}
 {const pb=document.getElementById("pz-brands");
   [["all","Tutte"],...Object.entries(BRAND)].forEach(([b,l])=>{const n=b==="all"?S.length:S.filter(x=>x.b===b).length;if(!n)return;
     const bt=document.createElement("button");bt.type="button";bt.className="pzb";bt.setAttribute("aria-pressed",b==="all");bt.setAttribute("aria-label",`${l} (${n})`);
@@ -1128,7 +1128,7 @@ function drawLogoMap(sv,tip,showFlags){const box=sv.parentElement;
 }
 {const nb=document.getElementById("nm-best");
   [["Gasolio self",bestG,"gs"],["Benzina self",bestB,"bs"]].forEach(([l,x,k])=>{if(!x)return;const a=document.createElement("a");a.href="#pv-"+x.pv;
-    a.innerHTML=`${LOGO[x.b]?`<img src="${LOGO[x.b]}" alt="${BRAND[x.b]}">`:`<span class="nm-comtag">COMEDA</span>`}<span>${l} più conveniente<small>${x.n} · ${x.c.replace(/ \(..\)$/,"")}</small></span><span><strong>${fmt(x.p[k])}</strong><em>€/l</em></span>`;nb.appendChild(a)});
+    a.innerHTML=`${LOGO[x.b]?`<img src="${LOGO[x.b]}" alt="${BRAND[x.b]}">`:`<span class="nm-comtag">COMEDA</span>`}<span>${l} più conveniente<small>${x.n} · ${x.c.replace(/ \(..\)$/,"")}</small></span><span><strong>${fmt(x.p[k])}</strong><em>€/lt</em></span>`;nb.appendChild(a)});
   document.getElementById("nm-n").textContent=S.length;}
 drawLogoMap(document.getElementById("nm-svg"),document.getElementById("nm-tip"),true);
 dots=drawLogoMap(document.getElementById("map"),document.getElementById("map-tip"),false);render();
