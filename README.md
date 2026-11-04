@@ -8,5 +8,5 @@ Sito statico pubblicato con GitHub Pages.
   - `BASE` = 8.938.710 (stima fissa 2015–2020) + somma della colonna "Nr erogazioni" (Stato OK) di tutti i fogli
   - `BASE_DAL` = giorno successivo all'ultimo dato della banca dati
   - `MEDIA` = media giornaliera delle erogazioni delle ultime 4 settimane
-- **Moduli**: aprono un'email verso commercialetpetrol@gmail.com.
+- **Moduli**: inviano direttamente a commercialetpetrol@gmail.com tramite FormSubmit (se fallisce, apre una mail precompilata).
 - **Privacy**: nessun cookie, font e immagini ospitati qui (`fonts/`, `logo.png`).

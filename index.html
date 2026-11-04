@@ -157,6 +157,7 @@ input:focus,textarea:focus,select:focus{outline:3px solid var(--sun-2);outline-o
 .consent a{color:inherit;font-weight:600}
 .row2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
 .msg{font-size:15px;margin:0;min-height:1em}
+.msg.ok{font-weight:700}
 .fcard .pill{justify-self:start}
 .fcard.p .pill{background:var(--sun);color:var(--on-sun)}
 .fcard.s .pill{background:#00142b;color:#f2f5f9}
@@ -526,6 +527,7 @@ footer a{color:inherit}
           <h3>Gasolio riscaldamento</h3>
           <p>Lasciaci i tuoi dati: ti ricontattiamo con disponibilità e prezzo.</p>
           <form id="f-gasolio" novalidate>
+            <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
             <div class="row2">
               <label for="g-nome">Nome e cognome<input id="g-nome" name="nome" required autocomplete="name"></label>
               <label for="g-tel">Telefono<input id="g-tel" name="telefono" type="tel" required autocomplete="tel"></label>
@@ -544,6 +546,7 @@ footer a{color:inherit}
           <h3>Carta petrolifera</h3>
           <p>Per aziende e professionisti con uno o più mezzi.</p>
           <form id="f-carta" novalidate>
+            <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
             <div class="row2">
               <label for="c-pv">Codice PV *<select id="c-pv" name="codice_pv" required><option value="">Scegli l'impianto</option></select></label>
               <label for="c-piva">Partita IVA<input id="c-piva" name="partita_iva" inputmode="numeric"></label>
@@ -844,13 +847,22 @@ const LIVE={BASE:17139522,BASE_DAL:"2026-11-03",MEDIA:4860,DOW:[.79,1.04,1.04,1.
 
 // moduli: preparano un'email precompilata verso la casella commerciale
 const DEST="commercialetpetrol@gmail.com";
+const FORM_URL="https://formsubmit.co/ajax/"+DEST; // FormSubmit: invio diretto alla casella commerciale
 function hook(id,msgId,subject){const f=document.getElementById(id),m=document.getElementById(msgId);
   f.addEventListener("submit",e=>{e.preventDefault();
     const miss=[...f.querySelectorAll("[required]")].filter(i=>i.type==="checkbox"?!i.checked:!i.value.trim());
     if(miss.length){m.className="msg";m.textContent="Compila i campi obbligatori: "+miss.map(i=>i.type==="checkbox"?"consenso privacy":i.parentElement.firstChild.textContent.replace("*","").trim()).join(", ")+".";miss[0].focus();return}
-    const body=[...new FormData(f)].map(([k,v])=>`${k.replace(/_/g," ")}: ${v}`).join("\n");
-    m.className="msg";m.textContent="Si aprirà il tuo programma di posta con la richiesta già compilata. Se non si apre, scrivici a "+DEST+".";
-    location.href=`mailto:${DEST}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`})}
+    const fd=[...new FormData(f)];const body=fd.map(([k,v])=>`${k.replace(/_/g," ")}: ${v}`).join("\n");
+    const btn=f.querySelector("button[type=submit]");
+    const mailto=()=>{m.className="msg";m.textContent="Non siamo riusciti a inviare: si aprirà il tuo programma di posta con la richiesta già compilata. Se non si apre, scrivici a "+DEST+".";location.href=`mailto:${DEST}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`};
+    const data={_subject:subject+(f.querySelector("[name=codice_pv]")?" – "+f.querySelector("[name=codice_pv]").value.split(" – ")[0]:""),_template:"table",_captcha:"false",_honey:""};
+    fd.forEach(([k,v])=>{if(k!=="_honey")data[k.replace(/_/g," ")]=v});
+    if(f.querySelector("[name=_honey]")&&f.querySelector("[name=_honey]").value)return;
+    btn.disabled=true;m.className="msg";m.textContent="Invio in corso…";
+    fetch(FORM_URL,{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify(data)})
+      .then(r=>r.json().catch(()=>({})).then(j=>{if(!r.ok||j.success===false||j.success==="false")throw new Error(j.message||r.status)}))
+      .then(()=>{f.reset();m.className="msg ok";m.textContent="Richiesta inviata, grazie! Ti ricontatteremo al più presto."})
+      .catch(()=>mailto()).finally(()=>{btn.disabled=false})})}
 hook("f-gasolio","g-msg","Richiesta gasolio riscaldamento");
 hook("f-carta","c-msg","Richiesta carta petrolifera");
 document.getElementById("yr").textContent=new Date().getFullYear();
