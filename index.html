@@ -803,7 +803,7 @@ footer a{color:inherit}
       <h2 class="title" id="so-title">Energia dal sole nelle nostre stazioni</h2>
       <p class="so-live"><span class="live-dot" aria-hidden="true"></span>Impianti attivi e in produzione</p>
       <div class="so-intro">
-        <p>Una stazione di servizio è aperta tutto l'anno, spesso dalla mattina alla sera, e ha tetti e pensiline esposti al sole. Per questo abbiamo scelto di usarli: abbiamo installato impianti fotovoltaici, affiancati da batterie di accumulo, in <b id="so-n"></b> stazioni della nostra rete: <span id="so-all"></span>.</p>
+        <p>Una stazione di servizio è aperta tutto l'anno, spesso dalla mattina alla sera, e ha tetti e pensiline esposti al sole. Per questo abbiamo scelto di usarli: abbiamo installato impianti fotovoltaici, affiancati da batterie di accumulo, in <b id="so-n"></b> stazioni della nostra rete.</p>
         <p>È un percorso che portiamo avanti un impianto alla volta, con l'idea che anche chi vende carburanti possa fare la sua parte nella transizione energetica, partendo dalle cose concrete.</p>
       </div>
       <div class="so-pillars">
@@ -1054,8 +1054,7 @@ const SOLARE={"5581":[[20,10]],"5580":[[20,10]],"6413":[[20,10]],"5229":[[20,20,
     const el=document.getElementById("pv-"+l.dataset.pv);if(el)el.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"})});
   const lk=x=>`<a href="#pv-${x.pv}" data-pv="${x.pv}">${SO_NOME[x.pv]||nome(x)}</a>`,el=L=>L.slice(0,-1).join(", ")+" e "+L.slice(-1);
   const c=st.filter(x=>CER_NOVA.has(x.pv)).map(lk);document.getElementById("so-cer-n").innerHTML=el(c);
-  document.getElementById("so-n").textContent=["zero","una","due","tre","quattro","cinque","sei","sette","otto","nove","dieci"][st.length]||st.length;
-  document.getElementById("so-all").innerHTML=el(st.map(lk))}
+  document.getElementById("so-n").textContent=["zero","una","due","tre","quattro","cinque","sei","sette","otto","nove","dieci"][st.length]||st.length;}
 {const avg=k=>{const v=S.map(x=>x.p[k]).filter(v=>v!=null);return v.reduce((a,b)=>a+b,0)/v.length};const sm=document.getElementById("pz-sum");
   sm.innerHTML=`<div>Benzina self da <b>${fmt(bestB.p.bs)}</b></div><div>Gasolio self da <b>${fmt(bestG.p.gs)}</b></div>`}
 {const pb=document.getElementById("pz-brands");
