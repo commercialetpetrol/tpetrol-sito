@@ -246,11 +246,6 @@ footer a{color:inherit}
 .ptab td.best{color:var(--sun-2)}
 .pextra{display:flex;flex-wrap:wrap;gap:6px}
 .pextra span{font-size:13px;padding:5px 10px;border-radius:999px;background:var(--soft);font-variant-numeric:tabular-nums}
-.pcarte{border-top:1px solid var(--line);padding-top:10px}
-.pcarte-k{display:block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
-.pcarte>div{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.pcarte img{height:28px;width:auto;max-width:76px;object-fit:contain;background:#fff;border:1px solid var(--line);border-radius:6px;padding:2px 4px;box-sizing:content-box}
-.pcarte>div>span{display:inline-flex;align-items:center;height:28px;font-size:12px;font-weight:600;padding:2px 9px;border-radius:6px;background:#fff;color:#00142b;border:1px solid var(--line);box-sizing:content-box;white-space:nowrap}
 .pextra b{font-weight:700}
 .pcard footer{display:flex;justify-content:space-between;gap:8px;font-size:13px;color:var(--muted);margin-top:auto}
 .pcard footer a{color:inherit;font-weight:600}
@@ -368,6 +363,24 @@ footer a{color:inherit}
 .odo-num{font-size:clamp(34px,8.2vw,92px)}
 .odo-s{margin:18px 0 0;font-size:15px;opacity:.85}
 .odo-n{margin:6px auto 0;font-size:12px;opacity:.65;max-width:60ch}
+/* carte accettate */
+.ca-all{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:22px auto 0;max-width:820px}
+.ca-all span{font-size:14px;font-weight:600;padding:7px 14px;border-radius:999px;background:var(--bg);border:1px solid var(--line)}
+.ca-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;margin-top:28px;align-items:start}
+.ca{background:var(--bg);border:1px solid var(--line);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.ca header{display:flex;align-items:center;gap:12px}
+.ca header img{height:44px;width:auto;max-width:96px;object-fit:contain;background:#fff;border:1px solid var(--line);border-radius:8px;padding:3px;flex:none}
+.ca header b{display:block;font-weight:600;line-height:1.25}
+.ca header small{color:var(--muted);font-size:13px}
+.ca details summary{cursor:pointer;font-size:14px;font-weight:600;color:var(--ink);list-style:none;display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:12px;background:var(--soft)}
+.ca details summary::-webkit-details-marker{display:none}
+.ca details summary::after{content:"+";font-weight:700}
+.ca details[open] summary::after{content:"–"}
+.ca ul{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:2px}
+.ca li a{display:block;padding:6px 10px;border-radius:10px;font-size:14px;color:var(--ink);text-decoration:none}
+.ca li a:hover{background:var(--soft)}
+.ca li small{color:var(--muted)}
+.ca-everywhere{font-size:14px;font-weight:600;padding:8px 12px;border-radius:12px;background:var(--soft)}
 /* AdBlue */
 .adb{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:4px 9px;border-radius:999px;background:#1e63c9;color:#fff;letter-spacing:.02em}
 .adb::before{content:"";width:8px;height:8px;border-radius:50%;background:#7fc3ff}
@@ -499,6 +512,7 @@ footer a{color:inherit}
       <a href="#chi-siamo">Chi siamo</a>
       <a href="#rete">Stazioni di servizio</a>
       <a href="#prezzi">Prezzi di oggi</a>
+      <a href="#carte-accettate">Carte accettate</a>
       <a href="#richieste">Gasolio riscaldamento</a>
       <a href="#carta">Carta petrolifera</a>
       <a href="#news">Notizie</a>
@@ -604,7 +618,18 @@ footer a{color:inherit}
       <div class="pz-brands" id="pz-brands" role="group" aria-label="Filtra per bandiera"></div>
       <div class="pz-sum" id="pz-sum"></div>
       <div class="pgrid" id="pgrid"></div>
-      <p class="pnote">Prezzi self service in euro al litro. Fonte: Osservaprezzi carburanti MIMIT, dati aperti. In caso di differenze vale il prezzo esposto all'impianto. Carte accettate: le carte flotta sono rilevate dai pagamenti registrati negli ultimi 4 mesi; American Express, contanti, carte di credito e PagoBANCOMAT sono accettati in tutti gli impianti.</p>
+      <p class="pnote">Prezzi self service in euro al litro. Fonte: Osservaprezzi carburanti MIMIT, dati aperti. In caso di differenze vale il prezzo esposto all'impianto.</p>
+    </div>
+  </section>
+
+  <section id="carte-accettate" class="sec band soft" aria-labelledby="ca-title">
+    <div class="wrap">
+      <p class="kicker">Pagamenti</p>
+      <h2 class="title" id="ca-title">Carte accettate</h2>
+      <p class="lede">Le carte flotta e le carte carburante che puoi usare nelle nostre stazioni. Apri una carta per vedere in quali impianti è accettata.</p>
+      <div class="ca-all" aria-label="Accettati in tutti gli impianti"><span>Contanti</span><span>Carte di credito</span><span>PagoBANCOMAT</span></div>
+      <div class="ca-grid" id="ca-grid"></div>
+      <p class="pnote" id="ca-note"></p>
     </div>
   </section>
 
@@ -858,9 +883,19 @@ function renderPrices(){const q=pq.value.trim().toLowerCase();const k=ps.value;
     a.innerHTML=`${badge}<header>${logo}<div><b>${x.n}</b><small>${x.c}</small></div></header>
       ${prow("Benzina",p.bs,x===bestB)}${prow("Gasolio",p.gs,x===bestG)}
       ${ex||x.adb?`<div class="pextra">${x.adb?`<span class="adb">AdBlue</span>`:""}${ex}</div>`:""}
-      ${x.carte.length?`<div class="pcarte"><span class="pcarte-k">Carte accettate</span><div>${x.carte.map(k=>{const c=CARTA[k];return c[1]?`<img src="${c[1]}" alt="${c[0]}" title="${c[0]}" loading="lazy">`:`<span>${c[0]}</span>`}).join("")}</div></div>`:""}
       <footer><span>Aggiornato ${dshort(p.last)}</span><a href="${gm(x)}" target="_blank" rel="noopener">Mappa ↗</a></footer>`;
     pg.appendChild(a)})}
+// sezione carte accettate
+{const g=document.getElementById("ca-grid"),T=S.length;
+  const L=Object.keys(CARTA).map(k=>({k,c:CARTA[k],st:S.filter(x=>x.carte.includes(k))})).filter(o=>o.st.length).sort((a,b)=>b.st.length-a.st.length||a.c[0].localeCompare(b.c[0]));
+  L.forEach(({k,c,st})=>{const a=document.createElement("article");a.className="ca";const all=st.length===T;
+    st.sort((a,b)=>a.c.localeCompare(b.c)||a.n.localeCompare(b.n));
+    a.innerHTML=`<header>${c[1]?`<img src="${c[1]}" alt="" loading="lazy">`:""}<div><b>${c[0]}</b><small>${all?"In tutti gli impianti":st.length===1?"1 impianto":st.length+" impianti"}</small></div></header>`+
+      (all?`<div class="ca-everywhere">Accettata in tutte le ${T} stazioni</div>`:`<details><summary>Dove è accettata</summary><ul>${st.map(x=>`<li><a href="#pv-${x.pv}">${x.c} <small>· ${BRAND[x.b]} · ${x.n}</small></a></li>`).join("")}</ul></details>`);
+    g.appendChild(a)});
+  document.getElementById("ca-note").textContent=`Carte flotta rilevate dai pagamenti registrati negli impianti dal ${CARTE_DAL} al ${CARTE_AL}. In caso di dubbi chiedi al gestore.`;
+  g.addEventListener("click",e=>{const l=e.target.closest("a[href^='#pv-']");if(!l)return;const id=l.getAttribute("href").slice(1);
+    if(!document.getElementById(id)){pq.value="";pBrand="all";const pb=document.getElementById("pz-brands");if(pb)[...pb.children].forEach((c,i)=>c.setAttribute("aria-pressed",i===0));renderPrices()}})}
 {const avg=k=>{const v=S.map(x=>x.p[k]).filter(v=>v!=null);return v.reduce((a,b)=>a+b,0)/v.length};const sm=document.getElementById("pz-sum");
   sm.innerHTML=`<div>Benzina self da <b>${fmt(bestB.p.bs)}</b></div><div>Gasolio self da <b>${fmt(bestG.p.gs)}</b></div>`}
 {const pb=document.getElementById("pz-brands");
