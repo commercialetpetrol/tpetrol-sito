@@ -425,6 +425,23 @@ footer a{color:inherit}
 .sv-cta{position:relative;z-index:3;display:block;text-align:center;background:rgba(255,255,255,.18);color:#fff;text-decoration:none;font-weight:700;padding:12px;border-radius:14px;backdrop-filter:blur(4px)}
 .sv-nav{position:absolute;top:70px;bottom:80px;width:40%;background:none;border:0;cursor:pointer;z-index:2}
 .sv-nav.prev{left:0}.sv-nav.next{right:0}
+
+/* instagram: griglia post */
+.ig-feed{display:grid;gap:12px}
+.ig-feed-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.ig-feed-h a{font-weight:600;font-size:14px;color:inherit}
+.ig-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.ig-tile{position:relative;aspect-ratio:1/1;max-width:100%;border:0;padding:0;border-radius:10px;overflow:hidden;cursor:pointer;background:var(--soft)}
+.ig-tile img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s}
+.ig-tile:hover img,.ig-tile:focus-visible img{transform:scale(1.06)}
+.ig-ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:14px;background:rgba(0,20,43,.55);color:#fff;font-weight:700;font-size:15px;opacity:0;transition:opacity .2s}
+.ig-tile:hover .ig-ov,.ig-tile:focus-visible .ig-ov{opacity:1}
+.ig-tile .vid{position:absolute;top:6px;right:6px;color:#fff;font-size:14px;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.ig-upd{margin:0;font-size:12px;color:var(--muted)}
+.sv-img{width:100%;max-height:52vh;object-fit:contain;border-radius:14px;background:#000}
+.sv-cap{font-size:15px;line-height:1.45;max-height:22vh;overflow:auto;white-space:pre-line}
+.sv-meta{font-size:14px;opacity:.85}
+.sv.paused .sv-bars i.run b{animation-play-state:paused}
 </style>
 </head>
 <body>
@@ -627,9 +644,16 @@ footer a{color:inherit}
       <p class="kicker">Ultimi aggiornamenti</p>
       <h2 class="title">Notizie</h2>
       <div class="news">
-        <div class="ncard">
+        <div class="ncard" id="ncard">
+          <div class="ig-feed" id="ig-feed" hidden>
+            <div class="ig-feed-h"><h3>Dal nostro Instagram</h3><a href="https://www.instagram.com/tpetrol_srl_/" target="_blank" rel="noopener">Vedi tutto</a></div>
+            <div class="ig-grid" id="ig-grid"></div>
+            <p class="ig-upd" id="ig-upd"></p>
+          </div>
+          <div id="ig-empty">
           <h3>Le prime notizie arrivano presto</h3>
           <p>Qui pubblicheremo aperture, promozioni negli impianti e aggiornamenti per i clienti. Le stesse notizie escono anche sui nostri canali social.</p>
+          </div>
         </div>
         <div class="ig" id="ig">
           <a class="ig-head" href="https://www.instagram.com/tpetrol_srl_/" target="_blank" rel="noopener">
@@ -914,17 +938,42 @@ const LIVE={BASE:17139522,BASE_DAL:"2026-11-03",MEDIA:4860,DOW:[.79,1.04,1.04,1.
   ST.forEach((st,i)=>{const b=document.createElement("button");b.type="button";b.className="ig-st";b.setAttribute("role","listitem");b.setAttribute("aria-label","Apri la storia "+st.t);
     b.innerHTML=`<span class="ig-ring"><span class="ig-in" style="background:${st.bg}">${st.ico}</span></span>${st.t}`;b.onclick=()=>open(i);wrap.appendChild(b)});
   const sv=document.getElementById("sv"),card=document.getElementById("sv-card"),bars=document.getElementById("sv-bars"),body=document.getElementById("sv-body");
-  bars.innerHTML=ST.map(()=>"<i><b></b></i>").join("");
   let cur=0,timer=null,last=null;const reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
-  function show(i){if(i<0)i=0;if(i>=ST.length){close();return}cur=i;const st=ST[i];card.style.background=st.bg;body.innerHTML=st.html();
+  let LIST=ST,left=6000,t0=0;
+  function arm(ms){clearTimeout(timer);left=ms;t0=Date.now();if(!reduce)timer=setTimeout(()=>show(cur+1),ms)}
+  function show(i){if(i<0)i=0;if(i>=LIST.length){close();return}cur=i;const st=LIST[i];card.style.background=st.bg||"#00142b";body.innerHTML=st.html();
+    bars.innerHTML=LIST.map(()=>"<i><b></b></i>").join("");
     [...bars.children].forEach((e,k)=>{e.className=k<i?"done":"";void e.offsetWidth;if(k===i&&!reduce)e.className="run"});
-    wrap.children[i].classList.add("seen");clearTimeout(timer);if(!reduce)timer=setTimeout(()=>show(cur+1),6000)}
-  function open(i){last=document.activeElement;sv.hidden=false;document.body.style.overflow="hidden";show(i);document.getElementById("sv-x").focus()}
+    if(LIST===ST&&wrap.children[i])wrap.children[i].classList.add("seen");sv.classList.remove("paused");arm(6000)}
+  function open(i,list){last=document.activeElement;LIST=list||ST;sv.hidden=false;document.body.style.overflow="hidden";show(i);document.getElementById("sv-x").focus()}
+  window.__openStory=open;
+  // gesti: tieni premuto per mettere in pausa, scorri a destra/sinistra, trascina in basso per chiudere
+  let px=0,py=0,pt=0,held=false;
+  card.addEventListener("pointerdown",e=>{if(e.target.closest("a,.sv-x"))return;px=e.clientX;py=e.clientY;pt=Date.now();held=false;
+    setTimeout(()=>{if(pt&&Date.now()-pt>=240){held=true;clearTimeout(timer);left=Math.max(500,left-(Date.now()-t0));sv.classList.add("paused")}},250)});
+  card.addEventListener("pointerup",e=>{if(!pt)return;const dx=e.clientX-px,dy=e.clientY-py;const wasHeld=held;pt=0;
+    if(dy>90&&Math.abs(dy)>Math.abs(dx)){close();return}
+    if(Math.abs(dx)>60){show(cur+(dx<0?1:-1));return}
+    if(wasHeld){sv.classList.remove("paused");arm(left);e.preventDefault()}});
+  card.addEventListener("click",e=>{if(held){e.preventDefault();e.stopPropagation();held=false}},true);
   function close(){clearTimeout(timer);sv.hidden=true;document.body.style.overflow="";if(last)last.focus()}
   document.getElementById("sv-x").onclick=close;document.getElementById("sv-prev").onclick=()=>show(cur-1);document.getElementById("sv-next").onclick=()=>show(cur+1);
   sv.addEventListener("click",e=>{if(e.target===sv)close();const a=e.target.closest("[data-close]");if(a){if(a.hasAttribute("data-adblue")){const ab=document.querySelector(".pzb-adb");if(ab)ab.click()}close()}});
   document.addEventListener("keydown",e=>{if(sv.hidden)return;if(e.key==="Escape")close();if(e.key==="ArrowRight")show(cur+1);if(e.key==="ArrowLeft")show(cur-1)});
 })();
+
+
+// post Instagram: ig.json viene aggiornato ogni giorno (Metricool -> GitHub)
+(function(){const box=document.getElementById("ig-feed");if(!box||!window.fetch)return;
+  fetch("ig.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(d=>{if(!d||!Array.isArray(d.post)||!d.post.length)return;
+    const P=d.post.slice(0,9),grid=document.getElementById("ig-grid");const esc=t=>String(t||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+    const fmtD=s=>{const t=new Date(s);return isNaN(t)?"":t.toLocaleDateString("it-IT",{day:"numeric",month:"long"})};
+    const list=P.map(p=>({bg:"#00142b",html:()=>`<img class="sv-img" src="${esc(p.img)}" alt=""><div class="sv-meta">${fmtD(p.data)} · ♥ ${p.like||0} · 💬 ${p.commenti||0}</div><div class="sv-cap">${esc(p.testo).slice(0,600)}</div><a class="sv-go" href="${esc(p.url)}" target="_blank" rel="noopener">Apri su Instagram</a>`}));
+    P.forEach((p,i)=>{const b=document.createElement("button");b.type="button";b.className="ig-tile";b.setAttribute("aria-label","Post del "+fmtD(p.data)+": "+String(p.testo||"").slice(0,80));
+      b.innerHTML=`<img src="${esc(p.img)}" alt="" loading="lazy"><span class="ig-ov"><span>♥ ${p.like||0}</span><span>💬 ${p.commenti||0}</span></span>${/video|reel/i.test(p.tipo||"")?'<span class="vid">▶</span>':""}`;
+      b.onclick=()=>window.__openStory&&window.__openStory(i,list);grid.appendChild(b)});
+    if(d.aggiornato)document.getElementById("ig-upd").textContent="Aggiornato il "+fmtD(d.aggiornato);
+    box.hidden=false;document.getElementById("ig-empty").hidden=true}).catch(()=>{})})();
 
 // moduli: preparano un'email precompilata verso la casella commerciale
 const DEST="commercialetpetrol@gmail.com";

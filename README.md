@@ -10,3 +10,5 @@ Sito statico pubblicato con GitHub Pages.
   - `MEDIA` = media giornaliera delle erogazioni delle ultime 4 settimane
 - **Moduli**: inviano direttamente a commercialetpetrol@gmail.com tramite Web3Forms (se fallisce, apre una mail precompilata).
 - **Privacy**: nessun cookie, font e immagini ospitati qui (`fonts/`, `logo.png`).
+- **Instagram**: ogni giorno un'attività di Claude scrive `instagram_raw.json` con gli ultimi post (da Metricool);
+  l'automazione `.github/workflows/instagram.yml` scarica le foto in `ig/` e aggiorna `ig.json`, che la pagina legge.
