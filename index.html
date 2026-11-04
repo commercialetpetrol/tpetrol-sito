@@ -659,7 +659,9 @@ const S=[
 ].map(([b,n,c,la,lo,pv,mid],i)=>({i,b,n,c,la,lo,pv,mid,adb:ADBLUE.has(pv)}));
 
 const col={eni:"var(--brand-eni)",ip:"var(--brand-ip)",q8:"var(--brand-q8)",tamoil:"var(--brand-tamoil)",t24:"var(--brand-t24)",comeda:"var(--brand-pb)"};
-const gm=x=>`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(x.n+", "+x.c)}`;
+// schede Google Maps verificate (posizione confrontata con le coordinate MIMIT); dove manca, link alle coordinate esatte
+const GPLACE={"27465":"ChIJpeZbCAQnLxMR86XsFBDyziE","12021":"ChIJzd_CiWdhLxMRdCf0aCd-2aw","12025":"ChIJ2eD7_yFiLxMRZ_M-fRO5cJ0","49510":"ChIJBbHsEueRLxMROyeQ_3VFAtw","49511":"ChIJpVUPodUTJRMRDoAPVRDOVm4","49512":"ChIJESEBpkIXJRMRaglhQwe0Phs","49513":"ChIJS-hyd9ANLxMR59f2a2-1oms","49514":"ChIJaaJc39GBLxMReN85LFrwrtQ","49515":"ChIJKU4QKUZjLxMRlOPlINyzopA","49516":"ChIJt3ALe_RgLxMRmQRlcNvV9LI","49518":"ChIJE4gEEzRhLxMRJsS5SF3aD8I","49519":"ChIJSc2CIgCJJRMRkTQdGgWushI","49520":"ChIJPxw99Xl4LxMRtUoX_XbsIhk","49521":"ChIJGS_f2ccdJRMRwkhO8-oMx8w","5229":"ChIJLUquUM76MRMRuR9chpWZmP8","5522":"ChIJ08WqSWmLJRMRLPVYL-eA1X4","5565":"ChIJhaYa_PlfLxMR_mf_gOMix2g","5581":"ChIJGWCPHDSJJRMRy0w2kzwyKOU","5687":"ChIJUUMf_YiKJRMR31Czz1TBABM","6413":"ChIJVctDKHeiJRMRn7bJKQFHza8","6414":"ChIJQ4uQ6ysLJRMRtOY95SmovBU","6415":"ChIJ1QK1_pJ1JRMR6JeN4NObymY","6823":"ChIJvfXksk1jLxMRHoh7jxKElAg","TM006784":"ChIJDSsegY8MJRMR9zqHnpQ4xzA"};
+const gm=x=>GPLACE[x.pv]?`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(BRAND[x.b]+" "+x.n+", "+x.c)}&query_place_id=${GPLACE[x.pv]}`:`https://www.google.com/maps/search/?api=1&query=${x.la}%2C${x.lo}`;
 let dots=[];
 
 let active="all";
