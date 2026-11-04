@@ -186,6 +186,11 @@ input:focus,textarea:focus,select:focus{outline:3px solid var(--sun-2);outline-o
 .ncard{background:var(--bg);color:var(--ink);border-radius:28px;padding:30px;display:grid;gap:10px;align-content:start}
 .ncard h3{font-size:24px}
 .ncard p{margin:0;color:var(--muted)}
+.nart{display:grid;gap:10px;padding-bottom:22px;margin-bottom:8px;border-bottom:1px solid var(--line)}
+.nart:last-of-type{border-bottom:0;padding-bottom:0;margin-bottom:0}
+.nart time{font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.nart .ntag{justify-self:start;font-size:12px;font-weight:700;padding:4px 12px;border-radius:999px;background:#1e63c9;color:#fff}
+.nart a{font-weight:600;color:inherit}
 .social{display:grid;gap:14px}
 .soc{display:flex;align-items:center;gap:14px;padding:18px 22px;border-radius:999px;background:var(--bg);color:var(--ink);text-decoration:none}
 .soc svg{width:28px;height:28px;flex:none;fill:currentColor}
@@ -762,14 +767,20 @@ footer a{color:inherit}
       <h2 class="title">Notizie</h2>
       <div class="news">
         <div class="ncard" id="ncard">
+          <div id="ig-empty" class="nlist">
+          <article class="nart" id="news-adblue-spoleto">
+            <span class="ntag">💧 Novità in stazione</span>
+            <time datetime="2026-11">Novembre 2026</time>
+            <h3>A Spoleto arriva l'AdBlue sfuso</h3>
+            <p>Da novembre la nostra stazione Q8 di Spoleto, sulla S.S. 3 Flaminia al km 123,360, eroga AdBlue sfuso direttamente alla colonnina.</p>
+            <p>Per chi guida un veicolo diesel che lo utilizza significa fare il rabbocco insieme al pieno, senza comprare e trasportare taniche: meno plastica da smaltire e un servizio più comodo, soprattutto per chi percorre la Flaminia per lavoro.</p>
+            <p>L'AdBlue resta disponibile anche negli altri impianti della rete. <a href="#prezzi">Trova la stazione più vicina</a>.</p>
+          </article>
+          </div>
           <div class="ig-feed" id="ig-feed" hidden>
             <div class="ig-feed-h"><h3>Dal nostro Instagram</h3><a href="https://www.instagram.com/tpetrol_srl_/" target="_blank" rel="noopener">Vedi tutto</a></div>
             <div class="ig-grid" id="ig-grid"></div>
             <p class="ig-upd" id="ig-upd"></p>
-          </div>
-          <div id="ig-empty">
-          <h3>Le prime notizie arrivano presto</h3>
-          <p>Qui pubblicheremo aperture, promozioni negli impianti e aggiornamenti per i clienti. Le stesse notizie escono anche sui nostri canali social.</p>
           </div>
         </div>
         <div class="ig" id="ig">
@@ -1217,7 +1228,7 @@ const LIVE={BASE:17139522,BASE_DAL:"2026-11-03",MEDIA:4860,DOW:[.79,1.04,1.04,1.
       b.innerHTML=`<img src="${esc(p.img)}" alt="" loading="lazy"><span class="ig-ov"><span>♥ ${p.like||0}</span><span>💬 ${p.commenti||0}</span></span>${/video|reel/i.test(p.tipo||"")?'<span class="vid">▶</span>':""}`;
       b.onclick=()=>window.__openStory&&window.__openStory(i,list);grid.appendChild(b)});
     if(d.aggiornato)document.getElementById("ig-upd").textContent="Aggiornato il "+fmtD(d.aggiornato);
-    box.hidden=false;document.getElementById("ig-empty").hidden=true}).catch(()=>{})})();
+    box.hidden=false}).catch(()=>{})})();
 
 // moduli: preparano un'email precompilata verso la casella commerciale
 const DEST="commercialetpetrol@gmail.com";
