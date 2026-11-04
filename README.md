@@ -15,3 +15,4 @@ Sito statico pubblicato con GitHub Pages.
 - **Carte accettate** (sezione `#carte-accettate` in `index.html`, oggetti `CARTE` e `CARTA`; loghi in `carte/`): fila di loghi + mappa che accende gli impianti dove la carta scelta è accettata
   Le carte flotta vengono dalla banca dati vendite (pagamenti negli ultimi 4 mesi,
   periodo in `CARTE_DAL`/`CARTE_AL`); American Express è aggiunta a mano su tutti gli impianti.
+- **Mappe**: la geografia (oggetto `GEO` in `index.html`) è già proiettata nel riquadro 560×740: regioni e province ISTAT (via openpolis/geojson-italy, CC BY), laghi e fiumi Natural Earth. Va rigenerata solo se cambia l'area della mappa.
