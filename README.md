@@ -32,11 +32,13 @@ Approvato il 6 novembre 2026. Si somma allo stile e al codice esistenti senza mo
 
 ## Pagine per proprietari di impianti (novembre 2026)
 Per farsi trovare su Google da chi vuole vendere un distributore o cerca consulenza:
-- `vendere-distributore-carburanti/` → www.tpetrol.it/vendere-distributore-carburanti/ (acquisto impianti, modulo «Proponi il tuo impianto»)
-- `consulenza-impianti-carburanti/` → www.tpetrol.it/consulenza-impianti-carburanti/ (costruzione, ristrutturazione, messa a norma, valutazioni e perizie, modulo «Richiedi una consulenza»)
+- `vendere-distributore-carburanti/` → www.tpetrol.it/vendere-distributore-carburanti/ (acquisizione, convenzionamento o gestione diretta degli impianti, modulo «Proposta per il vostro impianto»)
+- `consulenza-impianti-carburanti/` → www.tpetrol.it/consulenza-impianti-carburanti/ (costruzione, ristrutturazione, messa a norma, valutazioni e perizie, modulo «Richiesta di consulenza»)
 - Stile comune in `pagine.css`, invio dei moduli in `moduli.js` (stesso Web3Forms della home, verso commercialetpetrol@gmail.com).
 - Nella home: sezione `#impianti-gestori` (stile in `<style id="sezione-impianti">`), voci nel menu ☰ e nel piè di pagina.
 - Ogni pagina ha titolo, descrizione, indirizzo canonico e dati strutturati (Organization, BreadcrumbList, FAQPage; Service per la consulenza).
   Le domande frequenti sono scritte sia nella pagina sia nei dati strutturati: se si cambia una risposta, va cambiata in tutti e due i punti.
 - I numeri nelle pagine (29 impianti, 6 marchi) sono scritti a mano: aggiornarli se cambia la rete.
+- La sezione «Ambito di intervento» raccoglie tipologie di impianti e province: sono le parole con cui le pagine vengono cercate.
 - `sitemap.xml` e `robots.txt`: aggiungere qui ogni nuova pagina da far trovare su Google.
+- Google Search Console: proprietà https://www.tpetrol.it/ (account commercialetpetrol@gmail.com), verificata con il file `google0f7155e32ee4327c.html`: non rimuoverlo.
