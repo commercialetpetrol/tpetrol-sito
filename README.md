@@ -17,3 +17,15 @@ Sito statico pubblicato con GitHub Pages.
   periodo in `CARTE_DAL`/`CARTE_AL`); American Express è aggiunta a mano su tutti gli impianti.
 - **Mappe**: la geografia (oggetto `GEO` in `index.html`) è già proiettata nel riquadro 560×740: regioni e province ISTAT (via openpolis/geojson-italy, CC BY), laghi e fiumi Natural Earth. Va rigenerata solo se cambia l'area della mappa.
 - **Sostenibilità** (sezione `#sostenibilita`): `SOLARE` = per ogni codice PV le righe `[kW fotovoltaico, kWh accumulo, etichetta opzionale]`; `CER_NOVA` = stazioni aderenti a CER Nova ETS. L'elenco "Dove" si genera da solo.
+
+## Restyling 2026 (livello C)
+Approvato il 6 novembre 2026. Si somma allo stile e al codice esistenti senza modificarli:
+- **Stile**: blocco `<style id="restyling">` subito dopo lo stile principale in `index.html`
+  (parte A rifiniture, parte B struttura visiva, parte C valorizzazione dati). Le classi nuove iniziano con `rs-`.
+- **Script**: blocco `<script id="restyling-js">` in fondo alla pagina. Legge i dati già presenti
+  (`S`, `bestB`, `bestG`, `fmt`, `SOLARE`, `CER_NOVA`): se si rinominano queste costanti va aggiornato anche il blocco.
+- **HTML aggiunto**: menu desktop e pulsante «Richiedi la carta» nella barra, prezzi di oggi e quattro numeri nell'apertura,
+  righe «oggi» nel contatore (`live-today`, `live-rate`, calcolate dal codice del contatore), icone e azioni nei contatti, piè di pagina a colonne.
+- **Privacy e Cookie**: pulsante «Torna al sito», piè di pagina, link leggibili.
+- Le righe aggiornate dalle automazioni (`PREZZI_DATA`, `PREZZI`, `LIVE`, `CARTE`) non sono cambiate.
+- Per tornare allo stile precedente: togliere i due blocchi `restyling` (o annullare il commit di unione del ramo `restyling`).
