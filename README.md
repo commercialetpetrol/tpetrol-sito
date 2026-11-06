@@ -29,3 +29,14 @@ Approvato il 6 novembre 2026. Si somma allo stile e al codice esistenti senza mo
 - **Privacy e Cookie**: pulsante «Torna al sito», piè di pagina, link leggibili.
 - Le righe aggiornate dalle automazioni (`PREZZI_DATA`, `PREZZI`, `LIVE`, `CARTE`) non sono cambiate.
 - Per tornare allo stile precedente: togliere i due blocchi `restyling` (o annullare il commit di unione del ramo `restyling`).
+
+## Pagine per proprietari di impianti (novembre 2026)
+Per farsi trovare su Google da chi vuole vendere un distributore o cerca consulenza:
+- `vendere-distributore-carburanti/` → www.tpetrol.it/vendere-distributore-carburanti/ (acquisto impianti, modulo «Proponi il tuo impianto»)
+- `consulenza-impianti-carburanti/` → www.tpetrol.it/consulenza-impianti-carburanti/ (costruzione, ristrutturazione, messa a norma, valutazioni e perizie, modulo «Richiedi una consulenza»)
+- Stile comune in `pagine.css`, invio dei moduli in `moduli.js` (stesso Web3Forms della home, verso commercialetpetrol@gmail.com).
+- Nella home: sezione `#impianti-gestori` (stile in `<style id="sezione-impianti">`), voci nel menu ☰ e nel piè di pagina.
+- Ogni pagina ha titolo, descrizione, indirizzo canonico e dati strutturati (Organization, BreadcrumbList, FAQPage; Service per la consulenza).
+  Le domande frequenti sono scritte sia nella pagina sia nei dati strutturati: se si cambia una risposta, va cambiata in tutti e due i punti.
+- I numeri nelle pagine (29 impianti, 6 marchi) sono scritti a mano: aggiornarli se cambia la rete.
+- `sitemap.xml` e `robots.txt`: aggiungere qui ogni nuova pagina da far trovare su Google.
