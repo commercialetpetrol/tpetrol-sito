@@ -305,3 +305,64 @@ html_i = pre_i + f'''<header class="top band">
 '''
 (out / "index.html").write_text(html_i)
 print("indice /stazioni/ generato")
+
+# ---- C10: pagine per zona (solo zone con almeno 2 stazioni)
+ZPAG = {0: ("distributori-roma", "Distributori di carburante a Roma", "a Roma", "nella città di Roma"),
+        1: ("distributori-provincia-di-roma", "Distributori di carburante in provincia di Roma", "in provincia di Roma", "in provincia di Roma"),
+        2: ("distributori-latina", "Distributori di carburante a Latina e provincia", "a Latina e provincia", "a Latina e in provincia"),
+        3: ("distributori-viterbo", "Distributori di carburante in provincia di Viterbo", "in provincia di Viterbo", "in provincia di Viterbo")}
+zone_links = {}
+for i, (zs, h1t, dove, dove_l) in ZPAG.items():
+    L = sorted([x for x in st if zona(x) == i], key=lambda x: (x["city"], x["n"]))
+    if len(L) < 2:
+        continue
+    zone_links[i] = zs
+    items = ""
+    for x in L:
+        tg = "".join(f"<i>{e(t)}</i>" for t in tags(x))
+        items += (f'<li><a href="../{x["slug"]}/"><span class="sx-b">{e(BRAND[x["b"]])}</span><b>{e(x["city"])}</b><small>{e(x["n"])}</small>'
+                  + (f'<span class="sx-t">{tg}</span>' if tg else "") + "</a></li>")
+    marchi = sorted({BRAND[x["b"]] for x in L})
+    comuni = sorted({x["city"] for x in L})
+    URLZ = f"{URLI}{zs}/"
+    ldz = [{"@context": "https://schema.org", "@type": "ItemList", "name": h1t + " – T.Petrol", "numberOfItems": len(L),
+            "itemListElement": [{"@type": "ListItem", "position": k + 1, "url": f"{URLI}{x['slug']}/", "name": f"{BRAND[x['b']]} {x['city']} – {x['n']}"} for k, x in enumerate(L)]},
+           {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+               {"@type": "ListItem", "position": 1, "name": "T.Petrol", "item": "https://www.tpetrol.it/"},
+               {"@type": "ListItem", "position": 2, "name": "Stazioni di servizio", "item": URLI},
+               {"@type": "ListItem", "position": 3, "name": ZONE[i][0], "item": URLZ}]}]
+    pre_z = pre_i.replace('href="../', 'href="../../').replace('src="../', 'src="../../')
+    pre_z = re.sub(r"<title>.*?</title>", f"<title>{e(h1t)} – {len(L)} stazioni T.Petrol, prezzi self di oggi</title>", pre_z, flags=re.S)
+    pre_z = re.sub(r'<meta name="description" content="[^"]*">', f'<meta name="description" content="{len(L)} stazioni di servizio T.Petrol {e(dove)} ({e(", ".join(marchi))}): indirizzi, servizi, carte accettate e prezzi self aggiornati ogni giorno.">', pre_z)
+    pre_z = re.sub(r'<link rel="canonical" href="[^"]*">', f'<link rel="canonical" href="{URLZ}">', pre_z)
+    pre_z = re.sub(r'<script type="application/ld\+json">.*?</script>', lambda m: '<script type="application/ld+json">' + json.dumps(ldz, ensure_ascii=False) + "</script>", pre_z, flags=re.S)
+    foot_z = foot_i.replace('href="../', 'href="../../').replace('src="../', 'src="../../')
+    zona_nome = e(ZONE[i][0])
+    h1h = e(h1t).replace("carburante", "<b>carburante</b>", 1)
+    lead = f"{len(L)} stazioni di servizio T.Petrol {e(dove_l)} ({e(', '.join(comuni))}), con i marchi {e(', '.join(marchi))}. Apri una stazione per vedere indirizzo, servizi, carte accettate e prezzi self di oggi."
+    html_z = (pre_z
+        + '<header class="top band">\n  <div class="wrap">\n'
+        + '    <a class="logo" href="../../" aria-label="T.Petrol, vai alla home"><img src="../../logo.png" alt="T.Petrol" width="161" height="38"></a>\n'
+        + '    <nav aria-label="Navigazione">\n      <a class="hide-m" href="../../">Home</a>\n      <a class="hide-m" href="../">Tutte le stazioni</a>\n'
+        + '      <a class="pill pill-sun" href="../../#contatti">Contatti</a>\n    </nav>\n  </div>\n</header>\n<main>\n'
+        + '  <section class="hero band">\n    <div class="wrap">\n'
+        + f'      <p class="crumbs"><a href="../../">T.Petrol</a> › <a href="../">Stazioni di servizio</a> › {zona_nome}</p>\n'
+        + f'      <p class="kick">Stazioni di servizio {e(dove)}</p>\n'
+        + f'      <h1>{h1h}</h1>\n'
+        + f'      <p class="lead">{lead}</p>\n'
+        + '      <div class="cta"><a class="pill pill-sun" href="../../#prezzi">Prezzi di oggi</a><a class="pill pill-white" href="../">Tutte le stazioni</a></div>\n'
+        + '    </div>\n  </section>\n  <section class="sec band">\n    <div class="wrap">\n'
+        + f'      <ul class="sx-list">{items}</ul>\n'
+        + '    </div>\n  </section>\n</main>\n\n'
+        + foot_z + '</body>\n</html>\n')
+    (out / zs).mkdir(exist_ok=True)
+    (out / zs / "index.html").write_text(html_z)
+    print("zona", zs, len(L))
+
+# link dalle intestazioni della pagina indice alle pagine per zona
+html_i2 = (out / "index.html").read_text()
+for i, zs in zone_links.items():
+    nome = e(ZONE[i][0])
+    html_i2 = html_i2.replace(f'<h2 class="sx-h">{nome} <span>', f'<h2 class="sx-h"><a href="{zs}/">{nome}</a> <span>', 1)
+html_i2 = html_i2.replace(".sx-h span{", ".sx-h a{color:inherit;text-decoration-color:rgba(246,118,37,.6);text-underline-offset:5px}.sx-h span{", 1)
+(out / "index.html").write_text(html_i2)
