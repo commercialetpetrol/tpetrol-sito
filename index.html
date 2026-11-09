@@ -564,6 +564,17 @@ footer a{color:inherit}
 .gal-note{margin:16px 0 0;font-size:13.5px;color:var(--muted);text-align:center}
 .gal-it figcaption b{color:#ff8a3d;margin-right:4px}
 @media (max-width:760px){.gal{grid-template-columns:1fr 1fr;gap:10px}.gal-it{grid-column:span 1}.gal-it.gal-w{grid-column:1/-1}.gal-it.gal-w img{aspect-ratio:16/10}.gal-it figcaption{font-size:13px;padding:26px 10px 8px}}
+
+.lk-btns{display:flex;flex-wrap:wrap;gap:10px}
+.lk-btns button{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border-radius:999px;background:var(--bg);border:2px solid var(--line);font-weight:700;font-size:15px;transition:border-color .15s,box-shadow .15s}
+.lk-btns button i{width:12px;height:12px;border-radius:50%;display:block}
+.lk-btns button:focus-visible{outline:3px solid #f67625;outline-offset:2px}
+.lk-btns button[aria-pressed="true"]{border-color:#f67625;box-shadow:0 10px 22px -12px rgba(246,118,37,.9)}
+.lk-list{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:8px;max-height:360px;overflow:auto}
+.lk-list li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--line);border-radius:14px;background:var(--bg)}
+.lk-list a{color:inherit;text-decoration:none;min-width:0}.lk-list a b{display:block;font-size:15px}.lk-list a small{display:block;color:var(--muted);font-size:13px}
+.lk-tags{display:flex;flex-wrap:wrap;gap:5px;justify-content:flex-end}
+.lk-tags i{font-style:normal;font-size:11.5px;font-weight:700;padding:3px 8px;border-radius:999px;border:1.5px solid var(--c);white-space:nowrap}
 </style>
 <style id="restyling">
 /* ==========================================================================
@@ -1008,6 +1019,7 @@ footer{background:#000b18}
       <a href="#carte-accettate">Carte accettate</a>
       <a href="#richieste">Gasolio riscaldamento</a>
       <a href="#carta">Carta petrolifera</a>
+      <a href="#locker">Locker pacchi H24</a>
       <a href="#fattura">Fattura elettronica</a>
       <a href="autolavaggio-aprilia/">Autolavaggio Aprilia H24</a>
       <a href="vendere-distributore-carburanti/">Vendita di impianti</a>
@@ -1144,6 +1156,22 @@ footer{background:#000b18}
           <p class="ca-sel" id="ca-sel" aria-live="polite" hidden></p>
         </div>
         <div class="ca-mapbox nm-map"><svg id="ca-map" viewBox="0 0 560 740" role="img" aria-label="Mappa degli impianti dove è accettata la carta scelta"></svg><div class="ca-tip" id="ca-tip" hidden></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="locker" class="sec band" aria-labelledby="lk-title">
+    <div class="wrap">
+      <p class="kicker">Servizi in stazione</p>
+      <h2 class="title" id="lk-title">Locker pacchi H24</h2>
+      <p class="lede">Ritira e spedisci i tuoi pacchi quando vuoi: nelle nostre stazioni trovi i locker di Poste Italiane e DHL, BRT e InPost, accessibili 24 ore su 24.</p>
+      <div class="ca-wrap">
+        <div class="ca-side">
+          <div class="lk-btns" id="lk-btns" role="group" aria-label="Scegli il servizio di locker"></div>
+          <p class="ca-sel" id="lk-sel" aria-live="polite"></p>
+          <ul class="lk-list" id="lk-list"></ul>
+        </div>
+        <div class="ca-mapbox nm-map"><svg id="lk-map" viewBox="0 0 560 740" role="img" aria-label="Mappa delle stazioni con locker pacchi"></svg><div class="ca-tip" id="lk-tip" hidden></div></div>
       </div>
     </div>
   </section>
@@ -1547,6 +1575,24 @@ function drawCardMap(svId,tipId,extra){const sv=document.getElementById(svId),ti
   L.forEach((o,i)=>{const bt=document.createElement("button");bt.type="button";bt.title=o.c[0];bt.setAttribute("aria-label",`${o.c[0]}, ${o.n} impianti`);bt.setAttribute("aria-pressed","false");
     bt.innerHTML=o.c[1]?`<img src="${o.c[1]}" alt="">`:`<span>${o.c[0]}</span>`;bt.onclick=()=>pick(o,bt);lg.appendChild(bt)});
   pick(L.find(o=>o.n<T)||L[0],lg.children[L.indexOf(L.find(o=>o.n<T)||L[0])]);
+}
+// locker pacchi H24 nelle stazioni (dati comunicati dall'azienda)
+const LOCKER={"5229":["brt","inpost","poste"],"6415":["brt","poste"],"49511":["brt","inpost"],"6413":["brt","inpost","poste"],"6414":["brt","inpost"],"5579":["brt","inpost","poste"],"5580":["brt"],"5581":["brt","poste"],"CMD01":["brt","inpost","poste"],"27465":["brt","inpost","poste"]};
+const LK={brt:["BRT","#d4001a"],inpost:["InPost","#ffc400"],poste:["Poste Italiane + DHL","#0047bb"]};
+{const lkName=k=>LK[k][0];
+  const pts=drawCardMap("lk-map","lk-tip",x=>LOCKER[x.pv]?`<small>Locker H24: ${LOCKER[x.pv].map(lkName).join(", ")}</small>`:"");
+  const bx=document.getElementById("lk-btns"),sel=document.getElementById("lk-sel"),ul=document.getElementById("lk-list");
+  const St=S.filter(x=>LOCKER[x.pv]).sort(byZona);
+  const pick=(k,bt)=>{[...bx.children].forEach(b=>b.setAttribute("aria-pressed",b===bt));
+    const has=x=>LOCKER[x.pv]&&(k==="all"||LOCKER[x.pv].includes(k));
+    pts.forEach(p=>{const on=has(p.x);p.c.setAttribute("class",on?"ca-off ca-on":"ca-off");p.h.setAttribute("class",on?"ca-halo on":"ca-halo");
+      p.g.setAttribute("aria-label",`${p.x.c}, ${p.x.n}: ${on?"locker presente":"nessun locker"}`)});
+    const L=St.filter(has);
+    sel.innerHTML=`<b>${k==="all"?"Tutti i locker":lkName(k)}</b><br>presenti in <span>${L.length} ${L.length===1?"stazione":"stazioni"}</span>, accessibili 24 ore su 24`;
+    ul.innerHTML=L.map(x=>`<li><a href="${gm(x)}" target="_blank" rel="noopener"><b>${x.c.replace(/ \(..\)$/,"")}</b><small>${BRAND[x.b]} · ${x.n}</small></a><span class="lk-tags">${LOCKER[x.pv].map(t=>`<i style="--c:${LK[t][1]}">${LK[t][0]}</i>`).join("")}</span></li>`).join("")};
+  [["all","Tutti i locker"],...Object.keys(LK).map(k=>[k,LK[k][0]])].forEach(([k,l],i)=>{const bt=document.createElement("button");bt.type="button";bt.setAttribute("aria-pressed","false");
+    bt.innerHTML=(k==="all"?"":`<i style="background:${LK[k][1]}"></i>`)+l;bt.onclick=()=>pick(k,bt);bx.appendChild(bt)});
+  pick("all",bx.children[0]);
 }
 // sostenibilità: fotovoltaico (kW) e accumulo (kWh) per stazione, comunicati dall'azienda
 const SO_NOME={"6413":"Aprilia Q8 Via Selciatella","6414":"Latina Q8 Borgo Podgora","49511":"Pontinia IP Via Trieste 100/104","5565":"Roma Q8 Via di Bravetta","5581":"Roma Q8 Via di Fioranello","5522":"Roma Q8 Via Marconi","5229":"Sant'Egidio alla Vibrata Q8 Via Aprutina","5580":"Spoleto Q8 S.S. 3 Flaminia"};
