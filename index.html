@@ -644,6 +644,17 @@ footer a{color:inherit}
   .lk-list a{padding:12px 0;margin:-12px 0}
   .consent input{width:24px;height:24px}
 }
+
+/* P4: su telefono le sezioni più lunghe si aprono con un pulsante */
+.mcol-btn{display:none}
+@media (max-width:760px){
+  .mcol:not(.open){display:none}
+  .mcol-btn{display:flex;align-items:center;justify-content:center;gap:8px;margin:20px auto 0;min-height:44px;padding:12px 22px;border-radius:999px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);font:700 15px var(--f);cursor:pointer}
+  .mcol-btn::after{content:"";width:8px;height:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg) translateY(-2px);transition:transform .2s}
+  .mcol-btn[aria-expanded="true"]::after{transform:rotate(-135deg) translateY(-2px)}
+  .mcol-btn.mcol-cta{margin:18px 0 0;background:#f67625;border-color:#f67625;color:#1a0a00}
+  .mcol-btn.mcol-cta[aria-expanded="true"]{display:none}
+}
 </style>
 <style id="restyling">
 /* ==========================================================================
@@ -1223,8 +1234,9 @@ footer{background:#000b18}
         <div class="fside">
           <p class="fx-lead">La carta carburante T.Petrol per chi gestisce uno o più veicoli: rifornimenti semplici e sotto controllo su tutta la nostra rete.</p>
           <ul class="fx-list"><li>Per auto e mezzi pesanti</li><li>Richiesta online in pochi minuti</li><li>Ti ricontattiamo noi</li></ul>
+          <button class="mcol-btn mcol-cta" type="button" aria-expanded="false" aria-controls="mc-carta"><span>Compila la richiesta</span></button>
         </div>
-        <div class="fcard s" id="carta-form">
+        <div class="mcol" id="mc-carta"><div class="fcard s" id="carta-form">
           <h3>Richiedi la carta</h3>
           <p>Compila il modulo: ti ricontattiamo per completare l'attivazione.</p>
           <form id="f-carta" novalidate>
@@ -1257,7 +1269,7 @@ footer{background:#000b18}
             <button class="pill" type="submit">Richiedi la carta</button>
             <p class="msg" id="c-msg" role="status"></p>
           </form>
-        </div>
+        </div></div>
       </div>
     </div>
   </section>
@@ -1387,6 +1399,8 @@ footer{background:#000b18}
         <p>Una stazione di servizio è aperta tutto l'anno, spesso dalla mattina alla sera, e ha tetti e pensiline esposti al sole. Per questo abbiamo scelto di usarli: abbiamo installato impianti fotovoltaici, affiancati da batterie di accumulo, in <b id="so-n"></b> stazioni della nostra rete.</p>
         <p>È un percorso che portiamo avanti un impianto alla volta, con l'idea che anche chi vende carburanti possa fare la sua parte nella transizione energetica, partendo dalle cose concrete.</p>
       </div>
+      <button class="mcol-btn" type="button" aria-expanded="false" aria-controls="mc-sole"><span>Mostra di più</span></button>
+      <div class="mcol" id="mc-sole">
       <div class="so-pillars">
         <article><span class="so-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span><h3>Produciamo</h3><p>I pannelli sulle pensiline e sugli edifici trasformano il sole in energia elettrica direttamente in stazione.</p></article>
         <article><span class="so-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M22 11v2M6 10v4M10 10v4"/></svg></span><h3>Conserviamo</h3><p>Le batterie di accumulo conservano l'energia prodotta di giorno dai pannelli: la usiamo per illuminare i nostri piazzali anche di notte.</p></article>
@@ -1408,6 +1422,7 @@ footer{background:#000b18}
           <li><b>Meno emissioni</b><span>Più energia rinnovabile consumata sul posto significa meno energia da fonti fossili.</span></li>
           <li><b>Un territorio più forte</b><span>La comunità è aperta a cittadini, imprese ed enti locali: più persone aderiscono, più energia si condivide e più benefici restano sul territorio.</span></li>
         </ul>
+      </div>
       </div>
     </div>
   </section>
@@ -1672,6 +1687,15 @@ const LK={brt:["BRT","#d4001a"],inpost:["InPost","#ffc400"],poste:["Poste Italia
   document.querySelectorAll(".lk-n").forEach(e=>{const n=St.filter(x=>LOCKER[x.pv].includes(e.dataset.k)).length;e.textContent=n+(n===1?" stazione":" stazioni")});
   document.querySelectorAll(".lk-card").forEach(c=>{c.tabIndex=0;c.setAttribute("role","button");const go=()=>{const i=[...Object.keys(LK)].indexOf(c.dataset.k)+1;pick(c.dataset.k,bx.children[i]);document.getElementById("lk-map").scrollIntoView({behavior:"smooth",block:"center"})};c.onclick=go;c.onkeydown=e=>{if(e.key==="Enter")go()}});
 }
+// P4: apertura delle sezioni compatte su telefono
+(function(){
+  function apri(id,btn){var el=document.getElementById(id);if(!el)return;el.classList.add("open");document.querySelectorAll('.mcol-btn[aria-controls="'+id+'"]').forEach(function(b){b.setAttribute("aria-expanded","true");var t=b.querySelector("span");if(t&&!b.classList.contains("mcol-cta"))t.textContent="Mostra meno"})}
+  function chiudi(id){var el=document.getElementById(id);if(!el)return;el.classList.remove("open");document.querySelectorAll('.mcol-btn[aria-controls="'+id+'"]').forEach(function(b){b.setAttribute("aria-expanded","false");var t=b.querySelector("span");if(t&&!b.classList.contains("mcol-cta"))t.textContent="Mostra di più"})}
+  document.querySelectorAll(".mcol-btn").forEach(function(b){b.addEventListener("click",function(){var id=b.getAttribute("aria-controls");var el=document.getElementById(id);if(el.classList.contains("open")){chiudi(id);b.scrollIntoView({block:"nearest"})}else{apri(id)}})});
+  function daHash(){if(location.hash==="#carta"||location.hash==="#carta-form")apri("mc-carta")}
+  document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest('a[href="#carta"]');if(a)apri("mc-carta")});
+  window.addEventListener("hashchange",daHash);daHash();
+})();
 // sostenibilità: fotovoltaico (kW) e accumulo (kWh) per stazione, comunicati dall'azienda
 const SO_NOME={"6413":"Aprilia Q8 Via Selciatella","6414":"Latina Q8 Borgo Podgora","49511":"Pontinia IP Via Trieste 100/104","5565":"Roma Q8 Via di Bravetta","5581":"Roma Q8 Via di Fioranello","5522":"Roma Q8 Via Marconi","5229":"Sant'Egidio alla Vibrata Q8 Via Aprutina","5580":"Spoleto Q8 S.S. 3 Flaminia"};
 const CER_NOVA=new Set(["49511","5522","5565","5229"]);
