@@ -63,6 +63,7 @@ footer = tpl[tpl.index("<footer"):tpl.index("</body>")].replace('href="../', 'hr
 font_pre = re.search(r'<link rel="preload"[^>]*>', tpl).group(0).replace('href="../', 'href="../../')
 
 CSS = """<style>
+@media (max-width:640px){.facts{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:16px 12px}.facts span{font-size:11px}}
 .st-prices{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin-top:22px}
 .st-p{background:#00142b;color:#f2f5f9;border-radius:20px;padding:18px 20px}
 .st-p span{display:block;font-size:13px;letter-spacing:.1em;text-transform:uppercase;opacity:.75}
