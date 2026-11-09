@@ -554,6 +554,15 @@ footer a{color:inherit}
 .pgrid .pzona:first-child{margin-top:0}
 .pz .pgrid .pzona{color:#ff8a3d}
 @media (max-width:860px){.pz .pgrid .pzona{display:none}}
+
+.gal{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:16px;margin-top:28px}
+.gal-it{margin:0;grid-column:span 2;position:relative;border-radius:20px;overflow:hidden;background:#00142b;box-shadow:var(--sh-1,0 10px 30px -18px rgba(0,20,43,.5))}
+.gal-it:nth-child(-n+2){grid-column:span 3}
+.gal-it img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;transition:transform .5s ease}
+.gal-it:hover img{transform:scale(1.04)}
+.gal-it figcaption{position:absolute;left:0;right:0;bottom:0;padding:34px 16px 12px;color:#fff;font-size:15px;background:linear-gradient(transparent,rgba(0,20,43,.85))}
+.gal-it figcaption b{color:#ff8a3d;margin-right:4px}
+@media (max-width:760px){.gal{grid-template-columns:1fr 1fr;gap:10px}.gal-it,.gal-it:nth-child(-n+2){grid-column:span 1}.gal-it:first-child{grid-column:span 2}.gal-it figcaption{font-size:13px;padding:26px 10px 8px}}
 </style>
 <style id="restyling">
 /* ==========================================================================
@@ -993,6 +1002,7 @@ footer{background:#000b18}
     <nav aria-label="Menu">
       <a href="#chi-siamo">Chi siamo</a>
       <a href="#rete">Stazioni di servizio</a>
+      <a href="#galleria">Galleria impianti</a>
       <a href="#prezzi">Prezzi di oggi</a>
       <a href="#carte-accettate">Carte accettate</a>
       <a href="#richieste">Gasolio riscaldamento</a>
@@ -1093,6 +1103,15 @@ footer{background:#000b18}
           <ul class="list" id="list"></ul>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section id="galleria" class="sec band" aria-labelledby="gal-title">
+    <div class="wrap">
+      <p class="kicker">Galleria</p>
+      <h2 class="title" id="gal-title">I nostri impianti</h2>
+      <p class="lede">Alcune delle stazioni della rete T.Petrol a Roma. Altre foto in arrivo, anche su Instagram <a href="https://www.instagram.com/tpetrol_srl_/" target="_blank" rel="noopener">@tpetrol_srl_</a>.</p>
+      <div class="gal"><figure class="gal-it"><img src="galleria/nomentana.jpg" alt="Stazione T24 Via Nomentana 359, Roma" loading="lazy" decoding="async"><figcaption><b>T24</b> Via Nomentana 359 · Roma</figcaption></figure><figure class="gal-it"><img src="galleria/casilina.jpg" alt="Stazione T24 Via Casilina, Roma" loading="lazy" decoding="async"><figcaption><b>T24</b> Via Casilina · Roma</figcaption></figure><figure class="gal-it"><img src="galleria/leonardo.jpg" alt="Stazione Q8 Largo Leonardo da Vinci, Roma" loading="lazy" decoding="async"><figcaption><b>Q8</b> Largo Leonardo da Vinci · Roma</figcaption></figure><figure class="gal-it"><img style="object-position:50% 90%" src="galleria/marconi.jpg" alt="Stazione Q8 Via Marconi 700/A, Roma" loading="lazy" decoding="async"><figcaption><b>Q8</b> Via Marconi 700/A · Roma</figcaption></figure><figure class="gal-it"><img src="galleria/bravetta.jpg" alt="Stazione Q8 Via di Bravetta 312, Roma" loading="lazy" decoding="async"><figcaption><b>Q8</b> Via di Bravetta 312 · Roma</figcaption></figure></div>
     </div>
   </section>
 
