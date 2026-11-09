@@ -109,7 +109,7 @@ def page(x):
     cards = "".join(f'<li><img src="../../{CARTA[k][1]}" alt="" loading="lazy"><span>{e(CARTA[k][0])}</span></li>' for k in carte)
     nomi_serv = [t for t, _ in serv if t not in ("Fattura elettronica", "Carta carburante T.Petrol")]
     nomi_serv = [t if t.startswith("AdBlue") else t[0].lower() + t[1:] for t in nomi_serv]
-    lead = ("Self service" + (", " + ", ".join(nomi_serv[:-1]) + " e " + nomi_serv[-1] if len(nomi_serv) > 1 else (" e " + nomi_serv[0] if nomi_serv else ""))
+    lead = ("Self service" + (", " + ", ".join(nomi_serv[:-1]) + (" ed " if nomi_serv[-1][0] in "eE" else " e ") + nomi_serv[-1] if len(nomi_serv) > 1 else (" e " + nomi_serv[0] if nomi_serv else ""))
             + f". Una stazione di servizio della rete T.Petrol a {x['city']}.")
     facts = [(B, "marchio"), (str(len(carte)), "carte flotta accettate")]
     if LOCKER.get(pv): facts.append(("H24", "locker pacchi"))
