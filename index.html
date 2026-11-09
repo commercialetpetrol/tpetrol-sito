@@ -565,17 +565,18 @@ footer a{color:inherit}
 .gal-it figcaption b{color:#ff8a3d;margin-right:4px}
 @media (max-width:760px){.gal{grid-template-columns:1fr 1fr;gap:10px}.gal-it{grid-column:span 1}.gal-it.gal-w{grid-column:1/-1}.gal-it.gal-w img{aspect-ratio:16/10}.gal-it figcaption{font-size:13px;padding:26px 10px 8px}}
 
-.lk-btns{display:flex;flex-wrap:wrap;gap:10px}
-.lk-btns button{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border-radius:999px;background:var(--bg);border:2px solid var(--line);font-weight:700;font-size:15px;transition:border-color .15s,box-shadow .15s}
-.lk-btns button i{width:12px;height:12px;border-radius:50%;display:block}
+.lk-btns{display:flex;flex-wrap:wrap;gap:6px}
+.lk-btns button{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;background:var(--bg);border:1.5px solid var(--line);font-weight:700;font-size:13.5px;transition:border-color .15s,box-shadow .15s}
+.lk-btns button i{width:10px;height:10px;border-radius:50%;display:block}
 .lk-btns button:focus-visible{outline:3px solid #f67625;outline-offset:2px}
-.lk-btns button[aria-pressed="true"]{border-color:#f67625;box-shadow:0 10px 22px -12px rgba(246,118,37,.9)}
-.lk-list{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:8px;max-height:360px;overflow:auto}
-.lk-list li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--line);border-radius:14px;background:var(--bg)}
-.lk-list a{color:inherit;text-decoration:none;min-width:0}.lk-list a b{display:block;font-size:15px}.lk-list a small{display:block;color:var(--muted);font-size:13px}
-.lk-tags{display:flex;flex-wrap:wrap;gap:5px;justify-content:flex-end}
-.lk-tags i{font-style:normal;font-size:11.5px;font-weight:700;padding:3px 8px;border-radius:999px;border:1.5px solid var(--c);white-space:nowrap}
-
+.lk-btns button[aria-pressed="true"]{border-color:#f67625;box-shadow:0 8px 18px -12px rgba(246,118,37,.9)}
+#locker .ca-sel{margin:12px 0 0;font-size:15px;min-height:0}
+.lk-list{list-style:none;margin:10px 0 0;padding:0;display:grid;border-top:1px solid var(--line)}
+.lk-list li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:7px 2px;border-bottom:1px solid var(--line)}
+.lk-list a{color:inherit;text-decoration:none;min-width:0;font-size:14.5px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lk-list a:hover b{color:#f67625}
+.lk-list a small{color:var(--muted);font-size:12.5px}
+.lk-tags{display:flex;gap:5px;flex:none}
+.lk-tags i{width:11px;height:11px;border-radius:50%;display:block;box-shadow:0 0 0 2px var(--bg)}
 .lk-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:30px}
 .lk-card{background:var(--bg);border:1px solid var(--line);border-radius:22px;padding:18px;display:grid;gap:6px;cursor:pointer;box-shadow:var(--sh-1,0 10px 30px -18px rgba(0,20,43,.4));transition:transform .2s,border-color .2s}
 .lk-card:hover,.lk-card:focus-visible{transform:translateY(-3px);border-color:#f67625;outline:none}
@@ -1602,7 +1603,7 @@ const LK={brt:["BRT","#d4001a"],inpost:["InPost","#ffc400"],poste:["Poste Italia
       p.g.setAttribute("aria-label",`${p.x.c}, ${p.x.n}: ${on?"locker presente":"nessun locker"}`)});
     const L=St.filter(has);
     sel.innerHTML=`<b>${k==="all"?"Tutti i locker":lkName(k)}</b><br>presenti in <span>${L.length} ${L.length===1?"stazione":"stazioni"}</span>, accessibili 24 ore su 24`;
-    ul.innerHTML=L.map(x=>`<li><a href="${gm(x)}" target="_blank" rel="noopener"><b>${x.c.replace(/ \(..\)$/,"")}</b><small>${BRAND[x.b]} · ${x.n}</small></a><span class="lk-tags">${LOCKER[x.pv].map(t=>`<i style="--c:${LK[t][1]}">${LK[t][0]}</i>`).join("")}</span></li>`).join("")};
+    ul.innerHTML=L.map(x=>`<li><a href="${gm(x)}" target="_blank" rel="noopener"><b>${x.c.replace(/ \(..\)$/,"")}</b> <small>${BRAND[x.b]} · ${x.n.replace(/ - .*$/,"")}</small></a><span class="lk-tags">${LOCKER[x.pv].map(t=>`<i style="background:${LK[t][1]}" title="${LK[t][0]}" aria-label="${LK[t][0]}"></i>`).join("")}</span></li>`).join("")};
   [["all","Tutti i locker"],...Object.keys(LK).map(k=>[k,LK[k][0]])].forEach(([k,l],i)=>{const bt=document.createElement("button");bt.type="button";bt.setAttribute("aria-pressed","false");
     bt.innerHTML=(k==="all"?"":`<i style="background:${LK[k][1]}"></i>`)+l;bt.onclick=()=>pick(k,bt);bx.appendChild(bt)});
   pick("all",bx.children[0]);
