@@ -655,7 +655,7 @@ footer a{color:inherit}
   .mcol-btn.mcol-cta{margin:18px 0 0;background:#f67625;border-color:#f67625;color:#1a0a00}
   .mcol-btn.mcol-cta[aria-expanded="true"]{display:none}
 }
-.where a.st-link{color:inherit;text-decoration:none}.where a.st-link:hover b{color:#b04a05;text-decoration:underline}
+.rete-sx{display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;margin:24px 0 0}.rete-sx span{color:var(--muted);font-size:15px}
 </style>
 <style id="restyling">
 /* ==========================================================================
@@ -1189,6 +1189,7 @@ footer{background:#000b18}
           <ul class="list" id="list"></ul>
         </div>
       </div>
+      <p class="rete-sx"><a class="pill pill-sun" href="stazioni/">Schede delle stazioni →</a><span>Indirizzo, servizi, carte accettate e prezzi di oggi di ciascuna delle 29 stazioni</span></p>
     </div>
   </section>
 
@@ -1569,7 +1570,7 @@ const filters=document.getElementById("filters"), list=document.getElementById("
 function render(){list.innerHTML="";let zp=-1;S.filter(x=>active==="all"||x.b===active).sort(byZona).forEach(x=>{
   if(x.z!==zp){zp=x.z;const h=document.createElement("li");h.className="zona";h.textContent=zname(x);list.appendChild(h)}
   const li=document.createElement("li");
-  li.innerHTML=`${LOGO[x.b]?`<span class="tag logo"><img src="${LOGO[x.b]}" alt="${BRAND[x.b]}"></span>`:`<span class="tag ${x.b}">COM</span>`}<span class="where"><a class="st-link" href="stazioni/${STAZ_SLUG[x.pv]}/"><b>${x.n}</b></a><small>${x.c}</small>${SERVIZI[x.pv]?`<span class="srv">${SERVIZI[x.pv].map(t=>`<i>${t}</i>`).join("")}</span>`:""}</span><a class="go" href="${gm(x)}" target="_blank" rel="noopener">Mappa ↗</a>`;
+  li.innerHTML=`${LOGO[x.b]?`<span class="tag logo"><img src="${LOGO[x.b]}" alt="${BRAND[x.b]}"></span>`:`<span class="tag ${x.b}">COM</span>`}<span class="where"><b>${x.n}</b><small>${x.c}</small>${SERVIZI[x.pv]?`<span class="srv">${SERVIZI[x.pv].map(t=>`<i>${t}</i>`).join("")}</span>`:""}</span><a class="go" href="${gm(x)}" target="_blank" rel="noopener">Mappa ↗</a>`;
   li.onmouseenter=()=>dots[x.i]&&dots[x.i].classList.add("hl");li.onmouseleave=()=>dots[x.i]&&dots[x.i].classList.remove("hl");list.appendChild(li)});
   dots.forEach((d,i)=>d.style.opacity=(active==="all"||S[i].b===active)?1:.15)}
 render();

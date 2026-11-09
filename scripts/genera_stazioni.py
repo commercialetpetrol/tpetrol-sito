@@ -130,7 +130,7 @@ def page(x):
     if pv in FOTO: ld["image"] = f"https://www.tpetrol.it/galleria/{FOTO[pv]}.jpg"
     bc = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
         {"@type": "ListItem", "position": 1, "name": "T.Petrol", "item": "https://www.tpetrol.it/"},
-        {"@type": "ListItem", "position": 2, "name": "Stazioni di servizio", "item": "https://www.tpetrol.it/#rete"},
+        {"@type": "ListItem", "position": 2, "name": "Stazioni di servizio", "item": "https://www.tpetrol.it/stazioni/"},
         {"@type": "ListItem", "position": 3, "name": f"{B} {x['city']} – {x['n']}", "item": URL}]}
     cards_serv = "".join(f'<article class="card"><h3>{e(t)}</h3><p>{d}</p></article>' for t, d in serv)
     facts_html = "".join(f"<li><strong>{e(a)}</strong><span>{e(b)}</span></li>" for a, b in facts)
@@ -161,7 +161,7 @@ def page(x):
     <a class="logo" href="../../" aria-label="T.Petrol, vai alla home"><img src="../../logo.png" alt="T.Petrol" width="161" height="38"></a>
     <nav aria-label="Navigazione">
       <a class="hide-m" href="../../">Home</a>
-      <a class="hide-m" href="../../#rete">Tutte le stazioni</a>
+      <a class="hide-m" href="../">Tutte le stazioni</a>
       <a class="hide-m" href="../../#contatti">Contatti</a>
       <a class="pill pill-sun" href="{MAPS}" target="_blank" rel="noopener">Indicazioni</a>
     </nav>
@@ -171,7 +171,7 @@ def page(x):
 <main>
   <section class="hero band">
     <div class="wrap">
-      <p class="crumbs"><a href="../../">T.Petrol</a> › <a href="../../#rete">Stazioni di servizio</a> › {e(x['city'])}, {e(x['n'])}</p>
+      <p class="crumbs"><a href="../../">T.Petrol</a> › <a href="../">Stazioni di servizio</a> › {e(x['city'])}, {e(x['n'])}</p>
       <p class="kick">Stazione di servizio {e(B)} · {e(x['city'])} ({e(x['prov'])})</p>
       <h1>Distributore <b>{e(B)}</b> {prep} {e(x['city'])}, {e(x['n'])}</h1>
       <p class="lead">{e(lead)}</p>
@@ -228,3 +228,77 @@ for x in st:
 (out / "elenco.json").write_text(json.dumps({x["pv"]: x["slug"] for x in st}, ensure_ascii=False, indent=1))
 print(len(st), "pagine generate")
 for x in st: print(x["pv"], x["slug"])
+
+# ---- pagina indice /stazioni/
+ZONE = [("Roma", lambda x: x["c"] == "Roma (RM)"), ("Provincia di Roma", lambda x: x["prov"] == "RM"),
+        ("Latina e provincia", lambda x: x["prov"] == "LT"), ("Provincia di Viterbo", lambda x: x["prov"] == "VT"),
+        ("Provincia di Rieti", lambda x: x["prov"] == "RI"), ("Umbria", lambda x: x["prov"] == "PG"), ("Abruzzo", lambda x: x["prov"] == "TE")]
+def zona(x): return next(i for i, (_, f) in enumerate(ZONE) if f(x))
+def tags(x):
+    pv = x["pv"]; t = []
+    if pv in ADB: t.append("AdBlue")
+    t += SERVIZI.get(pv, [])
+    if pv == "6413": t.append("Autolavaggio H24")
+    if LOCKER.get(pv): t.append("Locker H24")
+    if pv in SOLARE: t.append("Fotovoltaico")
+    return t
+grp = ""
+for i, (nome, _) in enumerate(ZONE):
+    L = sorted([x for x in st if zona(x) == i], key=lambda x: (x["city"], x["n"]))
+    if not L: continue
+    items = ""
+    for x in L:
+        tg = "".join(f"<i>{e(t)}</i>" for t in tags(x))
+        items += (f'<li><a href="{x["slug"]}/"><span class="sx-b">{e(BRAND[x["b"]])}</span><b>{e(x["city"])}</b><small>{e(x["n"])}</small>'
+                  + (f'<span class="sx-t">{tg}</span>' if tg else "") + "</a></li>")
+    grp += f'<h2 class="sx-h">{e(nome)} <span>{len(L)}</span></h2>\n      <ul class="sx-list">{items}</ul>\n      '
+URLI = "https://www.tpetrol.it/stazioni/"
+ld_i = {"@context": "https://schema.org", "@type": "ItemList", "name": "Stazioni di servizio T.Petrol", "numberOfItems": len(st),
+        "itemListElement": [{"@type": "ListItem", "position": k + 1, "url": f"{URLI}{x['slug']}/", "name": f"{BRAND[x['b']]} {x['city']} – {x['n']}"} for k, x in enumerate(st)]}
+pre_i = page(st[0]).split("<header")[0]
+pre_i = re.sub(r"<title>.*?</title>", f"<title>Le nostre stazioni di servizio – {len(st)} distributori a Roma, Latina, Umbria e Abruzzo | T.Petrol</title>", pre_i, flags=re.S)
+pre_i = re.sub(r'<meta name="description" content="[^"]*">', f'<meta name="description" content="Tutte le {len(st)} stazioni di servizio T.Petrol tra Roma, Latina e province, Viterbo, Rieti, Spoleto e Teramo: indirizzi, marchi, servizi e prezzi self di oggi.">', pre_i)
+pre_i = re.sub(r'<link rel="canonical" href="[^"]*">', f'<link rel="canonical" href="{URLI}">', pre_i)
+pre_i = re.sub(r'<meta property="og:(title|description|url|image)" content="[^"]*">\n', "", pre_i)
+pre_i = re.sub(r'<script type="application/ld\+json">.*?</script>', lambda m: '<script type="application/ld+json">' + json.dumps(ld_i, ensure_ascii=False) + "</script>", pre_i, flags=re.S)
+pre_i = pre_i.replace('href="../../', 'href="../').replace("<style>", """<style>
+.sx-h{margin:40px 0 0;font-size:clamp(22px,2.6vw,28px)}.sx-h:first-child{margin-top:0}.sx-h span{font-size:15px;color:var(--muted);font-weight:600;margin-left:6px}
+.sx-list{list-style:none;margin:16px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.sx-list a{display:grid;gap:3px;height:100%;padding:16px 18px;border:1px solid var(--line);border-radius:18px;background:var(--bg);text-decoration:none;color:inherit;transition:border-color .15s,transform .15s}
+.sx-list a:hover{border-color:#f67625;transform:translateY(-2px)}
+.sx-b{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#b04a05}.sx-list b{font-size:18px}.sx-list small{color:var(--muted)}
+.sx-t{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}.sx-t i{font-style:normal;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(246,118,37,.14);color:#b04a05}
+""", 1)
+foot_i = footer.replace('href="../../', 'href="../').replace('src="../../', 'src="../')
+html_i = pre_i + f'''<header class="top band">
+  <div class="wrap">
+    <a class="logo" href="../" aria-label="T.Petrol, vai alla home"><img src="../logo.png" alt="T.Petrol" width="161" height="38"></a>
+    <nav aria-label="Navigazione">
+      <a class="hide-m" href="../">Home</a>
+      <a class="hide-m" href="../#prezzi">Prezzi di oggi</a>
+      <a class="pill pill-sun" href="../#contatti">Contatti</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <section class="hero band">
+    <div class="wrap">
+      <p class="crumbs"><a href="../">T.Petrol</a> › Stazioni di servizio</p>
+      <p class="kick">La rete T.Petrol</p>
+      <h1>Le nostre <b>{len(st)} stazioni</b> di servizio</h1>
+      <p class="lead">Distributori di carburante tra Roma, Latina e le loro province, Viterbo, Rieti, Spoleto e Teramo. Scegli una stazione per vedere indirizzo, servizi, carte accettate e prezzi self di oggi.</p>
+      <div class="cta"><a class="pill pill-sun" href="../#rete">Apri la mappa</a><a class="pill pill-white" href="../#prezzi">Prezzi di oggi</a></div>
+    </div>
+  </section>
+  <section class="sec band">
+    <div class="wrap">
+      {grp}
+    </div>
+  </section>
+</main>
+
+{foot_i}</body>
+</html>
+'''
+(out / "index.html").write_text(html_i)
+print("indice /stazioni/ generato")
