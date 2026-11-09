@@ -942,6 +942,26 @@ footer{background:#000b18}
 .rs-ig-go{margin-top:6px;font-weight:700}
 @media (max-width:760px){.rs-ig-grid{grid-template-columns:minmax(0,1fr)}.rs-ig-card{padding:24px}.rs-ig-card h3{font-size:24px}}
 </style>
+<style id="sezione-fattura">
+/* Sezione "Fattura elettronica, anche in self" (novembre 2026) */
+.rs-fe{background:linear-gradient(180deg,#fff6ef,#fff)}
+.rs-fe-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:20px;margin-top:40px;text-align:left}
+.rs-fe-card{display:grid;gap:12px;align-content:start;padding:30px;border-radius:30px;background:#fff;border:1px solid var(--line);box-shadow:var(--sh-2)}
+.rs-fe-card.app{background:#00142b;color:#f2f5f9;border-color:#00142b}
+.rs-fe-card .ico{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;background:#00142b;color:#f67625}
+.rs-fe-card.app .ico{background:#f67625;color:#1a0a00}
+.rs-fe-card .ico svg{width:26px;height:26px}
+.rs-fe-card h3{font-size:26px}
+.rs-fe-card p{margin:0;color:var(--muted)}
+.rs-fe-card ol{margin:0;padding:0;list-style:none;counter-reset:fe;display:grid;gap:10px}
+.rs-fe-card li{counter-increment:fe;display:grid;grid-template-columns:30px minmax(0,1fr);gap:10px;align-items:start;line-height:1.5}
+.rs-fe-card li::before{content:counter(fe);width:28px;height:28px;border-radius:9px;background:rgba(246,118,37,.18);color:#ff9a52;display:grid;place-items:center;font-weight:800;font-size:14px}
+.rs-fe-store{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.rs-fe-store .pill{padding:11px 18px;font-size:15px}
+.rs-fe-note{margin:22px auto 0;font-size:14.5px;color:var(--muted);text-align:center}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .rs-fe{background:linear-gradient(180deg,#141c1e,var(--bg))}:root:not([data-theme="light"]) .rs-fe-card:not(.app){background:var(--soft)}}
+@media (max-width:760px){.rs-fe-grid{grid-template-columns:minmax(0,1fr)}.rs-fe-card{padding:24px}.rs-fe-card h3{font-size:23px}}
+</style>
 </head>
 <body>
 
@@ -971,6 +991,7 @@ footer{background:#000b18}
       <a href="#carte-accettate">Carte accettate</a>
       <a href="#richieste">Gasolio riscaldamento</a>
       <a href="#carta">Carta petrolifera</a>
+      <a href="#fattura">Fattura elettronica</a>
       <a href="vendere-distributore-carburanti/">Vendita di impianti</a>
       <a href="consulenza-impianti-carburanti/">Consulenza tecnica</a>
       <a href="#news">Notizie</a>
@@ -1096,6 +1117,35 @@ footer{background:#000b18}
         </div>
         <div class="ca-mapbox nm-map"><svg id="ca-map" viewBox="0 0 560 740" role="img" aria-label="Mappa degli impianti dove è accettata la carta scelta"></svg><div class="ca-tip" id="ca-tip" hidden></div></div>
       </div>
+    </div>
+  </section>
+
+  <section id="fattura" class="sec band rs-fe" aria-labelledby="fe-title">
+    <div class="wrap">
+      <p class="kicker">Per aziende e professionisti</p>
+      <h2 class="title" id="fe-title">Fattura elettronica, <em>anche in self</em></h2>
+      <p class="lede">Sulle nostre stazioni la fattura elettronica del rifornimento è disponibile anche quando fai benzina o gasolio in self service: direttamente al self oppure con l'app gratuita fattura1click.</p>
+      <div class="rs-fe-grid">
+        <article class="rs-fe-card">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 22h12M4 9h10M14 22V4a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v18M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0V9.83a2 2 0 0 0-.59-1.42L18 5"/></svg></span>
+          <h3>Al self service</h3>
+          <p>Al termine del rifornimento richiedi la fattura direttamente al self, senza attendere il gestore e anche fuori orario.</p>
+        </article>
+        <article class="rs-fe-card app">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg></span>
+          <h3>Con l'app fattura1click</h3>
+          <ol>
+            <li>Scarica gratis l'app e registra una sola volta i dati della tua attività.</li>
+            <li>Dopo il rifornimento inserisci i dati dello scontrino.</li>
+            <li>Richiedi la fattura entro la giornata: arriva a norma di legge tramite il Sistema di Interscambio.</li>
+          </ol>
+          <div class="rs-fe-store">
+            <a class="pill pill-sun" href="https://apps.apple.com/it/app/fattura1click/id1399465020" target="_blank" rel="noopener">App Store ↗</a>
+            <a class="pill pill-sun" href="https://play.google.com/store/apps/details?id=it.fortech.fatturaoneclick&amp;hl=it" target="_blank" rel="noopener">Google Play ↗</a>
+          </div>
+        </article>
+      </div>
+      <p class="rs-fe-note">Per fatture di giorni precedenti o riepilogative rivolgiti al gestore della stazione.</p>
     </div>
   </section>
 
