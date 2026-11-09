@@ -1270,6 +1270,10 @@ footer{background:#000b18}
               <label for="c-rs">Ragione sociale *<input id="c-rs" name="ragione_sociale" required autocomplete="organization"></label>
               <label for="c-note">Note<input id="c-note" name="note"></label>
             </div>
+            <div class="row2">
+              <label for="c-sdi">PEC o codice SDI<input id="c-sdi" name="pec_o_codice_sdi" autocapitalize="characters" placeholder="per la fattura elettronica"></label>
+              <label for="c-litri">Consumo mensile stimato (litri)<input id="c-litri" name="consumo_mensile_litri" inputmode="numeric" placeholder="es. 1.500"></label>
+            </div>
             <label class="consent" for="c-priv"><input type="checkbox" id="c-priv" name="consenso_privacy" value="sì" required><span>Ho letto l'<a href="privacy.html" target="_blank" rel="noopener">informativa privacy</a> e acconsento al trattamento dei dati per ricevere risposta.</span></label>
             <button class="pill" type="submit">Richiedi la carta</button>
             <p class="msg" id="c-msg" role="status"></p>
