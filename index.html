@@ -1022,7 +1022,7 @@ footer{background:#000b18}
       <div class="live" id="live" aria-label="Contatore dei rifornimenti">
         <div class="live-top"><span class="live-dot" aria-hidden="true"></span>In diretta dai nostri impianti</div>
         <p class="live-k">Rifornimenti dal 2015</p>
-        <div class="odo-num" id="odo" role="status" aria-live="off">17.139.522</div>
+        <div class="odo-num" id="odo" role="status" aria-live="off">17.169.683</div>
         <div class="live-row"><div><strong id="live-today">—</strong><span>rifornimenti oggi</span></div><div><strong id="live-rate">—</strong><span>al minuto, in questo momento</span></div></div>
         <p class="live-n">Stima in tempo reale basata sulla media delle erogazioni delle ultime 4 settimane.</p>
       </div>
@@ -1612,7 +1612,7 @@ dots=drawLogoMap(document.getElementById("map"),document.getElementById("map-tip
 // CONTATORE RIFORNIMENTI IN DIRETTA
 // Aggiornamento del lunedì: BASE = 8.938.710 (stima fissa 2015-2020) + somma "Nr erogazioni" (Stato OK) della banca dati;
 // BASE_DAL = giorno successivo all'ultimo dato; MEDIA = media giornaliera delle ultime 4 settimane.
-const LIVE={BASE:17139522,BASE_DAL:"2026-11-03",MEDIA:4860,DOW:[.79,1.04,1.04,1.04,1.04,1.04,.98]};
+const LIVE={BASE:17169683,BASE_DAL:"2026-11-09",MEDIA:4915,DOW:[.79,1.04,1.04,1.04,1.04,1.04,.98]};
 (function(){const el=document.getElementById("odo");
   const W=[.004,.004,.004,.004,.004,.004,.01,.03,.06,.07,.065,.06,.06,.055,.05,.05,.055,.06,.07,.07,.06,.045,.03,.015].map((v,i,a)=>v);
   // pesi orari 0-23 (ore locali di Roma), normalizzati
