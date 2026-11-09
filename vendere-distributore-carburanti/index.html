@@ -152,6 +152,12 @@
  ]
 }
 </script>
+<style>
+.vsc{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:22px}
+.vsc span{width:100%;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.75}
+.vsc a{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:999px;border:1.5px solid rgba(255,255,255,.35);color:#f2f5f9;text-decoration:none;font-weight:700;font-size:15px}
+.vsc a:hover,.vsc a:focus-visible{border-color:#f67625;color:#ff8a3d}
+</style>
 </head>
 <body>
 <header class="top band">
@@ -176,6 +182,12 @@
       <div class="cta">
         <a class="pill pill-sun" href="#proponi">Invia una proposta</a>
         <a class="pill pill-white" href="tel:+390671355341">06 7135 5341</a>
+      </div>
+      <div class="vsc" role="group" aria-label="Cosa vuoi fare con il tuo impianto">
+        <span>Cosa vuoi fare con il tuo impianto?</span>
+        <a href="#proponi" data-sol="Vendita">Venderlo</a>
+        <a href="#proponi" data-sol="Convenzionamento con una compagnia">Convenzionarlo con una compagnia</a>
+        <a href="#proponi" data-sol="Gestione diretta">Affidarne la gestione</a>
       </div>
       <ul class="facts" aria-label="T.Petrol in numeri">
         <li><strong>2015</strong><span>anno di nascita</span></li>
@@ -300,5 +312,6 @@
   </div>
 </footer>
 <script src="../moduli.js"></script>
+<script>document.querySelectorAll(".vsc a").forEach(function(a){a.addEventListener("click",function(){var s=document.getElementById("v-soluzione");if(s)s.value=a.dataset.sol})})</script>
 </body>
 </html>
