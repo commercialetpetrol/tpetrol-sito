@@ -168,6 +168,7 @@ input:focus,textarea:focus,select:focus{outline:3px solid var(--sun-2);outline-o
 .msg{font-size:15px;margin:0;min-height:1em}
 .msg.ok{font-weight:700}
 .fcard .pill{justify-self:start}
+.ct-form{max-width:760px;margin:28px auto 0;border:1px solid rgba(255,255,255,.14)}
 .fcard.p .pill{background:var(--sun);color:var(--on-sun)}
 .fcard.s .pill{background:#00142b;color:#f2f5f9}
 .partners{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:40px}
@@ -1490,6 +1491,23 @@ footer{background:#000b18}
         <div><span class="rs-cico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg></span><p class="k">Telefono</p><p class="v"><a href="tel:+390671355341">06 7135 5341</a></p><a class="rs-cact" href="tel:+390671355341">Chiama ora</a></div>
         <div><span class="rs-cico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></span><p class="k">Email</p><p class="v"><a href="mailto:info@tpetrol.it">info@tpetrol.it</a></p><a class="rs-cact" href="mailto:info@tpetrol.it">Scrivici</a></div>
       </div>
+      <div class="fcard p ct-form" id="contatti-form">
+        <h3>Scrivici</h3>
+        <p>Scegli il motivo della richiesta: così possiamo risponderti più rapidamente.</p>
+        <form id="f-contatti" novalidate>
+          <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+          <label for="k-motivo">Motivo della richiesta *<select id="k-motivo" name="motivo" required><option value="">Scegli</option><option>Carta carburante</option><option>Gasolio extrarete</option><option>Vendita o convenzionamento di un impianto</option><option>Consulenza tecnica</option><option>Fatture e amministrazione</option><option>Segnalazione su una stazione</option><option>Altro</option></select></label>
+          <div class="row2">
+            <label for="k-nome">Nome e cognome *<input id="k-nome" name="nome" required autocomplete="name"></label>
+            <label for="k-tel">Telefono<input id="k-tel" name="telefono" type="tel" autocomplete="tel"></label>
+          </div>
+          <label for="k-mail">Email *<input id="k-mail" name="email" type="email" required autocomplete="email"></label>
+          <label for="k-msg-t">Messaggio *<textarea id="k-msg-t" name="messaggio" rows="3" required></textarea></label>
+          <label class="consent" for="k-priv"><input type="checkbox" id="k-priv" name="consenso_privacy" value="sì" required><span>Ho letto l'<a href="privacy.html" target="_blank" rel="noopener">informativa privacy</a> e acconsento al trattamento dei dati per ricevere risposta.</span></label>
+          <button class="pill" type="submit">Invia messaggio</button>
+          <p class="msg" id="k-msg" role="status"></p>
+        </form>
+      </div>
     </div>
   </section>
 </main>
@@ -1923,6 +1941,7 @@ function hook(id,msgId,subject){const f=document.getElementById(id),m=document.g
       .catch(()=>mailto()).finally(()=>{btn.disabled=false})})}
 hook("f-gasolio","g-msg","Richiesta fornitura gasolio extrarete");
 hook("f-carta","c-msg","Richiesta carta petrolifera");
+hook("f-contatti","k-msg","Richiesta dal sito – Contatti");
 document.getElementById("yr").textContent=new Date().getFullYear();
 
 const dr=document.getElementById("drawer"),ob=document.getElementById("open-menu");
