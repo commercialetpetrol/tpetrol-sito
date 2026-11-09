@@ -856,6 +856,8 @@ footer a:hover{color:#ff8a3d}
 
 /* --- rete: elenco con altezza contenuta anche su smartphone --- */
 @media (max-width:860px){.list{max-height:440px}}
+.gos{display:flex;gap:6px;align-items:center;justify-content:flex-end}@media (max-width:560px){.gos{flex-direction:column;align-items:stretch}.gos .go{justify-content:center}}
+.list li .go.sch{background:#00142b;color:#f2f5f9}.list li .go.sch:hover{background:#f67625;color:#1a0a00}
 .list li .go{display:inline-flex;align-items:center;gap:4px;padding:7px 12px;border-radius:999px;background:rgba(246,118,37,.10);transition:background-color .15s}
 .list li .go:hover{background:rgba(246,118,37,.2);text-decoration:none}
 
@@ -1096,7 +1098,8 @@ footer{background:#000b18}
     <div class="top"><span class="logo"><img src="img/e1f312e5b4.png" alt="T.Petrol" width="150" height="35"></span><button class="x" type="button" id="close-menu" aria-label="Chiudi il menu">✕</button></div>
     <nav aria-label="Menu" class="dr-nav">
       <p class="dr-h">La rete</p>
-      <a href="#rete">Stazioni di servizio</a>
+      <a href="stazioni/">Le nostre stazioni</a>
+      <a href="#rete">Mappa delle stazioni</a>
       <a href="#galleria">Galleria impianti</a>
       <a href="#prezzi">Prezzi di oggi</a>
       <a href="#carte-accettate">Carte carburante</a>
@@ -1185,7 +1188,7 @@ footer{background:#000b18}
     <div class="wrap">
       <p class="kicker">La nostra rete</p>
       <h2 class="title">Stazioni di servizio</h2>
-      <p class="lede">Roma, Latina e le loro province, fino all'Alto Lazio, a Spoleto e alla Val Vibrata. Tocca un punto sulla mappa o un impianto in elenco per aprirlo su Google Maps.</p>
+      <p class="lede">Roma, Latina e le loro province, fino all'Alto Lazio, a Spoleto e alla Val Vibrata. Tocca un impianto sulla mappa per aprire la sua scheda; nell'elenco trovi anche il collegamento a Google Maps.</p>
       <div class="rete-grid">
         <div class="map nm-map"><svg id="map" viewBox="0 0 560 740" role="img" aria-label="Mappa degli impianti T.Petrol con i loghi dei marchi"></svg><div class="nm-tip" id="map-tip" hidden></div></div>
         <div>
@@ -1600,7 +1603,7 @@ const okF=x=>(active==="all"||x.b===active)&&(!activeSrv||SRVF[activeSrv][1](x))
 function render(){list.innerHTML="";let zp=-1;S.filter(okF).sort(byZona).forEach(x=>{
   if(x.z!==zp){zp=x.z;const h=document.createElement("li");h.className="zona";h.textContent=zname(x);list.appendChild(h)}
   const li=document.createElement("li");
-  li.innerHTML=`${LOGO[x.b]?`<span class="tag logo"><img src="${LOGO[x.b]}" alt="${BRAND[x.b]}"></span>`:`<span class="tag ${x.b}">COM</span>`}<span class="where"><b>${x.n}</b><small>${x.c}</small>${SERVIZI[x.pv]?`<span class="srv">${SERVIZI[x.pv].map(t=>`<i>${t}</i>`).join("")}</span>`:""}</span><a class="go" href="${gm(x)}" target="_blank" rel="noopener">Mappa ↗</a>`;
+  li.innerHTML=`${LOGO[x.b]?`<span class="tag logo"><img src="${LOGO[x.b]}" alt="${BRAND[x.b]}"></span>`:`<span class="tag ${x.b}">COM</span>`}<span class="where"><b>${x.n}</b><small>${x.c}</small>${SERVIZI[x.pv]?`<span class="srv">${SERVIZI[x.pv].map(t=>`<i>${t}</i>`).join("")}</span>`:""}</span><span class="gos">${STAZ_SLUG[x.pv]?`<a class="go sch" href="stazioni/${STAZ_SLUG[x.pv]}/">Scheda</a>`:""}<a class="go" href="${gm(x)}" target="_blank" rel="noopener">Mappa ↗</a></span>`;
   li.onmouseenter=()=>dots[x.i]&&dots[x.i].classList.add("hl");li.onmouseleave=()=>dots[x.i]&&dots[x.i].classList.remove("hl");list.appendChild(li)});
   if(!list.children.length){const e=document.createElement("li");e.className="zona";e.textContent="Nessuna stazione con questi filtri";list.appendChild(e)}
   dots.forEach((d,i)=>d.style.opacity=okF(S[i])?1:.15)}
@@ -1688,7 +1691,7 @@ function drawCardMap(svId,tipId,extra){const sv=document.getElementById(svId),ti
     const show=()=>{const r=box.getBoundingClientRect(),k=r.width/PW;tip.innerHTML=`<b>${x.c}</b><small>${BRAND[x.b]} · ${x.n}</small>${extra?extra(x):""}`;
       tip.style.left=Math.max(90,Math.min(r.width-90,cx*k))+"px";tip.style.top=(cy-6)*k+"px";tip.hidden=false};
     const hide=()=>{tip.hidden=true};
-    const go=()=>{pq.value="";pBrand="all";const pb=document.getElementById("pz-brands");if(pb)[...pb.children].forEach((b,i)=>b.setAttribute("aria-pressed",i===0));renderPrices();
+    const go=()=>{if(typeof STAZ_SLUG!=="undefined"&&STAZ_SLUG[x.pv]){location.href="stazioni/"+STAZ_SLUG[x.pv]+"/";return}pq.value="";pBrand="all";const pb=document.getElementById("pz-brands");if(pb)[...pb.children].forEach((b,i)=>b.setAttribute("aria-pressed",i===0));renderPrices();
       const el=document.getElementById("pv-"+x.pv);if(el)el.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"})};
     g.addEventListener("mouseenter",show);g.addEventListener("mouseleave",hide);g.addEventListener("focus",show);g.addEventListener("blur",hide);
     g.addEventListener("click",go);g.addEventListener("keydown",e=>{if(e.key==="Enter")go()});
@@ -1810,7 +1813,7 @@ function drawLogoMap(sv,tip,showFlags){const box=sv.parentElement;
       tip.innerHTML=`<header>${LOGO[x.b]?`<img src="${LOGO[x.b]}" alt="">`:""}<div><b>${x.n}</b><small>${x.c}</small></div></header><dl><dt>Benzina self</dt><dd>${fmt(x.p.bs)}</dd><dt>Gasolio self</dt><dd>${fmt(x.p.gs)}</dd></dl>${x.adb?`<p style="margin:8px 0 0"><span class="adb">AdBlue disponibile</span></p>`:""}`;
       let L=n.cx*k;L=Math.max(115,Math.min(r.width-115,L));tip.style.left=L+"px";tip.style.top=(n.cy-MH/2)*k+"px";tip.hidden=false};
     const hide=()=>{g.classList.remove("on");tip.hidden=true};
-    const go=()=>{pq.value="";renderPrices();(document.getElementById("pv-"+x.pv)||document.getElementById("prezzi")).scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"})};
+    const go=()=>{if(typeof STAZ_SLUG!=="undefined"&&STAZ_SLUG[x.pv]){location.href="stazioni/"+STAZ_SLUG[x.pv]+"/";return}pq.value="";renderPrices();(document.getElementById("pv-"+x.pv)||document.getElementById("prezzi")).scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"})};
     g.addEventListener("mouseenter",show);g.addEventListener("mouseleave",hide);g.addEventListener("focus",show);g.addEventListener("blur",hide);
     g.addEventListener("click",go);g.addEventListener("keydown",e=>{if(e.key==="Enter")go()});
     if(best)flags.push([n,x===bestG?"Gasolio":"Benzina",x===bestG?x.p.gs:x.p.bs])});
