@@ -593,6 +593,13 @@ footer a{color:inherit}
 .dr-nav .dr-h{margin:14px 0 4px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#ff8a3d}
 .dr-nav .dr-h:first-child{margin-top:4px}
 .drawer nav.dr-nav a{padding:6px 4px;font-size:15.5px;border-bottom:0}
+
+.fside{align-self:center;display:grid;gap:18px;padding:8px 6px}
+.fx-lead{margin:0;font-size:clamp(18px,2vw,22px);line-height:1.5}
+.fx-list{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.fx-list li{display:flex;gap:12px;align-items:center;font-weight:600}
+.fx-list li::before{content:"";flex:none;width:24px;height:24px;border-radius:8px;background:#f67625 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a0a00' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center/14px no-repeat}
+@media (max-width:860px){.fside{padding:0}}
 </style>
 <style id="restyling">
 /* ==========================================================================
@@ -1181,6 +1188,53 @@ footer{background:#000b18}
     </div>
   </section>
 
+  <section id="carta" class="sec band" aria-labelledby="cc-title">
+    <div class="wrap">
+      <p class="kicker">Per aziende e professionisti</p>
+      <h2 class="title" id="cc-title">Richiesta carta carburante</h2>
+      <div class="forms">
+        <div class="fside">
+          <p class="fx-lead">La carta carburante T.Petrol per chi gestisce uno o più veicoli: rifornimenti semplici e sotto controllo su tutta la nostra rete.</p>
+          <ul class="fx-list"><li>Per auto e mezzi pesanti</li><li>Richiesta online in pochi minuti</li><li>Ti ricontattiamo noi</li></ul>
+        </div>
+        <div class="fcard s" id="carta-form">
+          <h3>Richiedi la carta</h3>
+          <p>Compila il modulo: ti ricontattiamo per completare l'attivazione.</p>
+          <form id="f-carta" novalidate>
+            <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+            <div class="row2">
+              <label for="c-pv">Codice PV *<select id="c-pv" name="codice_pv" required><option value="">Scegli l'impianto</option></select></label>
+              <label for="c-piva">Partita IVA<input id="c-piva" name="partita_iva" inputmode="numeric"></label>
+            </div>
+            <div class="row2">
+              <label for="c-nome">Nome cliente *<input id="c-nome" name="nome" required autocomplete="given-name"></label>
+              <label for="c-cf">Codice fiscale<input id="c-cf" name="codice_fiscale" autocapitalize="characters"></label>
+            </div>
+            <div class="row2">
+              <label for="c-cognome">Cognome cliente *<input id="c-cognome" name="cognome" required autocomplete="family-name"></label>
+              <label for="c-prov">Provincia (sigla) *<input id="c-prov" name="provincia" required maxlength="2" autocapitalize="characters" placeholder="es. RM"></label>
+            </div>
+            <div class="row2">
+              <label for="c-mail">Email cliente *<input id="c-mail" name="email" type="email" required autocomplete="email"></label>
+              <label for="c-mezzi">Numero mezzi *<input id="c-mezzi" name="numero_mezzi" required inputmode="numeric"></label>
+            </div>
+            <div class="row2">
+              <label for="c-tel">Telefono cliente *<input id="c-tel" name="telefono" type="tel" required autocomplete="tel"></label>
+              <label for="c-tipo">Tipologia mezzi<select id="c-tipo" name="tipologia_mezzi"><option value="">Scegli</option><option>Auto</option><option>Camion</option></select></label>
+            </div>
+            <div class="row2">
+              <label for="c-rs">Ragione sociale *<input id="c-rs" name="ragione_sociale" required autocomplete="organization"></label>
+              <label for="c-note">Note<input id="c-note" name="note"></label>
+            </div>
+            <label class="consent" for="c-priv"><input type="checkbox" id="c-priv" name="consenso_privacy" value="sì" required><span>Ho letto l'<a href="privacy.html" target="_blank">informativa privacy</a> e acconsento al trattamento dei dati per ricevere risposta.</span></label>
+            <button class="pill" type="submit">Richiedi la carta</button>
+            <p class="msg" id="c-msg" role="status"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section id="locker" class="sec band" aria-labelledby="lk-title">
     <div class="wrap">
       <p class="kicker">Locker H24 nelle nostre stazioni</p>
@@ -1228,14 +1282,18 @@ footer{background:#000b18}
     </div>
   </section>
 
-  <section id="richieste" class="sec band">
+  <section id="gasolio" class="sec band" aria-labelledby="ex-title">
     <div class="wrap">
-      <p class="kicker">Servizi</p>
-      <h2 class="title">Richieste</h2>
+      <p class="kicker">Extrarete</p>
+      <h2 class="title" id="ex-title">Fornitura gasolio extrarete</h2>
       <div class="forms">
-        <div class="fcard p" id="gasolio">
-          <h3>Richiesta fornitura gasolio extrarete</h3>
-          <p>Gasolio consegnato dove ti serve, anche per il riscaldamento: lasciaci i tuoi dati e ti ricontattiamo con disponibilità e prezzo.</p>
+        <div class="fside">
+          <p class="fx-lead">Non solo stazioni: consegniamo gasolio anche fuori dalla nostra rete, per il riscaldamento di famiglie, condomini e aziende.</p>
+          <ul class="fx-list"><li>Indica comune di consegna e litri indicativi</li><li>Ti ricontattiamo con disponibilità e prezzo</li><li>Richiesta online, senza impegno</li></ul>
+        </div>
+        <div class="fcard p" id="gasolio-form">
+          <h3>Richiedi un preventivo</h3>
+          <p>Lasciaci i tuoi dati: ti ricontattiamo con disponibilità e prezzo.</p>
           <form id="f-gasolio" novalidate>
             <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
             <div class="row2">
@@ -1250,40 +1308,6 @@ footer{background:#000b18}
             <label class="consent" for="g-priv"><input type="checkbox" id="g-priv" name="consenso_privacy" value="sì" required><span>Ho letto l'<a href="privacy.html" target="_blank">informativa privacy</a> e acconsento al trattamento dei dati per ricevere risposta.</span></label>
             <button class="pill" type="submit">Invia richiesta</button>
             <p class="msg" id="g-msg" role="status"></p>
-          </form>
-        </div>
-        <div class="fcard s" id="carta">
-          <h3>Richiesta carta carburante</h3>
-          <p>Per aziende e professionisti con uno o più mezzi.</p>
-          <form id="f-carta" novalidate>
-            <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
-            <div class="row2">
-              <label for="c-pv">Codice PV *<select id="c-pv" name="codice_pv" required><option value="">Scegli l'impianto</option></select></label>
-              <label for="c-piva">Partita IVA<input id="c-piva" name="partita_iva" inputmode="numeric"></label>
-            </div>
-            <div class="row2">
-              <label for="c-nome">Nome cliente *<input id="c-nome" name="nome" required autocomplete="given-name"></label>
-              <label for="c-cf">Codice fiscale<input id="c-cf" name="codice_fiscale" autocapitalize="characters"></label>
-            </div>
-            <div class="row2">
-              <label for="c-cognome">Cognome cliente *<input id="c-cognome" name="cognome" required autocomplete="family-name"></label>
-              <label for="c-prov">Provincia (sigla) *<input id="c-prov" name="provincia" required maxlength="2" autocapitalize="characters" placeholder="es. RM"></label>
-            </div>
-            <div class="row2">
-              <label for="c-mail">Email cliente *<input id="c-mail" name="email" type="email" required autocomplete="email"></label>
-              <label for="c-mezzi">Numero mezzi *<input id="c-mezzi" name="numero_mezzi" required inputmode="numeric"></label>
-            </div>
-            <div class="row2">
-              <label for="c-tel">Telefono cliente *<input id="c-tel" name="telefono" type="tel" required autocomplete="tel"></label>
-              <label for="c-tipo">Tipologia mezzi<select id="c-tipo" name="tipologia_mezzi"><option value="">Scegli</option><option>Auto</option><option>Camion</option></select></label>
-            </div>
-            <div class="row2">
-              <label for="c-rs">Ragione sociale *<input id="c-rs" name="ragione_sociale" required autocomplete="organization"></label>
-              <label for="c-note">Note<input id="c-note" name="note"></label>
-            </div>
-            <label class="consent" for="c-priv"><input type="checkbox" id="c-priv" name="consenso_privacy" value="sì" required><span>Ho letto l'<a href="privacy.html" target="_blank">informativa privacy</a> e acconsento al trattamento dei dati per ricevere risposta.</span></label>
-            <button class="pill" type="submit">Richiedi la carta</button>
-            <p class="msg" id="c-msg" role="status"></p>
           </form>
         </div>
       </div>
