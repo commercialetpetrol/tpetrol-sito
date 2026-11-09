@@ -633,6 +633,17 @@ footer a{color:inherit}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .rs-nav a.rs-nav-acq{color:#ff8a3d}}
 :root[data-theme="dark"] .rs-nav a.rs-nav-acq{color:#ff8a3d}
 .hero h1 .h1-sub{display:block;margin-top:20px;font-size:clamp(19px,2.1vw,26px);font-weight:600;letter-spacing:-.01em;line-height:1.3;color:#f2f5f9;opacity:.92;max-width:30ch}
+
+/* P6: aree di tocco di almeno 44 px su telefono (layout invariato dove possibile) */
+@media (max-width:760px){
+  .burger{min-width:46px;min-height:44px}
+  .chip,.lk-btns button,.pzb,.list li .go,.rs-cact,.aff-pdf,.rs-fe .pill,#fattura .pill{min-height:44px}
+  .list li .go,.rs-cact{display:inline-flex;align-items:center}
+  .pcard footer a,.so-ft a,.so-list a.so-st,.rs-flinks a,.rs-fcol a{display:inline-block;padding:12px 0;margin:-12px 0}
+  .lk-list li{min-height:44px}
+  .lk-list a{padding:12px 0;margin:-12px 0}
+  .consent input{width:24px;height:24px}
+}
 </style>
 <style id="restyling">
 /* ==========================================================================
