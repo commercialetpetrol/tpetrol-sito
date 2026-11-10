@@ -143,7 +143,7 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;background:#ff
 .storia-f:hover img{transform:scale(1.04)}
 .storia-f figcaption{position:absolute;left:10px;bottom:10px;background:rgba(0,20,43,.82);color:#f2f5f9;font-size:12px;font-weight:700;padding:5px 10px;border-radius:999px}
 @media (max-width:820px){.storia{grid-template-columns:minmax(0,1fr);gap:22px}}
-.srvf{margin-top:10px;align-items:center}.nearme{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:10px}.chip.near{font-weight:700;border-color:#f67625}.chip.near[aria-pressed=true]{background:#f67625;color:#1a0a00}#near-msg{font-size:14px;color:var(--muted)}.km{color:#f67625;font-weight:700}#map{overflow:hidden;clip-path:inset(0 round 28px)}.me-r{fill:rgba(246,118,37,.12);stroke:#f67625;stroke-width:1.5;stroke-dasharray:5 4;vector-effect:non-scaling-stroke}.me-p{fill:rgba(37,99,235,.25);animation:mep 1.8s ease-out infinite;transform-box:fill-box;transform-origin:center}.me-d{fill:#2563eb;stroke:#fff;stroke-width:2;vector-effect:non-scaling-stroke}@keyframes mep{0%{transform:scale(.6);opacity:1}100%{transform:scale(2.4);opacity:0}}@media (prefers-reduced-motion:reduce){.me-p{animation:none}}.srvf-k{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+.srvf{margin-top:10px;align-items:center}.nearme{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:10px}.chip.near{font-weight:700;border-color:#f67625}.chip.near[aria-pressed=true]{background:#f67625;color:#1a0a00}#near-msg{font-size:14px;color:var(--muted)}.km{color:#f67625;font-weight:700}.me-r{fill:rgba(246,118,37,.12);stroke:#f67625;stroke-width:1.5;stroke-dasharray:5 4;vector-effect:non-scaling-stroke}.me-p{fill:rgba(37,99,235,.25);animation:mep 1.8s ease-out infinite;transform-box:fill-box;transform-origin:center}.me-d{fill:#2563eb;stroke:#fff;stroke-width:2;vector-effect:non-scaling-stroke}@keyframes mep{0%{transform:scale(.6);opacity:1}100%{transform:scale(2.4);opacity:0}}@media (prefers-reduced-motion:reduce){.me-p{animation:none}}.srvf-k{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:4px}
 .chip[aria-pressed="true"]{border-color:var(--petrol);background:var(--petrol);color:#f2f5f9}
 .list{list-style:none;margin:0;padding:0;background:var(--bg);border:1px solid var(--line);border-radius:20px;max-height:520px;overflow:auto}
 .list li{display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line)}
@@ -1083,6 +1083,19 @@ footer{background:#000b18}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .rs-fe{background:linear-gradient(180deg,#141c1e,var(--bg))}:root:not([data-theme="light"]) .rs-fe-card:not(.app){background:var(--soft)}}
 @media (max-width:760px){.rs-fe-grid{grid-template-columns:minmax(0,1fr)}.rs-fe-card{padding:24px}.rs-fe-card h3{font-size:23px}}
 
+.lmap-w{position:relative}.lmap svg{max-width:none}.lmap .leaflet-control-zoom a{color:#00142b}
+.lmap{height:620px;border-radius:28px;overflow:hidden;background:#0b2340;box-shadow:0 30px 60px -30px rgba(0,20,43,.6);z-index:0}
+.lmap-ph{margin:0;display:grid;place-items:center;height:100%;color:#cdd8e4;font-size:15px}
+.lmap .leaflet-tile-pane{filter:saturate(.55) brightness(.95) contrast(1.05)}
+.lm-pin{background:#fff;border-radius:9px;box-shadow:0 4px 12px rgba(0,20,43,.35);display:grid;place-items:center;border:2px solid #fff;transition:opacity .2s,transform .2s}
+.lm-pin img{width:36px!important;height:24px!important;object-fit:contain;display:block}.lm-pin b{font-size:9px;color:#00142b}
+.lm-pin.best{border-color:#f67625}.lm-pin.hl,.lm-pin:hover{border-color:#f67625;transform:scale(1.12)}
+.lm-tip{font:500 13px/1.4 var(--f);border-radius:12px;padding:8px 12px}
+.lm-r{fill:#f67625;fill-opacity:.10;stroke:#f67625;stroke-width:2;stroke-dasharray:6 5}
+.lm-me i{display:block;width:18px;height:18px;border-radius:50%;background:#2563eb;border:3px solid #fff;box-shadow:0 0 0 0 rgba(37,99,235,.6);animation:lmp 1.8s ease-out infinite}
+@keyframes lmp{0%{box-shadow:0 0 0 0 rgba(37,99,235,.55)}100%{box-shadow:0 0 0 18px rgba(37,99,235,0)}}
+@media (max-width:820px){.lmap{height:420px;border-radius:22px}}
+@media (prefers-reduced-motion:reduce){.lm-me i{animation:none}}
 /* --- animazioni (rispettano "riduci movimento") --- */
 svg.anim-pins:not(.lit) .nm-pin>*{opacity:0}
 svg.anim-pins.lit .nm-pin>*{transform-box:fill-box;transform-origin:center;animation:pinpop .55s cubic-bezier(.2,1.5,.4,1) both;animation-delay:var(--d,0s)}
@@ -1232,7 +1245,7 @@ svg.anim-pins.lit .nm-pin>*{transform-box:fill-box;transform-origin:center;anima
       <h2 class="title">Stazioni di servizio</h2>
       <p class="lede">Roma, Latina e le loro province, fino all'Alto Lazio, a Spoleto e alla Val Vibrata. Tocca un impianto sulla mappa per aprire la sua scheda; nell'elenco trovi anche il collegamento a Google Maps.</p>
       <div class="rete-grid">
-        <div class="map nm-map"><svg id="map" viewBox="0 0 560 740" role="img" aria-label="Mappa degli impianti T.Petrol con i loghi dei marchi"></svg><div class="nm-tip" id="map-tip" hidden></div></div>
+        <div class="lmap-w"><div id="lmap" class="lmap" role="region" aria-label="Mappa interattiva degli impianti T.Petrol"><p class="lmap-ph">Caricamento della mappa…</p></div></div>
         <div>
           <div class="filters" role="group" aria-label="Filtra per marchio" id="filters"></div>
           <div class="filters srvf" role="group" aria-label="Filtra per servizio" id="filters-srv"><span class="srvf-k">Servizi</span></div>
@@ -1666,23 +1679,33 @@ render();
 {const fs=document.getElementById("filters-srv");Object.entries(SRVF).forEach(([k,[l]])=>{const btn=document.createElement("button");btn.className="chip";btn.type="button";btn.setAttribute("aria-pressed","false");btn.dataset.k=k;btn.textContent=l;
   btn.onclick=()=>{activeSrv=activeSrv===k?null:k;fs.querySelectorAll("button").forEach(c=>c.setAttribute("aria-pressed",c.dataset.k===activeSrv));render()};fs.appendChild(btn)});
  addEventListener("load",()=>fs.querySelectorAll("button").forEach(b=>{const n=S.filter(SRVF[b.dataset.k][1]).length;b.textContent=`${SRVF[b.dataset.k][0]} · ${n}`}))}
-{const nb=document.getElementById("near"),nm=document.getElementById("near-msg"),RAGGIO=5,sv=document.getElementById("map"),VB0=[0,0,560,740];
- const NS="http://www.w3.org/2000/svg",rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
- const setVB=v=>sv.setAttribute("viewBox",v.map(n=>n.toFixed(1)).join(" "));
- const anim=to=>{const fr=(sv.getAttribute("viewBox")||"0 0 560 740").split(/\s+/).map(Number);if(rm){setVB(to);return}const t0=performance.now();
-   const f=t=>{const k=Math.min(1,(t-t0)/800),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;setVB(fr.map((a,i)=>a+(to[i]-a)*e));if(k<1)requestAnimationFrame(f)};requestAnimationFrame(f)};
- const unmark=()=>{const m=sv.querySelector("#me-mk");if(m)m.remove()};
- const zoom=()=>{const G=sv._geo;if(!G)return;unmark();const P=G.isRoma(me)?G.R:G.M,ux=P.x(me.lo),uy=P.y(me.la),rp=Math.abs(P.y(me.la)-P.y(me.la+RAGGIO/111));
-   if(ux<0||ux>G.PW||uy<0||uy>G.PH)return false;
-   const g=document.createElementNS(NS,"g");g.id="me-mk";g.setAttribute("aria-hidden","true");
-   g.innerHTML=`<circle cx="${ux}" cy="${uy}" r="${rp}" class="me-r"/><circle cx="${ux}" cy="${uy}" r="9" class="me-p"/><circle cx="${ux}" cy="${uy}" r="5" class="me-d"/>`;
-   const first=sv.querySelector(".nm-pin");sv.insertBefore(g,first);
-   let x0=ux-rp,x1=ux+rp,y0=uy-rp,y1=uy+rp;
-   G.nodes.forEach(n=>{if(okF(n.x)){x0=Math.min(x0,n.cx-26);x1=Math.max(x1,n.cx+26);y0=Math.min(y0,n.cy-20);y1=Math.max(y1,n.cy+20)}});
-   let w=Math.max(x1-x0+40,190),h=Math.max(y1-y0+40,190*740/560);if(w/h>560/740)h=w*740/560;else w=h*560/740;
-   if(w>560){w=560;h=740}let cx=(x0+x1)/2,cy=(y0+y1)/2,vx=Math.max(0,Math.min(560-w,cx-w/2)),vy=Math.max(0,Math.min(740-h,cy-h/2));
-   anim([vx,vy,w,h]);if(innerWidth<820)setTimeout(()=>sv.scrollIntoView({behavior:rm?"auto":"smooth",block:"center"}),150);return true};
- nb.onclick=()=>{if(me){me=null;nb.setAttribute("aria-pressed","false");nb.textContent="📍 Vicino a me";nm.textContent="";unmark();anim(VB0);render();return}
+/* mappa interattiva (Leaflet + OpenStreetMap), caricata quando ci si avvicina alla sezione */
+let LM=null,LMK=[],meLayer=null;const LMEL=document.getElementById("lmap"),RAGGIO=5;
+const rmM=matchMedia("(prefers-reduced-motion: reduce)").matches;
+function allBounds(){return L.latLngBounds(S.filter(okF).map(x=>[x.la,x.lo]))}
+function loadLeaflet(cb){if(window.L)return cb();const c=document.createElement("link");c.rel="stylesheet";c.href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css";document.head.appendChild(c);
+  const j=document.createElement("script");j.src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js";j.onload=cb;j.onerror=()=>{LMEL.innerHTML='<p class="lmap-ph">Mappa non disponibile in questo momento.</p>'};document.head.appendChild(j)}
+function initMap(){if(LM)return;LMEL.innerHTML="";
+  LM=L.map(LMEL,{zoomControl:true,scrollWheelZoom:false,attributionControl:false,zoomSnap:.25});L.control.attribution({prefix:'<a href="https://leafletjs.com" target="_blank" rel="noopener">Leaflet</a>'}).addTo(LM);
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'}).addTo(LM);
+  LM.fitBounds(allBounds(),{padding:[30,30]});
+  LM.on("focus click",()=>LM.scrollWheelZoom.enable());LM.on("mouseout",()=>LM.scrollWheelZoom.disable());
+  LMK=S.map(x=>{const best=x===bestG||x===bestB;
+    const ic=L.divIcon({className:"lm-pin"+(best?" best":""),html:LOGO[x.b]?`<img src="${LOGO[x.b]}" alt="">`:`<b>COMEDA</b>`,iconSize:[44,32],iconAnchor:[22,16]});
+    const m=L.marker([x.la,x.lo],{icon:ic,title:`${BRAND[x.b]} ${x.n}, ${x.c}`,riseOnHover:true}).addTo(LM);
+    m.bindTooltip(`<b>${x.n}</b><br><small>${x.c}</small><br>Benzina self ${fmt(x.p.bs)} · Gasolio self ${fmt(x.p.gs)}`,{direction:"top",offset:[0,-16],className:"lm-tip"});
+    m.on("click",()=>{if(STAZ_SLUG[x.pv])location.href="stazioni/"+STAZ_SLUG[x.pv]+"/"});return m});
+  dots=LMK.map(m=>m.getElement());render();
+  if(me)nearView()}
+function nearView(){if(!LM||!me)return;if(meLayer)meLayer.remove();
+  meLayer=L.layerGroup([L.circle([me.la,me.lo],{radius:RAGGIO*1000,className:"lm-r"}),L.marker([me.la,me.lo],{icon:L.divIcon({className:"lm-me",html:"<i></i>",iconSize:[18,18],iconAnchor:[9,9]}),interactive:false})]).addTo(LM);
+  const vic=me.r?S.filter(okF):[],pts=[[me.la,me.lo]].concat((vic.length?vic:[...S].sort((a,b)=>dist(me,a)-dist(me,b)).slice(0,1)).map(x=>[x.la,x.lo]));
+  const bb=L.latLngBounds(pts).extend(L.latLng(me.la,me.lo).toBounds(RAGGIO*2000));
+  if(rmM)LM.fitBounds(bb,{padding:[24,24]});else LM.flyToBounds(bb,{padding:[24,24],duration:1.8,maxZoom:15})}
+function resetView(){if(meLayer){meLayer.remove();meLayer=null}if(LM){rmM?LM.fitBounds(allBounds(),{padding:[30,30]}):LM.flyToBounds(allBounds(),{padding:[30,30],duration:1.2})}}
+if("IntersectionObserver" in window){const o=new IntersectionObserver(es=>{if(es[0].isIntersecting){o.disconnect();loadLeaflet(initMap)}},{rootMargin:"400px"});o.observe(LMEL)}else loadLeaflet(initMap);
+{const nb=document.getElementById("near"),nm=document.getElementById("near-msg");
+ nb.onclick=()=>{if(me){me=null;nb.setAttribute("aria-pressed","false");nb.textContent="📍 Vicino a me";nm.textContent="";render();resetView();return}
   if(!navigator.geolocation){nm.textContent="Il tuo browser non condivide la posizione.";return}
   nm.textContent="Cerco la tua posizione…";
   navigator.geolocation.getCurrentPosition(p=>{me={la:p.coords.latitude,lo:p.coords.longitude,r:null};
@@ -1690,7 +1713,8 @@ render();
     if(vic.length)me.r=RAGGIO;nb.setAttribute("aria-pressed","true");nb.textContent="✕ Ordina per zona";render();list.scrollTop=0;
     const km=x=>{const d=dist(me,x);return (d<10?d.toFixed(1).replace(".",","):Math.round(d))+" km"},nm1=x=>`${BRAND[x.b]} ${x.n}, ${x.c.replace(/ \(..\)$/,"")}`;
     nm.textContent=vic.length?`${vic.length===1?"1 stazione":vic.length+" stazioni"} entro ${RAGGIO} km · la più vicina: ${nm1(vic[0])}`:(ok[0]?`Nessuna stazione entro ${RAGGIO} km: la più vicina è ${nm1(ok[0])}, a ${km(ok[0])}`:"");
-    if(vic.length&&!zoom())nm.textContent+=" (sei fuori dall'area della mappa)"},
+    if(innerWidth<820)LMEL.scrollIntoView({behavior:rmM?"auto":"smooth",block:"center"});
+    if(LM)nearView();else loadLeaflet(initMap)},
    e=>{nm.textContent=e.code===1?"Posizione non autorizzata: abilitala nelle impostazioni del browser.":"Posizione non disponibile, riprova."},{enableHighAccuracy:true,timeout:10000,maximumAge:120000})}}
 document.getElementById("n-marchi").textContent=Object.keys(BRAND).length;
 
@@ -1909,7 +1933,7 @@ function drawLogoMap(sv,tip,showFlags){const box=sv.parentElement;
     a.innerHTML=`${LOGO[x.b]?`<img src="${LOGO[x.b]}" alt="${BRAND[x.b]}">`:`<span class="nm-comtag">COMEDA</span>`}<span>${l} più conveniente<small>${x.n} · ${x.c.replace(/ \(..\)$/,"")}</small></span><span><strong>${fmt(x.p[k])}</strong><em>€/lt</em></span>`;nb.appendChild(a)});
   document.getElementById("nm-n").textContent=S.length;}
 drawLogoMap(document.getElementById("nm-svg"),document.getElementById("nm-tip"),true);
-dots=drawLogoMap(document.getElementById("map"),document.getElementById("map-tip"),false);render();
+render();
 
 
 
