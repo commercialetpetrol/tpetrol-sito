@@ -179,3 +179,13 @@ footer nav a:hover{color:#ff8a3d}
   .facts span{font-size:10.5px;letter-spacing:.05em}
   .fcard{padding:22px 18px}
 }
+
+/* schede e pulsanti vivi */
+.pill{position:relative;overflow:hidden;isolation:isolate}
+.pill::after{content:"";position:absolute;inset:-2px;z-index:-1;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.45) 50%,transparent 70%);transform:translateX(-120%);transition:transform .6s ease;pointer-events:none}
+.pill:hover::after,.pill:focus-visible::after{transform:translateX(120%)}
+.card,.trust div,.arch figure{transition:transform .25s cubic-bezier(.2,.7,.2,1),box-shadow .25s,border-color .25s}
+.card:hover{transform:translateY(-4px);border-color:rgba(246,118,37,.6);box-shadow:0 20px 38px -22px rgba(0,20,43,.45)}
+.trust div:hover{transform:translateY(-3px);box-shadow:0 18px 34px -18px rgba(0,0,0,.55)}
+.arch figure:hover{transform:translateY(-3px);box-shadow:0 18px 34px -20px rgba(0,20,43,.45)}
+@media (prefers-reduced-motion:reduce){.pill::after{display:none}.card:hover,.trust div:hover,.arch figure:hover{transform:none}}

@@ -1097,6 +1097,20 @@ footer{background:#000b18}
 @media (max-width:820px){.lmap{height:420px;border-radius:22px}}
 @media (prefers-reduced-motion:reduce){.lm-me i{animation:none}}
 /* --- animazioni (rispettano "riduci movimento") --- */
+.roll{display:inline-flex;vertical-align:baseline}
+.roll .rd{display:inline-block;height:1.1em;line-height:1.1em;overflow:hidden;vertical-align:bottom}
+.roll .rd>span{display:block;transform:translateY(0);transition:transform 1.3s cubic-bezier(.15,.85,.25,1)}
+.roll .rd>span>i{display:block;font-style:normal;height:1.1em}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.pill{position:relative;overflow:hidden;isolation:isolate}
+.pill::after{content:"";position:absolute;inset:-2px;z-index:-1;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.45) 50%,transparent 70%);transform:translateX(-120%);transition:transform .6s ease;pointer-events:none}
+.pill:hover::after,.pill:focus-visible::after{transform:translateX(120%)}
+.so-pillars article,.so-list li,.storia-f figure{transition:transform .25s var(--ease),box-shadow .25s var(--ease),border-color .25s}
+.so-pillars article:hover,.so-list li:hover{transform:translateY(-4px);box-shadow:0 18px 34px -20px rgba(0,20,43,.45)}
+.storia-f figure:hover{transform:translateY(-3px);box-shadow:0 18px 34px -18px rgba(0,0,0,.6)}
+.list li:hover .where b{color:#c2410c}
+@media (prefers-reduced-motion:reduce){.roll .rd>span{transition:none}.pill::after{display:none}.so-pillars article:hover,.so-list li:hover,.storia-f figure:hover{transform:none}}
+
 svg.anim-pins:not(.lit) .nm-pin>*{opacity:0}
 svg.anim-pins.lit .nm-pin>*{transform-box:fill-box;transform-origin:center;animation:pinpop .55s cubic-bezier(.2,1.5,.4,1) both;animation-delay:var(--d,0s)}
 @keyframes pinpop{0%{opacity:0;transform:scale(.2)}60%{opacity:1}100%{opacity:1;transform:scale(1)}}
@@ -2133,13 +2147,19 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!dr.hidden){setMenu
 </script>
 
 <script>
-/* animazioni: mappe che si accendono */
+/* animazioni: mappe che si accendono, prezzi a rulli */
 (function(){var rm=matchMedia("(prefers-reduced-motion: reduce)").matches;if(rm||!("IntersectionObserver" in window))return;
+ function roll(el){if(el.dataset.rolled)return;var tn=el.firstChild;if(!tn||tn.nodeType!==3)return;var m=/^\s*([\d.,]+)/.exec(tn.nodeValue);if(!m)return;el.dataset.rolled=1;
+   var txt=m[1],rest=tn.nodeValue.slice(m[0].length),w=document.createElement("span");w.className="roll";w.setAttribute("aria-hidden","true");
+   var cols=[];txt.split("").forEach(function(ch){if(/\d/.test(ch)){var c=document.createElement("span");c.className="rd";var st=document.createElement("span");for(var k=0;k<=19;k++){var i=document.createElement("i");i.textContent=k%10;st.appendChild(i)}c.appendChild(st);w.appendChild(c);cols.push([st,10+(+ch)])}else{var t=document.createElement("span");t.textContent=ch;w.appendChild(t)}});
+   var sr=document.createElement("span");sr.className="sr-only";sr.textContent=txt;tn.nodeValue=rest;el.insertBefore(sr,el.firstChild);el.insertBefore(w,sr);
+   requestAnimationFrame(function(){requestAnimationFrame(function(){cols.forEach(function(c,j){c[0].style.transitionDelay=(j*0.08)+"s";c[0].style.transform="translateY(-"+(c[1]*1.1)+"em)"})})})}
+ function rollAll(){var els=[].slice.call(document.querySelectorAll(".rs-today b,#pz-sum b"));if(!els.length)return;var o3=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){roll(e.target);o3.unobserve(e.target)}})},{threshold:.6});els.forEach(function(e){o3.observe(e)})}
  function prep(){document.querySelectorAll("svg").forEach(function(sv){if(sv.classList.contains("anim-pins"))return;var p=sv.querySelectorAll(".nm-pin");if(p.length<5)return;
    sv.classList.add("anim-pins");var arr=[].slice.call(p).map(function(g){var m=/translate\(([-\d.]+) ([-\d.]+)\)/.exec(g.getAttribute("transform")||"");return{g:g,y:m?+m[2]:0}});
    arr.sort(function(a,b){return a.y-b.y}).forEach(function(o,i){[].forEach.call(o.g.children,function(c){c.style.setProperty("--d",(i*0.06).toFixed(2)+"s")})});
    var o2=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){sv.classList.add("lit");o2.disconnect()}})},{threshold:.25});o2.observe(sv)})}
- addEventListener("load",function(){prep();setTimeout(prep,1500);setTimeout(prep,4000)})})();
+ addEventListener("load",function(){prep();setTimeout(prep,1500);setTimeout(prep,4000);setTimeout(rollAll,200)})})();
 </script>
 </body>
 </html>
