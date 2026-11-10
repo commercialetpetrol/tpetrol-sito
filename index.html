@@ -143,7 +143,7 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;background:#ff
 .storia-f:hover img{transform:scale(1.04)}
 .storia-f figcaption{position:absolute;left:10px;bottom:10px;background:rgba(0,20,43,.82);color:#f2f5f9;font-size:12px;font-weight:700;padding:5px 10px;border-radius:999px}
 @media (max-width:820px){.storia{grid-template-columns:minmax(0,1fr);gap:22px}}
-.srvf{margin-top:10px;align-items:center}.srvf-k{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+.srvf{margin-top:10px;align-items:center}.nearme{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:10px}.chip.near{font-weight:700;border-color:#f67625}.chip.near[aria-pressed=true]{background:#f67625;color:#1a0a00}#near-msg{font-size:14px;color:var(--muted)}.km{color:#f67625;font-weight:700}.srvf-k{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:4px}
 .chip[aria-pressed="true"]{border-color:var(--petrol);background:var(--petrol);color:#f2f5f9}
 .list{list-style:none;margin:0;padding:0;background:var(--bg);border:1px solid var(--line);border-radius:20px;max-height:520px;overflow:auto}
 .list li{display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line)}
@@ -1218,6 +1218,7 @@ footer{background:#000b18}
         <div>
           <div class="filters" role="group" aria-label="Filtra per marchio" id="filters"></div>
           <div class="filters srvf" role="group" aria-label="Filtra per servizio" id="filters-srv"><span class="srvf-k">Servizi</span></div>
+          <div class="nearme"><button type="button" class="chip near" id="near" aria-pressed="false">📍 Vicino a me</button><span id="near-msg" role="status"></span></div>
           <ul class="list" id="list"></ul>
         </div>
       </div>
@@ -1624,10 +1625,11 @@ const filters=document.getElementById("filters"), list=document.getElementById("
 let activeSrv=null;
 const SRVF={bar:["Bar tabacchi",x=>(SERVIZI[x.pv]||[]).includes("Bar tabacchi")],locker:["Locker",x=>!!LOCKER[x.pv]],adblue:["AdBlue",x=>ADBLUE.has(x.pv)],sole:["Fotovoltaico",x=>!!SOLARE[x.pv]],lavaggio:["Autolavaggio",x=>x.pv==="6413"],docce:["Docce",x=>(SERVIZI[x.pv]||[]).includes("Docce per camionisti")]};
 const okF=x=>(active==="all"||x.b===active)&&(!activeSrv||SRVF[activeSrv][1](x));
-function render(){list.innerHTML="";let zp=-1;S.filter(okF).sort(byZona).forEach(x=>{
-  if(x.z!==zp){zp=x.z;const h=document.createElement("li");h.className="zona";h.textContent=zname(x);list.appendChild(h)}
+let me=null;const dist=(a,x)=>{const R=6371,r=Math.PI/180,dl=(x.la-a.la)*r,dn=(x.lo-a.lo)*r,h=Math.sin(dl/2)**2+Math.cos(a.la*r)*Math.cos(x.la*r)*Math.sin(dn/2)**2;return 2*R*Math.asin(Math.sqrt(h))};
+function render(){list.innerHTML="";let zp=-1;const L=S.filter(okF);if(me){L.forEach(x=>x.d=dist(me,x));L.sort((a,b)=>a.d-b.d)}else L.sort(byZona);L.forEach((x,k)=>{
+  if(!me&&x.z!==zp){zp=x.z;const h=document.createElement("li");h.className="zona";h.textContent=zname(x);list.appendChild(h)}
   const li=document.createElement("li");
-  li.innerHTML=`${LOGO[x.b]?`<span class="tag logo"><img src="${LOGO[x.b]}" alt="${BRAND[x.b]}"></span>`:`<span class="tag ${x.b}">COM</span>`}<span class="where"><b>${x.n}</b><small>${x.c}</small>${SERVIZI[x.pv]?`<span class="srv">${SERVIZI[x.pv].map(t=>`<i>${t}</i>`).join("")}</span>`:""}</span><span class="gos">${STAZ_SLUG[x.pv]?`<a class="go sch" href="stazioni/${STAZ_SLUG[x.pv]}/">Scheda</a>`:""}<a class="go" href="${gm(x)}" target="_blank" rel="noopener">Mappa ↗</a></span>`;
+  li.innerHTML=`${LOGO[x.b]?`<span class="tag logo"><img src="${LOGO[x.b]}" alt="${BRAND[x.b]}"></span>`:`<span class="tag ${x.b}">COM</span>`}<span class="where"><b>${x.n}</b><small>${x.c}${me?` · <strong class="km">${x.d<10?x.d.toFixed(1).replace(".",","):Math.round(x.d)} km</strong>`:""}</small>${SERVIZI[x.pv]?`<span class="srv">${SERVIZI[x.pv].map(t=>`<i>${t}</i>`).join("")}</span>`:""}</span><span class="gos">${STAZ_SLUG[x.pv]?`<a class="go sch" href="stazioni/${STAZ_SLUG[x.pv]}/">Scheda</a>`:""}<a class="go" href="${gm(x)}" target="_blank" rel="noopener">Mappa ↗</a></span>`;
   li.onmouseenter=()=>dots[x.i]&&dots[x.i].classList.add("hl");li.onmouseleave=()=>dots[x.i]&&dots[x.i].classList.remove("hl");list.appendChild(li)});
   if(!list.children.length){const e=document.createElement("li");e.className="zona";e.textContent="Nessuna stazione con questi filtri";list.appendChild(e)}
   dots.forEach((d,i)=>d.style.opacity=okF(S[i])?1:.15)}
@@ -1635,6 +1637,13 @@ render();
 {const fs=document.getElementById("filters-srv");Object.entries(SRVF).forEach(([k,[l]])=>{const btn=document.createElement("button");btn.className="chip";btn.type="button";btn.setAttribute("aria-pressed","false");btn.dataset.k=k;btn.textContent=l;
   btn.onclick=()=>{activeSrv=activeSrv===k?null:k;fs.querySelectorAll("button").forEach(c=>c.setAttribute("aria-pressed",c.dataset.k===activeSrv));render()};fs.appendChild(btn)});
  addEventListener("load",()=>fs.querySelectorAll("button").forEach(b=>{const n=S.filter(SRVF[b.dataset.k][1]).length;b.textContent=`${SRVF[b.dataset.k][0]} · ${n}`}))}
+{const nb=document.getElementById("near"),nm=document.getElementById("near-msg");
+ nb.onclick=()=>{if(me){me=null;nb.setAttribute("aria-pressed","false");nb.textContent="📍 Vicino a me";nm.textContent="";render();return}
+  if(!navigator.geolocation){nm.textContent="Il tuo browser non condivide la posizione.";return}
+  nm.textContent="Cerco la tua posizione…";
+  navigator.geolocation.getCurrentPosition(p=>{me={la:p.coords.latitude,lo:p.coords.longitude};nb.setAttribute("aria-pressed","true");nb.textContent="✕ Ordina per zona";render();
+    const f=S.filter(okF).sort((a,b)=>dist(me,a)-dist(me,b))[0];nm.textContent=f?`La più vicina: ${BRAND[f.b]} ${f.n}, ${f.c.replace(/ \(..\)$/,"")}`:"";list.scrollTop=0},
+   e=>{nm.textContent=e.code===1?"Posizione non autorizzata: abilitala nelle impostazioni del browser.":"Posizione non disponibile, riprova."},{enableHighAccuracy:false,timeout:10000,maximumAge:300000})}}
 document.getElementById("n-marchi").textContent=Object.keys(BRAND).length;
 
 const pvSel=document.getElementById("c-pv");
