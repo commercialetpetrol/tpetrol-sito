@@ -1082,6 +1082,24 @@ footer{background:#000b18}
 .rs-fe-note{margin:22px auto 0;font-size:14.5px;color:var(--muted);text-align:center}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .rs-fe{background:linear-gradient(180deg,#141c1e,var(--bg))}:root:not([data-theme="light"]) .rs-fe-card:not(.app){background:var(--soft)}}
 @media (max-width:760px){.rs-fe-grid{grid-template-columns:minmax(0,1fr)}.rs-fe-card{padding:24px}.rs-fe-card h3{font-size:23px}}
+
+/* --- animazioni (rispettano "riduci movimento") --- */
+svg.anim-pins:not(.lit) .nm-pin>*{opacity:0}
+svg.anim-pins.lit .nm-pin>*{transform-box:fill-box;transform-origin:center;animation:pinpop .55s cubic-bezier(.2,1.5,.4,1) both;animation-delay:var(--d,0s)}
+@keyframes pinpop{0%{opacity:0;transform:scale(.2)}60%{opacity:1}100%{opacity:1;transform:scale(1)}}
+.flow{max-width:880px;margin:30px auto 8px;color:var(--ink)}
+.flow svg{display:block;width:100%;height:auto;overflow:visible}
+.flow-c{fill:var(--bg);stroke:var(--line);stroke-width:2}
+.flow-l{fill:none;stroke:var(--line);stroke-width:4;stroke-linecap:round}
+.flow-d{fill:none;stroke:#f67625;stroke-width:4;stroke-linecap:round;stroke-dasharray:14 26;animation:flow 1.4s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-40}}
+.flow .sun{animation:spin 18s linear infinite;transform-box:fill-box;transform-origin:center}
+@keyframes spin{to{transform:rotate(360deg)}}
+.flow .bat{transform-box:fill-box;transform-origin:left center;animation:charge 3s ease-in-out infinite}
+@keyframes charge{0%{transform:scaleX(.15)}70%,100%{transform:scaleX(1)}}
+.flow-t text{text-anchor:middle;font-size:17px;font-weight:700;fill:var(--muted);letter-spacing:.02em}
+@media (max-width:560px){.flow-t text{font-size:22px}}
+@media (prefers-reduced-motion:reduce){.flow-d,.flow .sun,.flow .bat{animation:none}svg.anim-pins:not(.lit) .nm-pin>*{opacity:1}svg.anim-pins.lit .nm-pin>*{animation:none}}
 </style>
 </head>
 <body>
@@ -1437,6 +1455,17 @@ footer{background:#000b18}
       <div class="so-intro">
         <p>Una stazione di servizio è aperta tutto l'anno, spesso dalla mattina alla sera, e ha tetti e pensiline esposti al sole. Per questo abbiamo scelto di usarli: abbiamo installato impianti fotovoltaici, affiancati da batterie di accumulo, in <b id="so-n"></b> stazioni della nostra rete.</p>
         <p>È un percorso che portiamo avanti un impianto alla volta, con l'idea che anche chi vende carburanti possa fare la sua parte nella transizione energetica, partendo dalle cose concrete.</p>
+      </div>
+      <div class="flow" aria-label="Dal sole alla comunità: pannelli, accumulo, comunità energetica">
+        <svg viewBox="0 0 880 170" role="img" aria-hidden="true">
+          <path class="flow-l" d="M110 85 H330"/><path class="flow-l" d="M330 85 H550"/><path class="flow-l" d="M550 85 H770"/>
+          <path class="flow-d" d="M110 85 H330"/><path class="flow-d" d="M330 85 H550" style="animation-delay:.6s"/><path class="flow-d" d="M550 85 H770" style="animation-delay:1.2s"/>
+          <g transform="translate(110 85)"><circle class="flow-c" r="44"/><g class="sun"><circle r="13" fill="#f67625"/><g stroke="#f67625" stroke-width="3" stroke-linecap="round"><path d="M0-22v-6M0 22v6M-22 0h-6M22 0h6M-15.5-15.5l-4-4M15.5 15.5l4 4M-15.5 15.5l-4 4M15.5-15.5l4-4"/></g></g></g>
+          <g transform="translate(330 85)"><circle class="flow-c" r="44"/><g transform="translate(-20 -14)" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 0h32l-6 26H-2z"/><path d="M15 0l-4 26M26 0l-4 26M1 13h32"/></g></g>
+          <g transform="translate(550 85)"><circle class="flow-c" r="44"/><g fill="none" stroke="currentColor" stroke-width="2.5"><rect x="-20" y="-11" width="36" height="22" rx="4"/><path d="M20-4v8"/></g><rect class="bat" x="-16" y="-7" width="28" height="14" rx="2" fill="#f67625"/></g>
+          <g transform="translate(770 85)"><circle class="flow-c" r="44"/><g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"><path d="M-24 14v-14l10-8 10 8v14zM4 14v-18l10-8 10 8v18z"/></g></g>
+          <g class="flow-t"><text x="110" y="160">Sole</text><text x="330" y="160">Pannelli</text><text x="550" y="160">Accumulo</text><text x="770" y="160">Comunità</text></g>
+        </svg>
       </div>
       <button class="mcol-btn" type="button" aria-expanded="false" aria-controls="mc-sole"><span>Mostra di più</span></button>
       <div class="mcol" id="mc-sole">
@@ -2059,5 +2088,14 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!dr.hidden){setMenu
 })();
 </script>
 
+<script>
+/* animazioni: mappe che si accendono */
+(function(){var rm=matchMedia("(prefers-reduced-motion: reduce)").matches;if(rm||!("IntersectionObserver" in window))return;
+ function prep(){document.querySelectorAll("svg").forEach(function(sv){if(sv.classList.contains("anim-pins"))return;var p=sv.querySelectorAll(".nm-pin");if(p.length<5)return;
+   sv.classList.add("anim-pins");var arr=[].slice.call(p).map(function(g){var m=/translate\(([-\d.]+) ([-\d.]+)\)/.exec(g.getAttribute("transform")||"");return{g:g,y:m?+m[2]:0}});
+   arr.sort(function(a,b){return a.y-b.y}).forEach(function(o,i){[].forEach.call(o.g.children,function(c){c.style.setProperty("--d",(i*0.06).toFixed(2)+"s")})});
+   var o2=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){sv.classList.add("lit");o2.disconnect()}})},{threshold:.25});o2.observe(sv)})}
+ addEventListener("load",function(){prep();setTimeout(prep,1500);setTimeout(prep,4000)})})();
+</script>
 </body>
 </html>
