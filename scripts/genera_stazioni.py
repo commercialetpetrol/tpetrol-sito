@@ -21,6 +21,7 @@ blk = s[s.index("const S=["):s.index("].map(([b,n,c,la,lo,pv,mid]")]
 ROWS = [json.loads(l.strip().rstrip(",")) for l in blk.splitlines()[1:] if l.strip().startswith("[")]
 LD = {x["@id"].split("#pv-")[1]: x for x in json.loads(re.search(r'id="ld-stazioni">(.*?)</script>', s, re.S).group(1))["@graph"]}
 FOTO = {"22021": "casilina", "12021": "nomentana", "5687": "leonardo", "5522": "marconi-scheda", "5565": "bravetta-scheda", "49512": "sabaudia", "5580": "spoleto", "5229": "sant-egidio", "6413": "aprilia", "49513": "farfa-scheda", "49521": "circeo-scheda", "6414": "podgora-scheda", "49510": "arsoli-scheda", "CMD01": "comeda-scheda"}
+GPL_PV = {"CMD01"}  # stazioni con GPL indicate nella scheda (confermate da Federico)
 LK = {"brt": "BRT", "inpost": "InPost", "poste": "Poste Italiane + DHL"}
 SLUG_FISSI = {"6413": "q8-aprilia-selciatella", "5580": "q8-spoleto-flaminia", "5579": "q8-orte-ortana",
               "27465": "enilive-bassano-in-teverina", "CMD01": "comeda-aprilia-pontina", "6416": "q8-latina-via-della-stazione",
@@ -98,6 +99,7 @@ def page(x):
     pv = x["pv"]; prep = a_ad(x["city"])
     serv = []
     if pv in ADB: serv.append(("AdBlue", "Disponibile in stazione per i veicoli diesel con sistema SCR."))
+    if pv in GPL_PV: serv.append(("GPL", "Rifornimento di GPL in stazione."))
     for t in SERVIZI.get(pv, []):
         serv.append((t, "Nell'area di servizio." if t == "Bar tabacchi" else "Per gli autisti dei mezzi pesanti, nell'area di servizio."))
     if pv == "6413": serv.append(("Autolavaggio self H24", 'Portale WashTec, acqua a ciclo chiuso, pagamento con carta o contanti e fattura dalla cassa self. <a href="../../autolavaggio-aprilia/">Scopri l\'autolavaggio</a>.'))
@@ -110,7 +112,7 @@ def page(x):
     carte = [k for k in CARTE.get(pv, []) + ["amex"] if k in CARTA]
     cards = "".join(f'<li><img src="../../{CARTA[k][1]}" alt="" loading="lazy"><span>{e(CARTA[k][0])}</span></li>' for k in carte)
     nomi_serv = [t for t, _ in serv if t not in ("Fattura elettronica", "Carta carburante T.Petrol")]
-    nomi_serv = [t if t.startswith("AdBlue") else t[0].lower() + t[1:] for t in nomi_serv]
+    nomi_serv = [t if t.startswith(("AdBlue", "GPL")) else t[0].lower() + t[1:] for t in nomi_serv]
     lead = ("Self service" + (", " + ", ".join(nomi_serv[:-1]) + (" ed " if nomi_serv[-1][0] in "eE" else " e ") + nomi_serv[-1] if len(nomi_serv) > 1 else (" e " + nomi_serv[0] if nomi_serv else ""))
             + f". Una stazione di servizio della rete T.Petrol a {x['city']}.")
     facts = [(B, "marchio"), (str(len(carte)), "carte flotta accettate")]
