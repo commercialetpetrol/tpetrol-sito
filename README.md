@@ -42,3 +42,9 @@ Per farsi trovare su Google da chi vuole vendere un distributore o cerca consule
 - La sezione «Ambito di intervento» raccoglie tipologie di impianti e province: sono le parole con cui le pagine vengono cercate.
 - `sitemap.xml` e `robots.txt`: aggiungere qui ogni nuova pagina da far trovare su Google.
 - Google Search Console: proprietà https://www.tpetrol.it/ (account commercialetpetrol@gmail.com), verificata con il file `google0f7155e32ee4327c.html`: non rimuoverlo.
+
+## Orari delle stazioni (novembre 2026)
+- In tutte le stazioni il self service è aperto H24. Gli orari del servito con il gestore sono nell'oggetto `ORARI`
+  di `scripts/genera_stazioni.py` (lunedì–venerdì, sabato, domenica; `None` = chiuso). Le stazioni non elencate sono solo self.
+- Ogni scheda stazione ha la sezione `#orari`; nei dati strutturati l'orario è 24/7 (self).
+- Se cambia un orario: modificare `ORARI` e rilanciare `python3 scripts/genera_stazioni.py`.

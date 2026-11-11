@@ -23,6 +23,23 @@ LD = {x["@id"].split("#pv-")[1]: x for x in json.loads(re.search(r'id="ld-stazio
 FOTO = {"22021": "casilina", "12021": "nomentana", "5687": "leonardo", "5522": "marconi-scheda", "5565": "bravetta-scheda", "49512": "sabaudia", "5580": "spoleto", "5229": "sant-egidio", "6413": "aprilia", "49513": "farfa-scheda", "49521": "circeo-scheda", "6414": "podgora-scheda", "49510": "arsoli-scheda", "CMD01": "comeda-scheda"}
 GPL_PV = {"CMD01", "5580", "27465", "6413"}  # stazioni con GPL indicate nella scheda (confermate da Federico)
 LK = {"brt": "BRT", "inpost": "InPost", "poste": "Poste Italiane + DHL"}
+# Orari (comunicati da Federico, novembre 2026): il self service è aperto H24 in tutte le stazioni.
+# Qui solo gli orari del servito con il gestore: (lunedì-venerdì, sabato, domenica); None = servito chiuso.
+# Le stazioni non elencate sono solo self, senza servito.
+_SPEZ = (["07:00-12:30", "15:00-19:00"], ["07:00-12:30"], None)
+ORARI = {pv: _SPEZ for pv in ["49518", "5522", "5581", "49514", "6413", "6415", "6416", "5229"]}
+ORARI.update({
+    "49512": (["07:00-12:00", "15:00-19:00"], ["07:00-12:00"], None),  # Sabaudia
+    "5580": (["07:00-13:00", "14:30-18:00"], None, None),               # Spoleto
+    "CMD01": (["06:00-19:00"], ["06:00-19:00"], ["06:00-17:00"]),       # Aprilia Comeda
+    "5579": (["06:00-18:00"], ["06:00-15:00"], ["06:00-18:00"]),        # Orte
+    "27465": (["05:00-21:00"],) * 3,                                    # Bassano in Teverina
+    "49515": (["05:00-12:00"], ["05:00-12:00"], None),                  # Roma Bufalini
+})
+def ora(t):
+    h, m = t.split(":"); return str(int(h)) + ("" if m == "00" else ":" + m)
+def fasce(r):
+    return "chiuso" if not r else " e ".join(ora(a) + "–" + ora(b) for a, b in (x.split("-") for x in r))
 SLUG_FISSI = {"6413": "q8-aprilia-selciatella", "5580": "q8-spoleto-flaminia", "5579": "q8-orte-ortana",
               "27465": "enilive-bassano-in-teverina", "CMD01": "comeda-aprilia-pontina", "6416": "q8-latina-via-della-stazione",
               "6414": "q8-latina-borgo-podgora", "49512": "ip-sabaudia-borgo-vodice", "49521": "ip-san-felice-circeo"}
@@ -77,6 +94,9 @@ CSS = """<style>
 .st-cards img{height:30px;width:auto}
 .st-foto{margin:0;border-radius:24px;overflow:hidden;box-shadow:var(--sh-1)}.st-foto img{display:block;width:100%;height:auto;max-height:520px;object-fit:cover}
 .st-foto figcaption{padding:10px 14px;font-size:13px;color:var(--muted);background:var(--bg)}
+.st-orari{border-collapse:collapse;margin-top:12px;min-width:min(100%,420px)}
+.st-orari th,.st-orari td{text-align:left;padding:10px 16px 10px 0;border-bottom:1px solid var(--line)}
+.st-orari th{font-weight:600}.st-orari td{font-variant-numeric:tabular-nums}
 .st-near{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
 .st-near a{display:block;padding:14px 16px;border:1px solid var(--line);border-radius:16px;background:var(--bg);text-decoration:none;color:inherit}
 .st-near a b{display:block}.st-near a small{color:var(--muted)}
@@ -113,9 +133,9 @@ def page(x):
     cards = "".join(f'<li><img src="../../{CARTA[k][1]}" alt="" loading="lazy"><span>{e(CARTA[k][0])}</span></li>' for k in carte)
     nomi_serv = [t for t, _ in serv if t not in ("Fattura elettronica", "Carta carburante T.Petrol")]
     nomi_serv = [t if t.startswith(("AdBlue", "GPL")) else t[0].lower() + t[1:] for t in nomi_serv]
-    lead = ("Self service" + (", " + ", ".join(nomi_serv[:-1]) + (" ed " if nomi_serv[-1][0] in "eE" else " e ") + nomi_serv[-1] if len(nomi_serv) > 1 else (" e " + nomi_serv[0] if nomi_serv else ""))
+    lead = ("Self service H24" + (", " + ", ".join(nomi_serv[:-1]) + (" ed " if nomi_serv[-1][0] in "eE" else " e ") + nomi_serv[-1] if len(nomi_serv) > 1 else (" e " + nomi_serv[0] if nomi_serv else ""))
             + f". Una stazione di servizio della rete T.Petrol a {x['city']}.")
-    facts = [(B, "marchio"), (str(len(carte)), "carte flotta accettate")]
+    facts = [(B, "marchio"), ("H24", "self service"), (str(len(carte)), "carte flotta accettate")]
     if LOCKER.get(pv): facts.append(("H24", "locker pacchi"))
     if pv in SOLARE: facts.append((f"{sum(r[0] for r in SOLARE[pv])} kW", "di fotovoltaico"))
     near = sorted((y for y in st if y is not x), key=lambda y: dist(x, y))[:3]
@@ -131,6 +151,13 @@ def page(x):
     title = f"Distributore {B} {x['city']}, {x['n']} – prezzi e servizi | T.Petrol"
     desc = f"Stazione di servizio {B} T.Petrol {prep} {x['city']} ({x['prov']}), {x['n']}: prezzi self di oggi" + (", " + ", ".join(nomi_serv) if nomi_serv else "") + " e carte carburante accettate."
     ld = dict(LD[pv]); ld["@context"] = "https://schema.org"; ld["url"] = URL; ld["mainEntityOfPage"] = URL
+    ld["openingHoursSpecification"] = [{"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], "opens": "00:00", "closes": "23:59"}]
+    o = ORARI.get(pv)
+    if o:
+        righe = "".join(f"<tr><th scope=\"row\">{g}</th><td>{fasce(r)}</td></tr>" for g, r in zip(("Dal lunedì al venerdì", "Sabato", "Domenica"), o))
+        servito = f'<h3 style="margin-top:28px">Servito con il gestore</h3><table class="st-orari"><tbody>{righe}</tbody></table><p class="intro" style="font-size:14px">Fuori da questi orari il rifornimento è sempre disponibile al self service.</p>'
+    else:
+        servito = '<p class="intro">Stazione completamente self service: nessun orario di chiusura.</p>'
     if pv in FOTO: ld["image"] = f"https://www.tpetrol.it/galleria/{FOTO[pv]}.jpg"
     bc = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
         {"@type": "ListItem", "position": 1, "name": "T.Petrol", "item": "https://www.tpetrol.it/"},
@@ -194,6 +221,14 @@ def page(x):
       <p class="intro" id="pz-data">Prezzi self service comunicati all'Osservaprezzi carburanti del Ministero delle Imprese.</p>
       <div class="st-prices" id="st-prices" data-mid="{x['mid']}"><p class="st-load">Caricamento dei prezzi…</p></div>
       <p class="intro" style="font-size:14px">Confronta con le altre stazioni: <a href="../../#prezzi">tutti i prezzi della rete T.Petrol</a>.</p>
+    </div>
+  </section>
+
+  <section class="sec band" id="orari" aria-labelledby="s5">
+    <div class="wrap">
+      <h2 id="s5">Orari</h2>
+      <div class="cross"><div><b>Self service aperto 24 ore su 24</b><span>Tutti i giorni, festivi compresi</span></div></div>
+      {servito}
     </div>
   </section>
 
