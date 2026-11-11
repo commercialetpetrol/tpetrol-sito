@@ -21,7 +21,7 @@ blk = s[s.index("const S=["):s.index("].map(([b,n,c,la,lo,pv,mid]")]
 ROWS = [json.loads(l.strip().rstrip(",")) for l in blk.splitlines()[1:] if l.strip().startswith("[")]
 LD = {x["@id"].split("#pv-")[1]: x for x in json.loads(re.search(r'id="ld-stazioni">(.*?)</script>', s, re.S).group(1))["@graph"]}
 FOTO = {"22021": "casilina", "12021": "nomentana", "5687": "leonardo", "5522": "marconi-scheda", "5565": "bravetta-scheda", "49512": "sabaudia", "5580": "spoleto", "5229": "sant-egidio", "6413": "aprilia", "49513": "farfa-scheda", "49521": "circeo-scheda", "6414": "podgora-scheda", "49510": "arsoli-scheda", "CMD01": "comeda-scheda"}
-GPL_PV = {"CMD01"}  # stazioni con GPL indicate nella scheda (confermate da Federico)
+GPL_PV = {"CMD01", "5580", "27465", "6413"}  # stazioni con GPL indicate nella scheda (confermate da Federico)
 LK = {"brt": "BRT", "inpost": "InPost", "poste": "Poste Italiane + DHL"}
 SLUG_FISSI = {"6413": "q8-aprilia-selciatella", "5580": "q8-spoleto-flaminia", "5579": "q8-orte-ortana",
               "27465": "enilive-bassano-in-teverina", "CMD01": "comeda-aprilia-pontina", "6416": "q8-latina-via-della-stazione",
