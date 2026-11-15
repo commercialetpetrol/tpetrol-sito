@@ -18,64 +18,55 @@
 <link rel="stylesheet" href="../pagine.css">
 <style>
 [hidden]{display:none!important}
-.g-head{padding:34px 0 14px}
+.g-head{padding:30px 0 12px}
 .g-head h1{font-size:clamp(34px,6vw,54px);font-weight:800}
 .g-head h1 span{color:var(--sun)}
 .g-head p{margin:10px 0 0;color:var(--muted);max-width:640px}
-.game{position:relative;max-width:760px;margin:10px auto 0;border-radius:26px;overflow:hidden;box-shadow:var(--sh-2);user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:manipulation;
-  background:linear-gradient(#bfe0f5 0,#e6f3fb 46%,#cfd8dc 46%,#b9c3c7 100%);aspect-ratio:4/5;color:#00142b}
-@media (min-width:700px){.game{aspect-ratio:16/12}}
-/* pensilina */
-.canopy{position:absolute;left:4%;right:4%;top:6%;height:9%;background:#fff;border-radius:10px;box-shadow:0 6px 0 #f67625,0 14px 20px -10px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center}
-.canopy img{height:58%;width:auto}
-.pole{position:absolute;top:15%;width:3%;height:31%;background:linear-gradient(90deg,#dfe6e9,#fff,#cfd8dc);border-radius:4px}
-.pole.l{left:12%}.pole.r{right:12%}
-.lane{position:absolute;left:0;right:0;top:71%;height:3px;background:repeating-linear-gradient(90deg,#fff 0 34px,transparent 34px 64px);opacity:.8}
-/* HUD */
-.hud{position:absolute;left:12px;right:12px;top:18%;display:flex;justify-content:space-between;gap:8px;font-weight:700;font-size:15px;z-index:3}
-.hud b{background:rgba(255,255,255,.92);padding:6px 12px;border-radius:999px;box-shadow:var(--sh-1);white-space:nowrap}
-.mute{border:0;background:rgba(255,255,255,.92);border-radius:999px;font:700 15px var(--f);padding:6px 12px;cursor:pointer;box-shadow:var(--sh-1);color:#00142b}
-/* auto */
-.car{position:absolute;left:50%;top:44%;width:min(60%,400px);transform:translateX(-160vw);transition:transform .9s cubic-bezier(.2,.7,.2,1);z-index:2}
-.car.in{transform:translateX(-50%)}
-.car.out{transform:translateX(160vw);transition-duration:1s;transition-timing-function:cubic-bezier(.6,0,.8,.4)}
-.car svg{width:100%;height:auto;display:block;filter:drop-shadow(0 10px 8px rgba(0,0,0,.25))}
-.car.shake svg{animation:shk .45s}
-@keyframes shk{20%{transform:translateX(-8px) rotate(-1deg)}40%{transform:translateX(8px) rotate(1deg)}60%{transform:translateX(-6px)}80%{transform:translateX(5px)}}
-.car .wheel{transform-box:fill-box;transform-origin:center}
-.car.moving .wheel{animation:spin .35s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.bubble{position:absolute;left:50%;bottom:100%;transform:translate(-50%,-6px) scale(0);transform-origin:50% 100%;transition:transform .25s;background:#fff;border-radius:18px;padding:8px 14px;font-weight:800;font-size:clamp(15px,3.6vw,20px);white-space:nowrap;box-shadow:var(--sh-2);display:flex;align-items:center;gap:8px}
-.bubble::after{content:"";position:absolute;left:50%;top:100%;border:9px solid transparent;border-top-color:#fff;transform:translateX(-50%)}
-.car.ask .bubble{transform:translate(-50%,-6px) scale(1)}
-.dot{width:22px;height:22px;border-radius:50%;display:inline-block;flex:none}
-/* serbatoio */
-.tank{position:absolute;left:50%;top:33%;transform:translateX(-50%);width:min(70%,420px);z-index:3;display:none}
+.game{position:relative;max-width:560px;margin:8px auto 0;border-radius:26px;overflow:hidden;box-shadow:var(--sh-2);user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:none;aspect-ratio:400/560;background:#bfe0f5;color:#00142b}
+.game svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hud{position:absolute;left:3%;right:3%;top:13.5%;display:flex;justify-content:space-between;gap:8px;font-weight:700;font-size:clamp(13px,3.4vw,15px);z-index:3;pointer-events:none}
+.hud b{background:rgba(255,255,255,.94);padding:5px 11px;border-radius:999px;box-shadow:var(--sh-1);white-space:nowrap}
+.mute{pointer-events:auto;border:0;background:rgba(255,255,255,.94);border-radius:999px;font:700 15px var(--f);padding:5px 11px;cursor:pointer;box-shadow:var(--sh-1);color:#00142b}
+.tank{position:absolute;left:50%;top:21%;transform:translateX(-50%);width:62%;z-index:3;display:none;pointer-events:none}
 .tank.on{display:block}
-.tank .bar{height:26px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 3px #00142b;overflow:hidden;position:relative}
-.tank .fill{position:absolute;inset:3px auto 3px 3px;width:0;border-radius:999px;background:#f67625;transition:width .05s linear}
-.tank .lbl{text-align:center;font-weight:800;margin-bottom:4px;font-size:15px}
-/* pompa */
-.pump{position:absolute;left:0;right:0;bottom:0;padding:12px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;z-index:3;background:linear-gradient(transparent,rgba(0,20,43,.18))}
-.noz{border:0;border-radius:18px;min-height:86px;padding:8px 4px;font:800 clamp(13px,3.4vw,17px)/1.1 var(--f);color:#fff;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;box-shadow:0 5px 0 rgba(0,0,0,.25);transition:transform .1s}
-.noz:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.25)}
-.noz svg{width:34px;height:34px}
-.noz[disabled]{opacity:.45;cursor:default}
-.f-benzina{background:#1f9d55}.f-diesel{background:#f2c200;color:#1a1a1a}.f-gpl{background:#1e78d6}.f-elettrico{background:#7b4fd6}
-.hold{position:absolute;left:12px;right:12px;bottom:12px;z-index:4;border:0;border-radius:20px;min-height:86px;background:#f67625;color:#1a0a00;font:800 clamp(18px,4.4vw,24px)/1.1 var(--f);cursor:pointer;box-shadow:0 6px 0 #b04a05;display:none;touch-action:none}
-.hold.on{display:block}
-.hold.press{transform:translateY(3px);box-shadow:0 3px 0 #b04a05}
-/* messaggi e schermate */
-.toast{position:absolute;left:50%;top:27%;transform:translate(-50%,0) scale(.8);opacity:0;transition:.25s;background:#00142b;color:#fff;font-weight:800;padding:10px 18px;border-radius:999px;z-index:5;white-space:nowrap;font-size:clamp(15px,3.8vw,19px);pointer-events:none}
+.tank .bar{height:22px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 3px #00142b,var(--sh-1);overflow:hidden;position:relative}
+.tank .fill{position:absolute;left:3px;top:3px;bottom:3px;width:0;border-radius:999px;background:#f67625}
+.tank .lbl{text-align:center;font-weight:800;margin-bottom:3px;font-size:14px;text-shadow:0 1px 0 #fff}
+.hold{position:absolute;left:3%;right:3%;bottom:2.4%;z-index:4;border:0;border-radius:20px;height:11%;background:#f67625;color:#1a0a00;font:800 clamp(16px,4.4vw,22px)/1.1 var(--f);cursor:pointer;box-shadow:0 6px 0 #b04a05;display:none;touch-action:none}
+.hold.on{display:block;animation:pulse 1.2s infinite}
+.hold.press{transform:translateY(3px);box-shadow:0 3px 0 #b04a05;animation:none}
+@keyframes pulse{50%{transform:scale(1.03)}}
+.hint{position:absolute;left:50%;bottom:3.5%;transform:translateX(-50%);z-index:3;background:rgba(0,20,43,.85);color:#fff;font-weight:700;font-size:clamp(13px,3.4vw,16px);padding:8px 14px;border-radius:999px;white-space:nowrap;pointer-events:none}
+.toast{position:absolute;left:50%;top:31.5%;transform:translate(-50%,0) scale(.8);opacity:0;transition:.25s;background:#00142b;color:#fff;font-weight:800;padding:9px 16px;border-radius:999px;z-index:5;white-space:nowrap;font-size:clamp(14px,3.8vw,18px);pointer-events:none}
 .toast.on{opacity:1;transform:translate(-50%,0) scale(1)}
-.screen{position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;background:rgba(0,20,43,.82);color:#fff;gap:14px}
+.screen{position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;background:rgba(0,20,43,.84);color:#fff;gap:14px}
 .screen h2{font-size:clamp(30px,7vw,46px);font-weight:800}
-.screen p{margin:0;max-width:440px;font-size:17px;color:#dbe6f0}
+.screen p{margin:0;max-width:420px;font-size:17px;color:#dbe6f0}
 .screen .big{font-size:20px;padding:18px 34px}
 .stars{font-size:44px;letter-spacing:6px;color:#ffc531}
-.coin{position:absolute;z-index:5;font-size:30px;pointer-events:none;animation:up 1s forwards}
-@keyframes up{to{transform:translateY(-120px);opacity:0}}
-.note{max-width:760px;margin:18px auto 50px;color:var(--muted);font-size:15px;text-align:center}
+.note{max-width:560px;margin:18px auto 50px;color:var(--muted);font-size:15px;text-align:center}
+/* animazioni SVG */
+.cloud{animation:drift linear infinite}
+@keyframes drift{from{transform:translateX(-160px)}to{transform:translateX(460px)}}
+.rays{transform-origin:350px 105px;animation:spin 18s linear infinite}
+.sunspin .rays{animation-duration:1s}
+@keyframes spin{to{transform:rotate(360deg)}}
+.wheel{transform-box:fill-box;transform-origin:center}
+.moving .wheel{animation:spin .35s linear infinite}
+.door-ring{transform-box:fill-box;transform-origin:center;animation:ring 1s ease-in-out infinite}
+@keyframes ring{50%{transform:scale(1.35);opacity:.35}}
+.bounce{animation:bnc .45s}
+@keyframes bnc{30%{transform:translateY(-10px)}60%{transform:translateY(2px)}}
+.shake{animation:shk .45s}
+@keyframes shk{20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(4px)}}
+.drop{animation:dropf .45s ease-in forwards}
+@keyframes dropf{to{transform:translateY(16px);opacity:0}}
+.conf{animation:conf 1.4s ease-out forwards}
+@keyframes conf{to{transform:translate(var(--dx),var(--dy)) rotate(540deg);opacity:0}}
+.puff{transform-box:fill-box;transform-origin:center;animation:puff .9s ease-out forwards}
+@keyframes puff{to{transform:translate(-30px,-14px) scale(2.4);opacity:0}}
+.noz{cursor:grab}.noz.drag{cursor:grabbing}
+.cartap{cursor:pointer}
 </style>
 </head>
 <body>
@@ -94,23 +85,59 @@
   <div class="wrap">
     <div class="g-head">
       <h1>Fai il <span>pieno!</span></h1>
-      <p>Il gioco per i più piccoli: ogni auto chiede il suo carburante. Scegli la pistola giusta e tieni premuto per riempire il serbatoio. Servi 10 auto più in fretta che puoi!</p>
+      <p>Il gioco per i più piccoli: ogni auto chiede il suo carburante. Trascina la pistola giusta fino al serbatoio e tieni premuto per riempirlo. Servi 10 auto più in fretta che puoi!</p>
     </div>
 
     <div class="game" id="game">
-      <div class="canopy"><img src="../logo.png" alt="T.Petrol"></div>
-      <div class="pole l"></div><div class="pole r"></div>
-      <div class="lane"></div>
+      <svg id="svg" viewBox="0 0 400 560" aria-label="Stazione di servizio T.Petrol">
+        <defs>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fcaf0"/><stop offset="1" stop-color="#e3f3fc"/></linearGradient>
+          <linearGradient id="asf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9aa6ab"/><stop offset="1" stop-color="#7d898e"/></linearGradient>
+          <linearGradient id="pole" x1="0" x2="1"><stop offset="0" stop-color="#d4dde0"/><stop offset=".5" stop-color="#fff"/><stop offset="1" stop-color="#c4cfd3"/></linearGradient>
+        </defs>
+        <rect width="400" height="340" fill="url(#sky)"/>
+        <g id="sun" style="cursor:pointer"><g class="rays" fill="#ffd54f"><circle cx="350" cy="105" r="0"/><path d="M350 72l4 14h-8zM350 138l4-14h-8zM317 105l14 4v-8zM383 105l-14 4v-8zM327 82l12 8-6 6zM373 128l-12-8 6-6zM373 82l-8 12-6-6zM327 128l8-12 6 6z"/></g><circle cx="350" cy="105" r="17" fill="#ffca28"/></g>
+        <g class="cloud" style="animation-duration:38s;animation-delay:-12s"><g fill="#fff" opacity=".95"><ellipse cx="40" cy="112" rx="34" ry="13"/><ellipse cx="58" cy="102" rx="20" ry="15"/><ellipse cx="28" cy="105" rx="14" ry="11"/></g></g>
+        <g class="cloud" style="animation-duration:52s;animation-delay:-36s"><g fill="#fff" opacity=".85"><ellipse cx="40" cy="160" rx="28" ry="10"/><ellipse cx="54" cy="152" rx="16" ry="12"/></g></g>
+        <g fill="#b9d3e2"><rect x="0" y="250" width="40" height="90"/><rect x="44" y="230" width="30" height="110"/><rect x="78" y="268" width="46" height="72"/><rect x="250" y="240" width="36" height="100"/><rect x="290" y="262" width="50" height="78"/><rect x="344" y="226" width="34" height="114"/><rect x="380" y="270" width="20" height="70"/></g>
+        <g fill="#cfe3ee"><rect x="50" y="240" width="6" height="8"/><rect x="62" y="240" width="6" height="8"/><rect x="50" y="256" width="6" height="8"/><rect x="62" y="256" width="6" height="8"/><rect x="352" y="238" width="6" height="8"/><rect x="364" y="238" width="6" height="8"/><rect x="352" y="254" width="6" height="8"/><rect x="364" y="254" width="6" height="8"/></g>
+        <rect y="338" width="400" height="222" fill="url(#asf)"/>
+        <rect y="336" width="400" height="6" fill="#cfd8dc"/>
+        <g fill="#fff" opacity=".8"><rect x="0" y="498" width="34" height="5"/><rect x="62" y="498" width="34" height="5"/><rect x="124" y="498" width="34" height="5"/><rect x="186" y="498" width="34" height="5"/><rect x="248" y="498" width="34" height="5"/><rect x="310" y="498" width="34" height="5"/><rect x="372" y="498" width="34" height="5"/></g>
+        <rect x="40" y="62" width="10" height="276" fill="url(#pole)"/>
+        <rect x="350" y="62" width="10" height="276" fill="url(#pole)"/>
+        <rect x="10" y="16" width="380" height="46" rx="10" fill="#fff"/>
+        <rect x="10" y="56" width="380" height="9" rx="4" fill="#f67625"/>
+        <image href="../logo.png" x="141" y="22" width="118" height="28"/>
+        <g id="carWrap" class="cartap"><g id="car"></g></g>
+        <g id="bubble" opacity="0"></g>
+        <!-- isola e colonnina -->
+        <rect x="6" y="470" width="116" height="18" rx="5" fill="#e0e6e8" stroke="#00142b" stroke-width="2"/>
+        <g id="pump">
+          <rect x="14" y="236" width="100" height="236" rx="12" fill="#fff" stroke="#00142b" stroke-width="3"/>
+          <rect x="14" y="236" width="100" height="22" rx="10" fill="#f67625" stroke="#00142b" stroke-width="3"/>
+          <text x="64" y="252" text-anchor="middle" font-family="Outfit,sans-serif" font-weight="800" font-size="12" fill="#1a0a00">SELF 24H</text>
+          <rect x="24" y="266" width="80" height="54" rx="7" fill="#00142b"/>
+          <text x="32" y="281" font-family="Outfit,sans-serif" font-weight="700" font-size="9" fill="#8fa6bf">LITRI</text>
+          <text id="disp" x="98" y="309" text-anchor="end" font-family="ui-monospace,Menlo,monospace" font-weight="700" font-size="22" fill="#5ef08a">0,00</text>
+          <rect x="22" y="328" width="84" height="134" rx="8" fill="#eef3f5"/>
+          <g font-family="Outfit,sans-serif" font-weight="800" font-size="9.5" text-anchor="middle" fill="#00142b">
+            <text x="43" y="396">BENZINA</text><text x="86" y="396">DIESEL</text><text x="43" y="457">GPL</text><text x="86" y="457">ELETTRICO</text>
+          </g>
+        </g>
+        <g id="hoses" fill="none" stroke="#263238" stroke-width="5" stroke-linecap="round"></g>
+        <g id="fx"></g>
+        <g id="nozzles"></g>
+      </svg>
       <div class="hud"><b id="hCars">🚗 0/10</b><b id="hTime">⏱ 0,0 s</b><button class="mute" id="mute" aria-label="Audio acceso">🔊</button></div>
       <div class="toast" id="toast" role="status" aria-live="polite"></div>
-      <div class="tank" id="tank"><div class="lbl">Serbatoio</div><div class="bar"><div class="fill" id="fill"></div></div></div>
-      <div class="car" id="car"><div class="bubble" id="bubble"></div><div id="carArt"></div></div>
-      <div class="pump" id="pump"></div>
+      <div class="tank" id="tank"><div class="lbl" id="tlbl">Serbatoio</div><div class="bar"><div class="fill" id="fill"></div></div></div>
+      <div class="hint" id="hint" hidden>👆 Trascina la pistola giusta sull'auto</div>
       <button class="hold" id="hold">Tieni premuto per fare il pieno ⛽</button>
 
       <div class="screen" id="start">
         <h2>Fai il pieno!</h2>
-        <p>Arriva un'auto: guarda cosa chiede, tocca la pistola del colore giusto e poi tieni premuto il bottone arancione finché il serbatoio è pieno.</p>
+        <p>Arriva un'auto e ti dice cosa vuole. Trascina la pistola del colore giusto fino al serbatoio (oppure toccala), poi tieni premuto il bottone arancione finché è pieno!</p>
         <button class="pill pill-sun big" id="go">Gioca ▶</button>
       </div>
       <div class="screen" id="end" hidden>
@@ -135,112 +162,242 @@
 
 <script>
 (function(){
-const FUELS={
-  benzina:{n:'Benzina',c:'#1f9d55'},
-  diesel:{n:'Diesel',c:'#f2c200'},
-  gpl:{n:'GPL',c:'#1e78d6'},
-  elettrico:{n:'Elettrico',c:'#7b4fd6'}
-};
-const NOZ='<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M6 10h18a3 3 0 0 1 3 3v6h4l4 6v5h-4v-4l-2-3h-2v9a3 3 0 0 1-3 3H6z" fill="currentColor" opacity=".9"/><rect x="9" y="13" width="12" height="7" rx="2" fill="#fff" opacity=".7"/></svg>';
-const PLUG='<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M22 3 9 23h10l-3 14 15-21H21z" fill="currentColor"/></svg>';
-const COLORS=['#e53935','#1e88e5','#fdd835','#43a047','#fb8c00','#8e24aa','#00acc1','#f06292','#ffffff','#546e7a'];
-const TOTAL=10;
+const NS='http://www.w3.org/2000/svg';
 const $=id=>document.getElementById(id);
-const game=$('game'),car=$('car'),carArt=$('carArt'),bubble=$('bubble'),pump=$('pump'),hold=$('hold'),tank=$('tank'),fill=$('fill'),toast=$('toast');
-let served=0,t0=0,timer=null,need='benzina',level=0,holding=false,busy=false,raf=null,last=0,sound=true,ac=null;
+const svg=$('svg'),carG=$('car'),carWrap=$('carWrap'),bubble=$('bubble'),hosesG=$('hoses'),nozG=$('nozzles'),fx=$('fx'),disp=$('disp');
+const hold=$('hold'),tank=$('tank'),fill=$('fill'),toast=$('toast'),hint=$('hint');
+const FUELS={benzina:{n:'Benzina',c:'#1f9d55',home:[43,352]},diesel:{n:'Diesel',c:'#f2c200',home:[86,352]},gpl:{n:'GPL',c:'#1e78d6',home:[43,414]},elettrico:{n:'Elettrico',c:'#7b4fd6',home:[86,414]}};
+const COLORS=['#e53935','#1e88e5','#fdd835','#43a047','#fb8c00','#8e24aa','#00acc1','#f06292','#ffffff','#90a4ae'];
+const TOTAL=10, CARX=150, CARY=332;
+let st={served:0,t0:0,need:'benzina',phase:'idle',level:0,holding:false,fd:[0,0],kind:'car',attached:null,litri:0};
+let timer=null,sound=true,ac=null,carX=-280;
 $('yr').textContent=new Date().getFullYear();
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e}
 
-// suoni (Web Audio, nessun file esterno)
-function beep(f,d,type,vol){if(!sound)return;try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),g=ac.createGain();o.type=type||'sine';o.frequency.value=f;g.gain.value=vol||.08;o.connect(g);g.connect(ac.destination);const n=ac.currentTime;g.gain.setValueAtTime(vol||.08,n);g.gain.exponentialRampToValueAtTime(.0001,n+d);o.start(n);o.stop(n+d)}catch(e){}}
-const ok=()=>{beep(660,.12);setTimeout(()=>beep(880,.18),110)};
-const no=()=>{beep(220,.25,'square',.05)};
-const done=()=>{[523,659,784,1046].forEach((f,i)=>setTimeout(()=>beep(f,.16,'triangle',.09),i*90))};
+/* ---------- suoni ---------- */
+function beep(f,d,type,vol,delay){if(!sound)return;try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();const n=ac.currentTime+(delay||0),o=ac.createOscillator(),g=ac.createGain();o.type=type||'sine';o.frequency.setValueAtTime(f,n);g.gain.setValueAtTime(vol||.08,n);g.gain.exponentialRampToValueAtTime(.0001,n+d);o.connect(g);g.connect(ac.destination);o.start(n);o.stop(n+d+.02)}catch(e){}}
+const sOk=()=>{beep(660,.12);beep(880,.18,'sine',.08,.11)};
+const sNo=()=>{beep(200,.28,'square',.05)};
+const sDone=()=>[523,659,784,1046].forEach((f,i)=>beep(f,.16,'triangle',.09,i*.09));
+const sHonk=()=>{beep(392,.14,'square',.05);beep(392,.18,'square',.05,.2)};
+const sClick=()=>beep(1200,.04,'square',.03);
 $('mute').onclick=()=>{sound=!sound;$('mute').textContent=sound?'🔊':'🔇';$('mute').setAttribute('aria-label',sound?'Audio acceso':'Audio spento')};
 
-function carSVG(kind,col){
-  const w='<g class="wheel"><circle r="15" fill="#263238"/><circle r="7" fill="#cfd8dc"/><rect x="-1.5" y="-7" width="3" height="14" fill="#90a4ae"/></g>';
-  const wheel=(x,y)=>'<g transform="translate('+x+' '+y+')">'+w+'</g>';
-  const eyes='<circle cx="0" cy="0" r="0"/>';
-  if(kind==='van') return '<svg viewBox="0 0 240 130"><rect x="14" y="22" width="190" height="78" rx="14" fill="'+col+'" stroke="#00142b" stroke-width="3"/><path d="M204 52h18l12 22v26h-30z" fill="'+col+'" stroke="#00142b" stroke-width="3"/><rect x="208" y="56" width="14" height="18" rx="3" fill="#b3e5fc"/><rect x="30" y="34" width="60" height="26" rx="5" fill="#b3e5fc"/><rect x="100" y="34" width="60" height="26" rx="5" fill="#b3e5fc"/><rect x="226" y="82" width="10" height="8" rx="2" fill="#ffeb3b"/>'+wheel(60,104)+wheel(186,104)+'</svg>';
-  if(kind==='truck') return '<svg viewBox="0 0 260 140"><rect x="10" y="20" width="160" height="86" rx="8" fill="#eceff1" stroke="#00142b" stroke-width="3"/><rect x="20" y="40" width="140" height="10" fill="#f67625"/><path d="M172 46h44l26 28v32h-70z" fill="'+col+'" stroke="#00142b" stroke-width="3"/><path d="M182 54h30l18 20h-48z" fill="#b3e5fc"/><rect x="236" y="88" width="10" height="8" rx="2" fill="#ffeb3b"/>'+wheel(50,112)+wheel(96,112)+wheel(212,112)+'</svg>';
-  if(kind==='moto') return '<svg viewBox="0 0 240 130"><circle cx="60" cy="96" r="24" fill="none" stroke="#263238" stroke-width="10"/><circle cx="182" cy="96" r="24" fill="none" stroke="#263238" stroke-width="10"/><path d="M60 96l40-34h50l32 34" fill="none" stroke="#455a64" stroke-width="7"/><path d="M92 58c10-14 50-14 64 0z" fill="'+col+'" stroke="#00142b" stroke-width="3"/><path d="M156 52l18-18h12" stroke="#263238" stroke-width="6" fill="none"/><circle cx="120" cy="30" r="14" fill="'+col+'" stroke="#00142b" stroke-width="3"/><rect x="112" y="24" width="18" height="8" rx="3" fill="#b3e5fc"/></svg>';
-  // auto classica (anche elettrica)
-  return '<svg viewBox="0 0 240 120"><path d="M14 74c0-12 8-20 20-22l30-4 26-26c4-4 9-6 15-6h56c7 0 13 3 17 9l18 25 22 4c8 2 12 8 12 16v14c0 5-4 9-9 9H23c-5 0-9-4-9-9z" fill="'+col+'" stroke="#00142b" stroke-width="3"/><path d="M98 28h28v24H74zM134 28h22c4 0 7 2 9 5l13 19h-44z" fill="#b3e5fc"/><rect x="214" y="70" width="12" height="8" rx="2" fill="#ffeb3b"/><rect x="16" y="68" width="8" height="8" rx="2" fill="#ef5350"/>'+(kind==='ev'?'<path d="M118 66l-8 14h8l-4 12 12-16h-8l4-10z" fill="#fff" stroke="#00142b" stroke-width="2"/>':'')+wheel(62,100)+wheel(182,100)+'</svg>';
+/* ---------- auto ---------- */
+const WHEEL='<g class="wheel"><circle r="18" fill="#263238"/><circle r="8.5" fill="#cfd8dc"/><rect x="-1.8" y="-8.5" width="3.6" height="17" fill="#90a4ae"/><rect x="-8.5" y="-1.8" width="17" height="3.6" fill="#90a4ae"/></g>';
+const SHAPES={
+ car:{body:'M10 112V78Q10 62 26 60L58 56 86 26Q92 20 100 20H160Q168 20 174 27L200 58 218 62Q230 66 230 80V112Q230 118 224 118H16Q10 118 10 112Z',
+      win:'M94 30H128V56H70Z',shield:'M134 30H160Q164 30 167 34L186 56H134Z',eyes:[[150,43],[169,46]],mouth:[216,96],fd:[44,79],wh:[[60,118],[184,118]]},
+ van:{body:'M10 112V30Q10 18 22 18H168Q178 18 184 26L220 64Q230 70 230 82V112Q230 118 224 118H16Q10 118 10 112Z',
+      win:'M28 30H120V58H28Z',shield:'M134 30H174L206 64H134Z',eyes:[[156,48],[178,50]],mouth:[216,98],fd:[44,82],wh:[[58,118],[186,118]]},
+ truck:{body:'M10 112V62H112V30Q112 22 120 22H168Q176 22 182 30L206 60Q230 64 230 80V112Q230 118 224 118H16Q10 118 10 112Z',
+      win:'M124 32H150V58H124Z',shield:'M156 32H170Q174 32 177 36L196 58H156Z',eyes:[[166,44],[184,48]],mouth:[216,96],fd:[44,84],wh:[[56,118],[186,118]]}
+};
+function buildCar(kind,col){
+  carG.innerHTML='';
+  const sh=SHAPES[kind==='ev'?'car':kind];
+  el('ellipse',{cx:120,cy:136,rx:112,ry:8,fill:'rgba(0,0,0,.18)'},carG);
+  el('path',{d:sh.body,fill:col,stroke:'#00142b','stroke-width':3,'stroke-linejoin':'round'},carG);
+  if(kind==='truck'){el('path',{d:'M14 66H108',stroke:'#00142b','stroke-width':3},carG);el('rect',{x:18,y:70,width:86,height:6,rx:3,fill:'rgba(0,0,0,.15)'},carG)}
+  el('path',{d:sh.win,fill:'#b3e5fc',stroke:'#00142b','stroke-width':2},carG);
+  el('path',{d:sh.shield,fill:'#d6f1fd',stroke:'#00142b','stroke-width':2},carG);
+  el('rect',{x:218,y:72,width:12,height:9,rx:3,fill:'#ffeb3b',stroke:'#00142b','stroke-width':1.5},carG);
+  el('rect',{x:10,y:72,width:8,height:10,rx:2,fill:'#ef5350',stroke:'#00142b','stroke-width':1.5},carG);
+  el('path',{d:'M14 100H226',stroke:'rgba(0,0,0,.18)','stroke-width':3},carG);
+  if(kind==='ev'){el('path',{d:'M128 70l-10 18h10l-5 14 15-20h-10l5-12z',fill:'#fff',stroke:'#00142b','stroke-width':2,'stroke-linejoin':'round'},carG)}
+  // occhi
+  const eyes=el('g',{id:'eyes'},carG);
+  sh.eyes.forEach(([x,y])=>{const g=el('g',{transform:'translate('+x+' '+y+')'},eyes);el('ellipse',{rx:7.5,ry:9,fill:'#fff',stroke:'#00142b','stroke-width':1.6,class:'eyew'},g);el('circle',{r:3.8,fill:'#00142b',class:'pup'},g);el('circle',{r:1.3,cx:1.3,cy:-1.5,fill:'#fff',class:'pup2'},g)});
+  el('path',{id:'mouth',d:mouth('ok',sh.mouth),fill:'none',stroke:'#00142b','stroke-width':3,'stroke-linecap':'round'},carG);
+  // sportello serbatoio
+  const [fx0,fy0]=sh.fd;st.fd=[fx0,fy0];
+  el('circle',{id:'ring',cx:fx0,cy:fy0,r:14,fill:'none',stroke:'#f67625','stroke-width':3,'stroke-dasharray':'5 4',class:'door-ring',opacity:0},carG);
+  el('rect',{id:'door',x:fx0-9,y:fy0-9,width:18,height:18,rx:4,fill:kind==='ev'?'#7b4fd6':'#cfd8dc',stroke:'#00142b','stroke-width':2},carG);
+  el('circle',{cx:fx0,cy:fy0,r:3.5,fill:'#00142b'},carG);
+  sh.wh.forEach(([x,y])=>{const g=el('g',{transform:'translate('+x+' '+y+')'},carG);g.innerHTML=WHEEL});
 }
+function mouth(m,p){const [x,y]=p||SHAPES[st.kind==='ev'?'car':st.kind].mouth;
+  if(m==='happy')return 'M'+(x-12)+' '+(y-4)+'Q'+x+' '+(y+12)+' '+(x+10)+' '+(y-4);
+  if(m==='sad')return 'M'+(x-11)+' '+(y+4)+'Q'+x+' '+(y-6)+' '+(x+9)+' '+(y+4);
+  return 'M'+(x-10)+' '+y+'Q'+x+' '+(y+6)+' '+(x+8)+' '+y}
+function setMouth(m){const e=$('mouth');if(e)e.setAttribute('d',mouth(m))}
+function placeCar(){carG.setAttribute('transform','translate('+carX+' '+CARY+')')}
+function look(px,py){const sh=SHAPES[st.kind==='ev'?'car':st.kind];document.querySelectorAll('#eyes > g').forEach((g,i)=>{const [ex,ey]=sh.eyes[i];let dx=px-(carX+ex),dy=py-(CARY+ey);const d=Math.hypot(dx,dy)||1;dx=dx/d*3.2;dy=dy/d*3.6;g.querySelectorAll('.pup,.pup2').forEach(p=>p.setAttribute('transform','translate('+dx.toFixed(1)+' '+dy.toFixed(1)+')'))})}
+setInterval(()=>{document.querySelectorAll('#eyes .eyew').forEach(e=>{e.setAttribute('ry',1);setTimeout(()=>e.setAttribute('ry',9),130)})},3200);
 
-function buildPump(){
-  pump.innerHTML='';
+/* ---------- fumetto ---------- */
+function showBubble(){
+  bubble.innerHTML='';const f=FUELS[st.need];
+  const txt=st.need==='elettrico'?'Ricaricami!':f.n+', grazie!';
+  const t=el('text',{x:0,y:6,'font-family':'Outfit,sans-serif','font-weight':800,'font-size':17,fill:'#00142b'},bubble);t.textContent=txt;
+  const w=t.getComputedTextLength()+46;
+  const g=el('g',{},null);bubble.insertBefore(g,t);
+  el('rect',{x:-w/2,y:-18,width:w,height:36,rx:18,fill:'#fff',stroke:'#00142b','stroke-width':2},g);
+  el('path',{d:'M-8 17L0 29 8 17',fill:'#fff',stroke:'#00142b','stroke-width':2,'stroke-linejoin':'round'},g);
+  el('rect',{x:-6,y:14,width:12,height:5,fill:'#fff'},g);
+  el('circle',{cx:-w/2+20,cy:0,r:9,fill:f.c,stroke:'#00142b','stroke-width':1.5},bubble);
+  t.setAttribute('x',-w/2+34);
+  bubble.setAttribute('transform','translate('+(CARX+120)+' '+(CARY-44)+')');
+  bubble.setAttribute('opacity',1);
+}
+function hideBubble(){bubble.setAttribute('opacity',0)}
+
+/* ---------- pistole ---------- */
+const NOZ={};
+function nozzleShape(k,g){
+  const c=FUELS[k].c;
+  el('circle',{r:30,fill:'transparent'},g); // area di presa grande
+  if(k==='elettrico'){
+    el('rect',{x:-16,y:-10,width:26,height:20,rx:6,fill:c,stroke:'#00142b','stroke-width':2},g);
+    el('rect',{x:10,y:-6,width:6,height:12,rx:2,fill:'#37474f'},g);
+    el('rect',{x:16,y:-4.5,width:7,height:3,fill:'#b0bec5'},g);el('rect',{x:16,y:1.5,width:7,height:3,fill:'#b0bec5'},g);
+    el('path',{d:'M-4 -6l-5 7h5l-2 6 7-8h-5l2-5z',fill:'#fff'},g);
+  }else{
+    el('path',{d:'M-18 -9H6L12 -4V4L6 3V9H-18Z',fill:c,stroke:'#00142b','stroke-width':2,'stroke-linejoin':'round'},g);
+    el('rect',{x:10,y:-3,width:16,height:6,rx:2,fill:'#78909c',stroke:'#00142b','stroke-width':1.5},g);
+    el('path',{d:'M-15 9V22Q-15 26 -11 26H-3Q1 26 1 22V9',fill:'none',stroke:'#00142b','stroke-width':2.4},g);
+    el('rect',{x:-12,y:-5,width:14,height:4,rx:2,fill:'rgba(255,255,255,.55)'},g);
+  }
+}
+function buildNozzles(){
+  nozG.innerHTML='';hosesG.innerHTML='';
   Object.keys(FUELS).forEach(k=>{
-    const b=document.createElement('button');b.className='noz f-'+k;b.dataset.f=k;
-    b.innerHTML=(k==='elettrico'?PLUG:NOZ)+'<span>'+FUELS[k].n+'</span>';
-    b.setAttribute('aria-label','Pistola '+FUELS[k].n);
-    b.onclick=()=>choose(k,b);pump.appendChild(b);
+    const [hx,hy]=FUELS[k].home;
+    const hose=el('path',{},hosesG);
+    const g=el('g',{class:'noz',tabindex:0,role:'button','aria-label':'Pistola '+FUELS[k].n},nozG);
+    nozzleShape(k,g);
+    NOZ[k]={g,hose,x:hx,y:hy,hx,hy};
+    drawNoz(k);
+    g.addEventListener('pointerdown',e=>grab(e,k));
+    g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();tryFuel(k,true)}});
   });
 }
-function say(t,ms){toast.textContent=t;toast.classList.add('on');clearTimeout(say.h);say.h=setTimeout(()=>toast.classList.remove('on'),ms||1300)}
-function setBtns(dis){pump.querySelectorAll('button').forEach(b=>b.disabled=dis)}
+function drawNoz(k){
+  const n=NOZ[k];n.g.setAttribute('transform','translate('+n.x.toFixed(1)+' '+n.y.toFixed(1)+') scale(.85)');
+  const sx=n.hx-14,sy=n.hy+14,ex=n.x-14,ey=n.y+(k==='elettrico'?0:16);
+  const mx=(sx+ex)/2,my=Math.max(sy,ey)+40+Math.hypot(ex-sx,ey-sy)*.15;
+  n.hose.setAttribute('d','M'+sx+' '+sy+'Q'+mx.toFixed(1)+' '+my.toFixed(1)+' '+ex.toFixed(1)+' '+ey.toFixed(1));
+}
+function animTo(k,tx,ty,ms,cb){const n=NOZ[k],x0=n.x,y0=n.y,t0=performance.now();
+  (function f(t){const p=Math.min(1,(t-t0)/ms),e=1-Math.pow(1-p,3);n.x=x0+(tx-x0)*e;n.y=y0+(ty-y0)*e;drawNoz(k);if(st.phase==='wait')look(n.x,n.y);if(p<1)requestAnimationFrame(f);else cb&&cb()})(t0)}
+function svgPt(e){const p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;return p.matrixTransform(svg.getScreenCTM().inverse())}
+function doorPos(){return [carX+st.fd[0],CARY+st.fd[1]]}
+let drag=null;
+function grab(e,k){
+  if(st.phase!=='wait'||st.attached)return;
+  e.preventDefault();const n=NOZ[k];const p=svgPt(e);
+  drag={k,ox:n.x-p.x,oy:n.y-p.y,sx:p.x,sy:p.y,moved:false,id:e.pointerId};
+  n.g.classList.add('drag');n.g.setPointerCapture(e.pointerId);nozG.appendChild(n.g);sClick();
+}
+svg.addEventListener('pointermove',e=>{
+  if(!drag)return;const p=svgPt(e),n=NOZ[drag.k];
+  if(Math.hypot(p.x-drag.sx,p.y-drag.sy)>6)drag.moved=true;
+  n.x=Math.max(10,Math.min(390,p.x+drag.ox));n.y=Math.max(90,Math.min(540,p.y+drag.oy));drawNoz(drag.k);look(n.x,n.y);
+  const [dx,dy]=doorPos();$('ring').setAttribute('stroke',Math.hypot(n.x+20-dx,n.y-dy)<44?'#1f9d55':'#f67625');
+});
+function release(e){
+  if(!drag)return;const k=drag.k,n=NOZ[k];n.g.classList.remove('drag');
+  const moved=drag.moved;drag=null;
+  if(!moved){tryFuel(k,true);return}
+  const [dx,dy]=doorPos();
+  if(Math.hypot(n.x+20-dx,n.y-dy)<44)tryFuel(k,false);else animTo(k,n.hx,n.hy,350);
+}
+svg.addEventListener('pointerup',release);svg.addEventListener('pointercancel',release);
 
-function nextCar(){
-  busy=true;level=0;fill.style.width='0';tank.classList.remove('on');hold.classList.remove('on');pump.hidden=false;setBtns(true);
-  const keys=Object.keys(FUELS);need=keys[Math.floor(Math.random()*keys.length)];
-  let kind='car';
-  if(need==='elettrico')kind='ev';
-  else if(need==='diesel')kind=['car','van','truck'][Math.floor(Math.random()*3)];
-  else if(need==='benzina')kind=['car','car','moto'][Math.floor(Math.random()*3)];
-  const col=COLORS[Math.floor(Math.random()*COLORS.length)];
-  car.className='car';carArt.innerHTML=carSVG(kind,col);
-  bubble.innerHTML='<span class="dot" style="background:'+FUELS[need].c+'"></span>'+(need==='elettrico'?'Ricaricami!':FUELS[need].n+', grazie!');
-  void car.offsetWidth;
-  car.classList.add('in','moving');beep(300,.3,'sawtooth',.03);
-  setTimeout(()=>{car.classList.remove('moving');car.classList.add('in','ask');setBtns(false);busy=false},900);
+function tryFuel(k,fly){
+  if(st.phase!=='wait'||st.attached)return;
+  const n=NOZ[k],[dx,dy]=doorPos(),tx=dx-20,ty=dy;
+  if(k!==st.need){
+    const back=()=>{sNo();setMouth('sad');carG.parentNode.classList.remove('shake');void carWrap.offsetWidth;carWrap.classList.add('shake');
+      say(st.need==='elettrico'?'Ops! Questa va ricaricata ⚡':'Ops! Questa vuole '+(st.need==='gpl'?'il GPL':st.need==='diesel'?'il Diesel':'la Benzina'));
+      setTimeout(()=>{carWrap.classList.remove('shake');setMouth('ok')},700);animTo(k,n.hx,n.hy,420)};
+    if(fly)animTo(k,tx,ty,380,back);else back();
+    return;
+  }
+  st.attached=k;
+  const go=()=>{n.x=tx;n.y=ty;drawNoz(k);attach()};
+  if(fly)animTo(k,tx,ty,420,go);else go();
 }
-function choose(k,b){
-  if(busy)return;
-  if(k!==need){no();car.classList.remove('shake');void car.offsetWidth;car.classList.add('shake');say(need==='elettrico'?'Ops! Questa va ricaricata ⚡':'Ops! Questa vuole '+(need==='gpl'?'il GPL':need==='diesel'?'il Diesel':'la Benzina'));return}
-  ok();busy=true;pump.hidden=true;toast.classList.remove('on');car.classList.remove('ask');
-  tank.classList.add('on');hold.classList.add('on');
-  hold.textContent=need==='elettrico'?'Tieni premuto per ricaricare ⚡':'Tieni premuto per fare il pieno ⛽';
-  fill.style.background=FUELS[need].c;
+function attach(){
+  sOk();st.phase='attached';hideBubble();hint.hidden=true;$('ring').setAttribute('opacity',0);setMouth('happy');
+  $('door').setAttribute('fill','#455a64');
+  fill.style.background=FUELS[st.need].c;fill.style.width='0';tank.classList.add('on');
+  $('tlbl').textContent=st.need==='elettrico'?'Batteria':'Serbatoio';
+  hold.textContent=st.need==='elettrico'?'Tieni premuto per ricaricare ⚡':'Tieni premuto per fare il pieno ⛽';
+  hold.classList.add('on');
 }
-function loop(ts){
-  if(!holding){raf=null;return}
-  const dt=Math.min(.05,(ts-(last||ts))/1000);last=ts;
-  level=Math.min(100,level+dt*45);fill.style.width='calc('+level+'% - 6px)';
-  if(Math.floor(level/8)!==Math.floor((level-dt*45)/8))beep(400+level*4,.05,'sine',.03);
-  if(level>=100){stopHold();finishCar();return}
+
+/* ---------- rifornimento ---------- */
+let raf=null,last=0,dropT=0;
+function loop(t){
+  if(!st.holding){raf=null;return}
+  const dt=Math.min(.05,(t-(last||t))/1000);last=t;
+  const prev=st.level;st.level=Math.min(100,st.level+dt*42);
+  st.litri+=dt*42*(st.kind==='truck'?.9:st.kind==='van'?.7:.45);
+  disp.textContent=st.litri.toFixed(2).replace('.',',');
+  fill.style.width='calc('+st.level+'% - 6px)';
+  if(Math.floor(st.level/10)!==Math.floor(prev/10))beep(420+st.level*5,.05,'sine',.03);
+  dropT+=dt;if(dropT>.07){dropT=0;drop()}
+  if(st.level>=100){stopHold();full();return}
   raf=requestAnimationFrame(loop);
 }
-function startHold(e){if(e)e.preventDefault();if(!hold.classList.contains('on')||holding)return;holding=true;last=0;hold.classList.add('press');raf=requestAnimationFrame(loop)}
-function stopHold(){holding=false;hold.classList.remove('press')}
+function drop(){const [dx,dy]=doorPos();const c=st.need==='elettrico'?'#ffeb3b':FUELS[st.need].c;
+  const d=el('circle',{cx:dx+(Math.random()*6-3),cy:dy-4,r:st.need==='elettrico'?2.2:3,fill:c,stroke:'#00142b','stroke-width':.8,class:'drop'},fx);setTimeout(()=>d.remove(),460)}
+function startHold(e){if(e)e.preventDefault();if(st.phase!=='attached'||st.holding)return;st.holding=true;last=0;hold.classList.add('press');raf=requestAnimationFrame(loop)}
+function stopHold(){st.holding=false;hold.classList.remove('press')}
 hold.addEventListener('pointerdown',startHold);
 ['pointerup','pointerleave','pointercancel'].forEach(ev=>hold.addEventListener(ev,stopHold));
 hold.addEventListener('keydown',e=>{if(e.key===' '||e.key==='Enter')startHold(e)});
 hold.addEventListener('keyup',e=>{if(e.key===' '||e.key==='Enter')stopHold()});
 hold.addEventListener('contextmenu',e=>e.preventDefault());
 
-function coin(){const c=document.createElement('div');c.className='coin';c.textContent='⭐';c.style.left=(40+Math.random()*20)+'%';c.style.top='40%';game.appendChild(c);setTimeout(()=>c.remove(),1000)}
-function finishCar(){
-  hold.classList.remove('on');done();coin();served++;$('hCars').textContent='🚗 '+served+'/'+TOTAL;
-  say(['Pieno fatto!','Grazie!','Perfetto!','Che bravo!','Buon viaggio!'][Math.floor(Math.random()*5)],1000);
-  setTimeout(()=>{tank.classList.remove('on');car.classList.remove('in');car.classList.add('out','moving');beep(300,.4,'sawtooth',.03)},500);
-  setTimeout(()=>{if(served>=TOTAL)end();else nextCar()},1400);
+function confetti(){const [dx,dy]=doorPos();const cols=['#f67625','#ffc531','#1f9d55','#1e78d6','#e53935','#7b4fd6'];
+  for(let i=0;i<26;i++){const r=el('rect',{x:CARX+120,y:CARY-10,width:7,height:11,rx:1.5,fill:cols[i%cols.length],class:'conf'},fx);
+    const a=Math.random()*Math.PI*2,s=60+Math.random()*90;r.style.setProperty('--dx',(Math.cos(a)*s).toFixed(0)+'px');r.style.setProperty('--dy',(Math.sin(a)*s-40).toFixed(0)+'px');r.style.transformBox='fill-box';r.style.transformOrigin='center';setTimeout(()=>r.remove(),1450)}}
+function full(){
+  st.phase='done';hold.classList.remove('on');sDone();confetti();setMouth('happy');
+  st.served++;$('hCars').textContent='🚗 '+st.served+'/'+TOTAL;
+  say(['Pieno fatto!','Grazie!','Perfetto!','Che bravo!','Buon viaggio!'][Math.floor(Math.random()*5)],1100);
+  const k=st.attached;
+  setTimeout(()=>{animTo(k,NOZ[k].hx,NOZ[k].hy,450,()=>{st.attached=null});tank.classList.remove('on')},500);
+  setTimeout(()=>{sHonk();driveOut()},1050);
 }
-function fmt(s){return s.toFixed(1).replace('.',',')}
-function tick(){$('hTime').textContent='⏱ '+fmt((performance.now()-t0)/1000)+' s'}
+
+/* ---------- movimento auto ---------- */
+function drive(from,to,ms,cb){const t0=performance.now();carWrap.classList.add('moving');
+  (function f(t){const p=Math.min(1,(t-t0)/ms);const e=from<to&&to>CARX?p*p:1-Math.pow(1-p,3);carX=from+(to-from)*(to>CARX?p*p:e);placeCar();if(p<1)requestAnimationFrame(f);else{carWrap.classList.remove('moving');cb&&cb()}})(t0)}
+function puff(){const p=el('circle',{cx:carX+8,cy:CARY+104,r:7,fill:'#eceff1',class:'puff'},fx);setTimeout(()=>p.remove(),900)}
+function driveOut(){let n=0;const iv=setInterval(()=>{puff();if(++n>4)clearInterval(iv)},90);
+  drive(CARX,460,900,()=>{if(st.served>=TOTAL)end();else nextCar()})}
+function nextCar(){
+  st.phase='arrive';st.level=0;st.litri=0;disp.textContent='0,00';
+  const keys=Object.keys(FUELS);st.need=keys[Math.floor(Math.random()*keys.length)];
+  st.kind=st.need==='elettrico'?'ev':st.need==='diesel'?['car','van','truck'][Math.floor(Math.random()*3)]:st.need==='gpl'?'car':['car','car','van'][Math.floor(Math.random()*3)];
+  buildCar(st.kind,COLORS[Math.floor(Math.random()*COLORS.length)]);
+  carX=-280;placeCar();
+  drive(-280,CARX,1000,()=>{st.phase='wait';showBubble();$('ring').setAttribute('opacity',1);sHonk();carWrap.classList.add('bounce');setTimeout(()=>carWrap.classList.remove('bounce'),460);
+    if(st.served<2)hint.hidden=false;look(60,380)});
+}
+carWrap.addEventListener('pointerdown',()=>{if(drag||st.phase==='arrive')return;sHonk();carWrap.classList.remove('bounce');void carWrap.offsetWidth;carWrap.classList.add('bounce')});
+$('sun').addEventListener('pointerdown',()=>{$('sun').classList.add('sunspin');beep(990,.2,'triangle',.05);setTimeout(()=>$('sun').classList.remove('sunspin'),1200)});
+
+/* ---------- partita ---------- */
+function say(t,ms){toast.textContent=t;toast.classList.add('on');clearTimeout(say.h);say.h=setTimeout(()=>toast.classList.remove('on'),ms||1300)}
+const fmt=s=>s.toFixed(1).replace('.',',');
+function tick(){$('hTime').textContent='⏱ '+fmt((performance.now()-st.t0)/1000)+' s'}
 function start(){
-  $('start').hidden=true;$('end').hidden=true;served=0;$('hCars').textContent='🚗 0/'+TOTAL;buildPump();
-  t0=performance.now();clearInterval(timer);timer=setInterval(tick,100);nextCar();
+  $('start').hidden=true;$('end').hidden=true;st.served=0;st.attached=null;$('hCars').textContent='🚗 0/'+TOTAL;
+  buildNozzles();st.t0=performance.now();clearInterval(timer);timer=setInterval(tick,100);nextCar();
 }
 function end(){
-  clearInterval(timer);const s=(performance.now()-t0)/1000;let best=null;
-  try{best=parseFloat(localStorage.getItem('tp-gioco-record'))||null;if(!best||s<best){localStorage.setItem('tp-gioco-record',s);}}catch(e){}
-  const rec=!best||s<best;
-  const st=s<40?3:s<60?2:1;$('stars').textContent='★'.repeat(st)+'☆'.repeat(3-st);
+  clearInterval(timer);const s=(performance.now()-st.t0)/1000;let best=null;
+  try{best=parseFloat(localStorage.getItem('tp-gioco-record'))||null;if(!best||s<best)localStorage.setItem('tp-gioco-record',s)}catch(e){}
+  const rec=!best||s<best;const n=s<45?3:s<70?2:1;$('stars').textContent='★'.repeat(n)+'☆'.repeat(3-n);
   $('endTxt').textContent='Hai fatto il pieno a '+TOTAL+' veicoli in '+fmt(s)+' secondi.'+(rec?' Nuovo record! 🏆':' Il tuo record è '+fmt(best)+' secondi.');
   $('end').hidden=false;
 }
 $('go').onclick=start;$('again').onclick=start;
-buildPump();setBtns(true);
+buildNozzles();buildCar('car','#e53935');st.kind='car';carX=CARX;placeCar();
 })();
 </script>
 </body>
