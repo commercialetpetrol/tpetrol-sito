@@ -257,7 +257,7 @@ def page(x):
   </section>
 </main>
 
-{footer}{JS}</body>
+{footer}{JS}<script data-goatcounter="https://tpetrol.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>\n</body>
 </html>
 '''
 
@@ -337,7 +337,7 @@ html_i = pre_i + f'''<header class="top band">
   </section>
 </main>
 
-{foot_i}</body>
+{foot_i}<script data-goatcounter="https://tpetrol.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>\n</body>
 </html>
 '''
 (out / "index.html").write_text(html_i)
@@ -391,7 +391,7 @@ for i, (zs, h1t, dove, dove_l) in ZPAG.items():
         + '    </div>\n  </section>\n  <section class="sec band">\n    <div class="wrap">\n'
         + f'      <ul class="sx-list">{items}</ul>\n'
         + '    </div>\n  </section>\n</main>\n\n'
-        + foot_z + '</body>\n</html>\n')
+        + foot_z + '<script data-goatcounter="https://tpetrol.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>\n</body>\n</html>\n')
     (out / zs).mkdir(exist_ok=True)
     (out / zs / "index.html").write_text(html_z)
     print("zona", zs, len(L))
