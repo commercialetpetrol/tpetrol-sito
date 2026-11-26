@@ -17,6 +17,10 @@ html = p.read_text(encoding="utf-8")
 ids = sorted(set(re.findall(r'"[A-Z0-9]+", "(\d{4,6})"\]', html)))
 if len(ids) < 20:
     sys.exit(f"id impianti non trovati ({len(ids)})")
+oggi = dt.datetime.now(ROMA).strftime("%d/%m/%Y")
+if f'const PREZZI_DATA="{oggi}";' in html:
+    print(f"prezzi già aggiornati al {oggi}: niente da fare")
+    sys.exit(0)
 
 
 def get(url, timeout):
@@ -59,7 +63,7 @@ def from_api():
         except Exception as e:
             print(f"API {i}: {e}")
             continue
-        for f in d.get("fuels", []):
+        for f in (d or {}).get("fuels") or []:
             try:
                 v = float(f.get("price"))
             except (TypeError, ValueError):

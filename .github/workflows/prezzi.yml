@@ -1,7 +1,7 @@
 name: Aggiorna prezzi MIMIT
 on:
   schedule:
-    - cron: "20 7 * * *"   # ogni mattina dopo la pubblicazione dei prezzi delle 8:00
+    - cron: "20 7-19/2 * * *"   # 8:20, 10:20 ... 20:20 ora italiana: riprova ogni 2 ore finché i prezzi del giorno non sono aggiornati
   workflow_dispatch: {}
 permissions:
   contents: write
